@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Cloud Drive</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <h1>登入</h1>
+        <input type="password" id="passwordInput" placeholder="請輸入密碼">
+        <button onclick="checkPassword()">登入</button>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <div class="container" id="driveContainer" style="display: none;">
+        <h1>雲端硬碟</h1>
+        <input type="file" id="fileInput" multiple>
+        <button onclick="uploadFiles()">上傳文件</button>
+        <div id="storageInfo"></div>
+        <ul id="fileList"></ul>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
