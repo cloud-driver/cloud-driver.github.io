@@ -1,0 +1,81 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-weight: bold;
+    margin-top: 20px;
+    color: #0056b3; /* 顏色可按照主題調整 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* 添加此行以在水平方向上居中 */
+    margin: auto; /* 添加此行以使整個容器居中 */
+    
+}
+
+.product-link {
+    text-decoration: none; /* 移除下劃線 */
+    color: inherit; /* 使用繼承的文字顏色 */
+    height: 300px;
+}
+
+.product {
+    flex: 0 0 calc(24vw - 10px); /* 每行四個商品 */
+    margin: 5px;
+    overflow: hidden;
+    position: relative;
+    height: 250px; /* 考慮增加高度 */
+    padding-bottom: calc(24vw - 10px);  /*使容器成為正方形 */
+}
+
+.product-image-container {
+    height: 100%;
+    overflow: hidden; /* 裁切超出容器的圖片部分 */
+}
+
+.product-image-container img {
+    transition: transform 0.3s ease; /* 平滑過渡效果 */
+    width: 100%;
+    height: 70%; /* 調整圖片容器的高度 */
+    object-fit: cover; /* 保持比例但覆蓋整個區域 */
+    display: block; /* 避免底部出現額外的空間 */
+    margin: 0 auto; /* 圖片居中 */
+}
+
+.product-image-container img:hover {
+    transform: scale(2.5); /* 放大圖片至原來的1.5倍 */
+    z-index: 1; /* 確保圖片在商品名稱下方 */
+}
+
+.product-name-container {
+    height: 30%; /* 調整文字容器的高度 */
+    background-color: white; /* 白色背景 */
+    position: relative; /* 絕對定位 */
+    bottom: 10px; /* 位於底部 */
+    left: 0;
+    right: 0;
+    z-index: 2; /* 確保在圖片上方 */
+    padding: 5px;
+    text-align: center;
+}
+
+/* 響應式設計 */
+@media (max-width: 600px) {
+    .product {
+        flex: 0 0 calc(100vw - 10px); /* 在手機上，每行一個商品 */
+        height: 200px; /* 同樣設定為固定高度 */
+    }
+}
+
+@media (min-width: 601px){
+    .product {
+        width: calc(24vw - 20px); /* 螢幕寬度超過901px時，每行四個商品 */
+        height: 200px; /* 同樣設定為固定高度 */
+    }
+}

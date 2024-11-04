@@ -1,20 +1,91 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-tw">
 <head>
-    <meta charset="UTF-8">
-    <title>2023 AIS3 Club 遊戲</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <link rel="shortcut icon" href="https://i.imgur.com/ucNOhZb.png" type="image/x-icon" />
+        <title>水呆魚陶藝創作工作室</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="index/style.css">
+    <script src="index/script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>歡迎來到 CyberGuard</h1>
-        <p class="intro">
-            在未來的某個城市，資安已經成為了每個人生活中的核心。這座城市的電子基礎設施被一家名為“CyberGuard”的企業所控制。
-            主角Alex是一位年輕的電腦高手，他的家人在一次資安事故中不幸喪生，事故與CyberGuard有著不可告人的關聯。
-            加入Alex的冒險，揭開隱藏的真相。
-        </p>
-        <button onclick="window.location.href='level1.html';">開始遊戲</button>
-        <button onclick="window.location.href='instructions.html';">遊戲說明</button>
+    <div class="header">
+        <div class="logo">
+            <img src="image/logo.jpg" alt="Logo" class="clickable-logo" onclick="toggleSection('demo')">
+        </div>
+        <div class="center-container">
+            <ul class="button">
+                <div class="dropdown">
+                    <button class="dropbtn">關於我們</button>
+                    <div class="dropdown-content">
+                        <a href="#aboutSection" onclick="toggleSection('aboutSectionA')">品牌緣起</a>
+                        <a href="#aboutSection" onclick="toggleSection('aboutSectionB')">藝術家介紹</a>
+                    </div>
+                </div>
+                <button onclick="window.open('buy.html')">商場</button>
+                <button onclick="window.open('game.html')">占卜小遊戲</button>
+            </ul>
+        </div>
+        <div class="contact">
+            <div><a href="https://www.facebook.com/sdytyxz/" target="_blank">Facebook</a><a href="https://www.instagram.com/water.fish.ceramic?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</a></div>
+            <div>電話: 0932 828 582</div>
+            <div>Email: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=albertsu77@gmail.com" target="_blank">albertsu77@gmail.com</a></div>
+        </div>
+    </div>  
+    <div id="demo" class="carousel slide" data-bs-ride="carousel" style="display: '';">
+        <!-- 目前在第幾張 -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        </div>
+        <!-- 輪播圖片 -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="image/product1.png" class="d-block" style="width:100%">
+            </div>
+            <div class="carousel-item">
+                <img src="image/product2.png" class="d-block" style="width:100%">
+            </div>
+        </div>
+        <!-- 手動切換 -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
+    <div class="aboutSectionA" id="aboutSectionA" style="display: none;">
+        <div class="section-containerA">
+            <h2>品牌緣起</h2>
+            <div>&nbsp</div>
+            <img src="image/logo.jpg" alt="Brand Origin Photo">
+            <div>&nbsp</div>
+            <h3>水：上善若水</h3>
+            <h3>呆：口甜立穩</h3>
+            <h3>魚：自在創作</h3>
+        </div>
+    </div>
+    <div class="aboutSectionB" id="aboutSectionB" style="display: none;">
+        <div class="section-containerB">
+            <h2>藝術家介紹</h2>
+            <p>鄭滿彩，1968年1月10日出生於台灣省台北縣，現年56歲，目前從事陶藝創作歷經28年，在23歲那一年首先接觸到了新娘彩妝，並於30歲那年接觸到了陶藝並對其產生了興趣，之後跑去埔里蛇窯裡學習了4年之後從裡面離開到嘉義自行創辦出「水呆魚」這個品牌。</p>
+            <h3>23歲到30歲</h3>
+            <p>鄭滿彩老師年輕時原本擔任新娘秘書的工作，直到三十歲那年，再一次賣化妝品的過程，遇到一個小姐再開花店，一起去喝茶，看到那位小姐做的杯子，是她自己做的，覺得很特殊，所以開始產生興趣。之後前往南投水里的蛇窯自學陶瓷，並在4年後從裡面離開並創辦出「陶塑坊」與「水呆魚」。</p>
+            <h3>離開蛇窯後</h3>
+            <p>老師先與朋友們一同創辦了「陶塑坊」，總共開設了13家直營店。之後更創立了個人品牌「水呆魚工作室」<br>一開始老師只把陶藝當成是興趣，主要還是做新娘彩妝，但後來開始專心在陶藝技術。</p>
+            <h3>她的陶藝生產模式主要分為兩類：</h3>
+            <p>其一是與中國工廠合作，由鄭老師授權設計圖的部分使用權，汝窯色為台灣獨家販售，而中國工廠可以販售其他顏色，如此則能降低生產成本，提供消費者評價又優質的陶藝文創作品；其二是與虎尾監獄合作，老師指導學員燒陶技術，一方面能降低人力成本，一方面也協助學員出獄後再就業，更曾指導學員獲得創意花燈比賽獎項。<br><br>此外，她與虎尾監獄合作，由監獄協助生產相關產品，而這種合作已經持續了二十多年。她選擇將水呆魚工作室創利於嘉義蒜頭糖廠中，店內展出了多種獨特的陶藝作品。這些作品不僅包括適合商界人士的招財金蟾和符合現代風格的手工茶具，還有與日常生活緊密相連的特色淨水器。<br><br>而老師做的作品主要有茶道香道花道 甚至連水系列都有 茶壺、茶杈、杯子<br><br></p>
+            <h2>2019年，「水呆魚工作室」在汐止開設分店</h2>
+            <img src="image/artist1.png" alt="Artist Photo">
+            <img src="image/artist2.png" alt="Artwork Photo">
+            <p>&nbsp</p>
+            <p>&nbsp</p>
+            <p>&nbsp</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
