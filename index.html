@@ -1,45 +1,135 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="arduino 遠端控制測試">
+<html lang="zh-Hant">
+	<head>
+		<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0;url=https://b940-118-165-65-149.ngrok-free.app" />
-    <title>Arduino 遠端控制</title>
+    <title>晚餐選擇轉盤</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e7eaed;
+        }
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 10px solid #ddd;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        #wheel::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(red, yellow, green, cyan, blue, magenta, red);
+        }
+        .label {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        #spinButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        #pointer {
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid red;
+            position: absolute;
+            top: -30px;
+            left: calc(50% - 15px);
+        }
+    </style>
 </head>
 <body>
-    <h1>Arduino 遠端控制</h1>
-    <label for="motor_speed">馬達轉速：</label>
-    <input type="range" id="motor_speed" min="0" max="255" step="1" value="0">
-    <span id="speed_value">0</span>
-    <button onclick="setMotorSpeed()">設定轉速</button>
 
-    <h2>感測器數據</h2>
-    <p>當前數值：<span id="sensor_value">0</span></p>
+    <h1>晚餐選擇轉盤</h1>
+    <div id="wheel">
+        <div id="pointer"></div>
+    </div>
+    <button id="spinButton">旋轉</button>
+    <div id="result">選到的晚餐會顯示在此</div>
 
     <script>
-        const api_url = "https://71ac-118-166-10-252.ngrok-free.app/get_data";
+        async function loadOptions() {
+            // 模擬載入選項
+            return ["壽司", "火鍋", "漢堡", "沙拉", "披薩", "燒烤"];
+        }
 
-        function setMotorSpeed() {
-            let speed = document.getElementById("motor_speed").value;
-            document.getElementById("speed_value").innerText = speed;
+        function createWheel(options) {
+            const wheel = document.getElementById('wheel');
+            const angle = 360 / options.length;
+            let gradientColors = '';
+            options.forEach((option, index) => {
+                const color = `hsl(${index * angle}, 70%, 50%)`;
+                gradientColors += `${color} ${index * angle}deg ${(index + 1) * angle}deg,`;
 
-            fetch("https://71ac-118-166-10-252.ngrok-free.app/set_speed", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "motor_speed": parseInt(speed) })
+                const label = document.createElement('div');
+                label.classList.add('label');
+                label.style.transform = `rotate(${index * angle + angle / 2}deg) translate(0, -100%)`;
+                label.innerText = option;
+                wheel.appendChild(label);
             });
+
+            // 設定轉盤的漸變背景
+            wheel.style.setProperty('--wheel-colors', gradientColors.slice(0, -1));
+            wheel.style.background = `conic-gradient(${gradientColors.slice(0, -1)})`;
         }
 
-        function updateSensorData() {
-            fetch(api_url)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("sensor_value").innerText = data.sensor_value;
-                });
+        let isSpinning = false;
+
+        async function spinWheel() {
+            if (isSpinning) return; // 防止連續點擊
+            isSpinning = true;
+
+            const options = await loadOptions();
+            if (options.length === 0) return;
+
+            const randomIndex = Math.floor(Math.random() * options.length);
+            const anglePerSegment = 360 / options.length;
+            const rotation = (360 * 5) + (360 - (randomIndex * anglePerSegment) - anglePerSegment / 2);
+
+            document.getElementById('wheel').style.transform = `rotate(${rotation}deg)`;
+
+            setTimeout(() => {
+                document.getElementById('result').innerText = `今晚吃：${options[randomIndex]}`;
+                isSpinning = false;
+            }, 4000);
         }
 
-        setInterval(updateSensorData, 2000);
+        document.getElementById('spinButton').addEventListener('click', spinWheel);
+
+        loadOptions().then(createWheel);
     </script>
 </body>
 </html>
