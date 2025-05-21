@@ -1,0 +1,211 @@
+/*style*/
+
+body {
+  font-family: "Microsoft JhengHei", sans-serif;
+  background-color: #f8f9fa;
+}
+
+h2 {
+  border-left: 5px solid #0d6efd;
+  padding-left: 10px;
+  margin-bottom: 1rem;
+  color: #0d6efd;
+}
+
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.navbar-nav{
+  float: right;
+  text-align: center;
+}
+
+.navbar .nav-link:hover{
+  font-weight: bold;
+  color: #ffc107 !important;
+}
+.navbar-toggler{
+  float: inline-end;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 10px 15px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: transparent;
+  color: #000;
+  z-index: 1030;
+}
+
+.navbar.scrolled {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+.navbar a.nav-link,
+.navbar .navbar-brand {
+  color: black;
+  transition: color 0.3s;
+}
+
+.navbar.scrolled a.nav-link,
+.navbar.scrolled .navbar-brand {
+  color: black;
+}
+
+footer {
+  background-color: #eee;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+img.img-fluid {
+  border-radius: 6px;
+  max-width: 100%;
+  height: auto;
+}
+/* ==== 首頁風格化區域（依照設計圖）==== */
+
+
+.hero {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  padding: 100px 20px 40px;
+  text-align: center;
+  position: relative;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.section-box {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 180px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.course-card {
+  background-color: white;
+  border: 2px solid #cce3f6;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.course-card .title-tag {
+  position: absolute;
+  left: -16px;
+  top: 20px;
+  background: #5ca9d6;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 20px;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.section-colored {
+  background-color: #67a8c4;
+  padding: 40px 20px;
+  color: white;
+}
+
+.section-colored h2 {
+  color: white;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+.section-colored .inner-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  color: black;
+  max-width: 800px;
+  margin: auto;
+}
+
+.section-light {
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+}
+
+.section-light h2 {
+  text-align: center;
+  color: #0d6efd;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+footer {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+  padding: 20px 0;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.admission-card {
+  background-color: #5ca9d6;
+  color: white;
+  border-radius: 16px;
+  padding: 30px 20px;
+  position: relative;
+  min-height: 200px;
+}
+
+.admission-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.section-box {
+  background-color: #fff;
+  border: 1px solid #cde0ee;
+  border-radius: 16px;
+  padding: 30px 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-box h5 {
+  color: #0059a8;
+  border-bottom: 2px solid #d2e5f2;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.creatby{
+  float: right;
+  text-align: right;
+  padding-right: 1em;
+}
+.named{
+  float: right;
+  text-align: right;
+  margin-right: 1em;
+}
+.footer-center{
+  text-align: center;
+}

@@ -1,0 +1,456 @@
+{
+    "home": {
+        "introduction": [
+            {
+                "title": "簡介",
+                "subtitle": "",
+                "content": "本班創立以來一直以「科學、資訊、人文」為課程規劃之核心，開設「數位學習實驗班」培育具備科技人文的未來產業人才，透過實作、專題等課程，培養學生靈活思考，重視學習目標的能力，帶領學生成為『自主學習、同理有愛、接軌世界』的未來公民，透過實驗班課程規劃，將程式科技、語文表達、國際視野、專題<span style='color:red'>研究與製作等領域連</span>結整合，以期培養基礎能力與建構健全品格與學習態度，並融入資訊科技等實務精神，並與大學端合作，<span style='color:red'>培育符應二十一世紀的科技人才</span>。<br>",
+                "images": [
+                    "files\\330229579685486eb1b1a12bc293c071.webp"
+                ],
+                "files": [],
+                "date": "2025-04-03",
+                "tags": [
+                    "教育",
+                    "科技",
+                    "人文"
+                ],
+                "videos": []
+            }
+        ],
+        "achievements": {
+            "competitions": [
+                {
+                    "title": "嘉藥智慧盃全國高中職專題製作競賽",
+                    "subtitle": "",
+                    "content": "數位實驗班第三屆理組榮獲<br>2024嘉藥智慧盃全國高中職專題製作競賽（機電組）在10組中獲得第一名<br>",
+                    "images": [],
+                    "files": [],
+                    "date": "2024",
+                    "tags": [
+                        "競賽",
+                        "資訊",
+                        "金獎"
+                    ],
+                    "videos": []
+                },
+                {
+                    "title": "嘉藥智慧盃全國高中職專題製作競賽",
+                    "content": "本校數位實驗班第三屆魏銘宏、蘇庭弘榮獲<br>2024嘉藥智慧盃全國高中職專題製作競賽（機電組）在10組中獲得第三名<br>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "銅獎"
+                    ]
+                },
+                {
+                    "title": "全國自走車競賽",
+                    "content": "恭喜林郁婕、江亞樺、魏銘宏、蘇庭弘榮獲全國自走車競賽第二名",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "競賽",
+                        "自走車",
+                        "銀獎"
+                    ]
+                },
+                {
+                    "title": "STEAM跨域競賽智慧滾珠高中職組",
+                    "content": "恭喜顏敏倫、 周士閔、陳俊佑、謝其澄、蘇庭弘榮獲STEAM跨域競賽智慧滾珠高中職組<span style='color:red'>佳作</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "競賽",
+                        "滾珠",
+                        "佳作"
+                    ]
+                },
+                {
+                    "title": "STEAM跨域競賽智慧滾珠高中職組",
+                    "content": "恭喜吳霽祐、陳奕愷、陳曦、魏銘宏榮獲2023STEAM跨域競賽智慧滾珠高中職組裁判特殊獎",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "競賽",
+                        "滾珠",
+                        "裁判特殊獎"
+                    ]
+                },
+                {
+                    "title": "致理科大全國自主學習競賽",
+                    "content": "恭喜魏銘宏榮獲致理科大全國自主學習競賽<span style='color:red'>佳作</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "競賽",
+                        "自主學習",
+                        "佳作"
+                    ]
+                },
+                {
+                    "title": "台灣仿生設計競賽",
+                    "content": "恭喜李昊、李昊宸、陳裕鈞、鄭宸翔、謝秉諺榮獲2023台灣仿生設計競賽<span style='color:red'>佳作</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "仿生"
+                    ]
+                },
+                {
+                    "title": "STEAM跨域競賽龍舟競賽",
+                    "content": "恭喜林郁倢、崔芷瑜、鄭宸翔榮獲2023STEAM跨域競賽龍舟競賽<span style='color:red'>佳作</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "龍舟",
+                        "佳作"
+                    ]
+                },
+                {
+                    "title": "三星創意提案競賽",
+                    "content": "恭喜李昊宸、陳裕均、鄭宸翔、謝秉諺榮獲2023三星創意提案競賽<span style='color:red'>全國前十</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "全國前十"
+                    ]
+                },
+                {
+                    "title": "TECH農 科技農業提案競賽",
+                    "content": "恭喜林聖偉、陳裕鈞、鄭宸翔、謝秉諺、蘇威勳榮獲2023TECH農 科技農業提案競賽<span style='color:red'>第三名</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2023",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "第三名"
+                    ]
+                },
+                {
+                    "title": "全國新興科技智慧農業創意應用競賽",
+                    "content": "恭喜崔芷瑜、謝秉諺榮獲2024全國新興科技智慧農業創意應用競賽<span style='color:red'>第二名</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "資訊",
+                        "競賽",
+                        "第二名"
+                    ]
+                },
+                {
+                    "title": "高中與大學學習歷程檔案深度對話論壇",
+                    "content": "鄭宸翔、謝秉諺 <多坐多得> <br>魏銘宏、蘇庭弘 <地震救災移動式機械手臂>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": null,
+                    "tags": []
+                },
+                {
+                    "title": "嘉藥智慧盃全國高中職專題製作競賽",
+                    "content": "恭喜周宜均、林萌、蘇威勳榮獲2024嘉藥智慧盃全國高中職專題製作競賽（商業組）<span style='color:red'>金獎</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "商業",
+                        "競賽",
+                        "第一名",
+                        "金獎"
+                    ]
+                },
+                {
+                    "title": "酷酷比城市盃創新創業及創意行銷競賽",
+                    "content": "恭喜周宜均、林萌、蘇威勳榮獲2024酷酷比城市盃創新創業及創意行銷競賽<span style='color:red'>季軍</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "商業",
+                        "創意",
+                        "競賽",
+                        "第三名",
+                        "季軍"
+                    ]
+                },
+                {
+                    "title": "光宇盃",
+                    "content": "恭喜周怡君、林萌、蘇威勳榮獲2024光宇盃<span style='color:red'>佳作</span>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": "2024",
+                    "tags": [
+                        "競賽",
+                        "佳作"
+                    ]
+                }
+            ],
+            "admissions": [
+                {
+                    "title": "123123123321",
+                    "subtitle": "",
+                    "content": "3333311111",
+                    "images": [],
+                    "files": [],
+                    "date": null,
+                    "tags": []
+                },
+                {
+                    "title": "升學成果",
+                    "subtitle": "",
+                    "content": "李志強錄取國立臺灣大學資工系<br><span style='color:red'>張雅雯</span>錄取交通大學電子工程學系<br>",
+                    "images": [
+                        "files\\04a9335ceb694cdfafeea06769a148fa.webp",
+                        "files\\e427e28c98894a29801262009e297e93.webp"
+                    ],
+                    "files": [
+                        "files\\1eb64b20be4b40a2b2ce29ecdcc67750.pdf"
+                    ],
+                    "date": "2024-07-15",
+                    "tags": [
+                        "升學"
+                    ],
+                    "videos": []
+                }
+            ],
+            "alumni": [
+                {
+                    "title": "AAA",
+                    "subtitle": "聯合國青年代表",
+                    "content": "擔任聯合國青年代表，推動數位平權<br>出版《科技與人文的交會》專書",
+                    "images": [
+                        "files\\61bcaa805f634046b6d1141c2cbc567e.webp"
+                    ],
+                    "files": [],
+                    "date": "2024-11-15",
+                    "tags": [
+                        "校友",
+                        "國際"
+                    ],
+                    "videos": []
+                },
+                {
+                    "title": "BBB",
+                    "subtitle": "AI科技新創公司創辦人",
+                    "content": "創辦AI科技新創公司，致力於智慧醫療應用開發<br>榮獲2024年十大傑出青年",
+                    "images": [
+                        "files\\aa762539d3e94e0996b00ced83a37db5.webp",
+                        "files\\bd31d522167c499fb415bf8e36f585b8.webp"
+                    ],
+                    "files": [],
+                    "date": "2024-10-01",
+                    "tags": [
+                        "校友",
+                        "科技"
+                    ],
+                    "videos": [
+                        "files\\71fd3ad65e1f48fbbac70019ceb2ea86.mp4"
+                    ]
+                }
+            ]
+        },
+        "news": [
+            {
+                "title": "最新消息",
+                "subtitle": "",
+                "content": "",
+                "images": [],
+                "files": [],
+                "date": "2025-04-03",
+                "tags": [
+                    "教育",
+                    "科技",
+                    "人文"
+                ]
+            }
+        ],
+        "events": [
+            {
+                "title": "2023專題成果發表會",
+                "subtitle": "",
+                "content": "展示學生專題研究成果",
+                "images": [],
+                "files": [],
+                "date": "2023-06-20",
+                "tags": [
+                    "活動",
+                    "專題"
+                ]
+            },
+            {
+                "title": "海外姐妹校文化交流日",
+                "subtitle": "",
+                "content": "與國際姐妹校進行文化交流",
+                "images": [],
+                "files": [],
+                "date": "2023-09-15",
+                "tags": [
+                    "活動",
+                    "國際"
+                ]
+            },
+            {
+                "title": "2024年資訊科學營",
+                "subtitle": "",
+                "content": "資訊科學相關活動<br><span style='color:red'>媽媽爸爸都有來</span>",
+                "images": [],
+                "files": [],
+                "date": "2024-07-01",
+                "tags": [
+                    "活動",
+                    "資訊"
+                ],
+                "videos": []
+            },
+            {
+                "title": "課程報告",
+                "subtitle": "123",
+                "content": "12312",
+                "images": [
+                    "files\\b807f0ff95824e63bc5b4db9c8e772ea.webp",
+                    "files\\cc2a4854d2734b18855375a1236266ce.webp"
+                ],
+                "files": [],
+                "date": "2024-01-10",
+                "tags": [
+                    "課程"
+                ],
+                "videos": [
+                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                ]
+            }
+        ]
+    },
+    "courses": {
+        "core": [
+            {
+                "title": "核心課程",
+                "content": "數位實驗班的核心課程包含程式設計、資料處理、專題製作與表達訓練，融合跨領域能力。",
+                "images": [],
+                "files": [],
+                "date": "2025-04-04",
+                "tags": [
+                    "課程",
+                    "核心"
+                ]
+            }
+        ],
+        "projects": [
+            {
+                "title": "新項目",
+                "content": "測試一下<br><span style='color:red'>這是紅字</span><br>哈哈哈",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ],
+        "trainings": [
+            {
+                "title": "我是第一個培訓項目",
+                "content": "呵呵<br>嘻嘻<br>他的<br>她的<br>ㄏㄏ",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ]
+    },
+    "achievements": {
+        "competitions": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            }
+        ],
+        "admissions": [],
+        "projects": []
+    },
+    "admissions": {
+        "targets": [
+            {
+                "title": "招生對象與條件",
+                "content": "對資訊科技有興趣、具備邏輯思考與創新精神之學生皆可報名。",
+                "date": "2025-04-04",
+                "tags": [
+                    "招生"
+                ]
+            }
+        ],
+        "process": [],
+        "dates": []
+    },
+    "campus": {
+        "clubs": [],
+        "sharing": [],
+        "environment": []
+    },
+    "resources": {
+        "faq": [
+            {
+                "title": "這是個好問題",
+                "content": "1233211234567",
+                "images": [],
+                "files": [],
+                "date": "2025-04-04",
+                "tags": [
+                    "Q&A",
+                    "faq"
+                ],
+                "videos": []
+            }
+        ],
+        "downloads": [
+            {
+                "title": "我是要下載的東西",
+                "content": "",
+                "images": [
+                    "files\\6ff3c23611514d94abc733484e23a5ac.webp"
+                ],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ],
+        "transport": []
+    }
+}
