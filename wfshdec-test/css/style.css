@@ -114,7 +114,7 @@ container {
     background-color: #fff;
     border: 2px solid #cce3f6;
     border-radius: 16px;
-    padding: 20px;
+    padding: 20px 10px 20px 40px;
     position: relative;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
@@ -232,7 +232,7 @@ footer {
     bottom: 40px;
     background-color: #fff;
     border-radius: 50%;
-    z-index: 1050;
+    z-index: 1030;
     border-color: #666;
 }
 .retop:hover{
@@ -257,4 +257,161 @@ footer {
     .navbar:has(> .container > .down-nav > #navbarNav.navbar-collapse.collapse.show) .navbar-brand {
         color: #000;
     }
+}
+
+/* 自製虛化背景層 */
+#modal-blur-layer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+  display: none;
+  pointer-events: none;
+  box-sizing: border-box;
+  overflow: hidden;  /* 防止 body 背景透過這層還能滑 */
+}
+
+#modal-blur-modal {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1070 !important;
+  display: none;
+  pointer-events: none;
+}
+
+.modal-backdrop {
+  display: none !important;
+}
+
+/* Modal 彈出動畫 */
+.modal.fade .modal-dialog {
+  transform: scale(0.9);
+  transition: transform 0.2s ease-out, opacity 0.1s ease-out;
+  opacity: 0;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 1050;
+}
+
+#detailModalBody img.img-fluid {
+  margin-bottom: 1.5rem;  /* 或 24px，依需求調整 */
+  display: block;
+  z-index: 1060;
+}
+
+#imgPreviewModal {
+  z-index: 1070;
+}
+
+#imgPreviewModalImg {
+  z-index: 1080;
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card {
+  cursor: pointer;
+  transition: box-shadow 0.15s, filter 0.15s;
+}
+.clickable-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  filter: brightness(1.03);
+}
+
+.preview-img:hover {
+  filter: brightness(1.1) drop-shadow(0 2px 12px #3332);
+  transition: 0.2s;
+}
+
+.course-card.offset-middle-right {
+  margin-left: -40px;
+}
+
+#transport {
+  position: relative;
+  padding-top: 75%;
+  overflow: hidden;
+}
+
+#transport iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+footer {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+ul {
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  margin-bottom: 1rem;
+}
+
+li {
+  margin-bottom: 0.25rem;
+}
+
+.modal-body img {
+  display: block;
+  margin: 1rem auto;
+  max-width: 100%;
+  height: auto;
+}
+
+h5.fw-bold {
+  color: #2a2a2a;
+  font-weight: bold;
+}
+
+.modal {
+  overflow: hidden !important;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+/* courses 頁面專用 */
+.mt-mid { margin-top: -4rem; }    /* 第二張卡片推到中間 */
+.mt-bot { margin-top: -4rem; }   /* 第三張卡片推到最下面 */
+
+/* 手機（576px 以下）時：標籤改成往右 +0.5rem，並給卡片多一點左側內距 */
+@media (max-width: 576px) {
+  .course-card {
+    /* 原本我們是 padding:20px 20px 20px 70px;
+       這裡改成左右對稱一點，左側內距維持 70px */
+    padding: 20px 20px 20px 70px;
+  }
+
+  .course-card .title-tag {
+    /* 從 -16px 改成 +0.5rem，讓它不要跑出到視窗邊緣 */
+    left: 0.5rem;
+  }
+
+  .mt-mid { margin-top: 2rem; }    /* 第二張卡片推到中間 */
+  .mt-bot { margin-top: 2rem; }   /* 第三張卡片推到最下面 */
+
+  #transport {
+  padding-top: 177.77%;
+  }
 }

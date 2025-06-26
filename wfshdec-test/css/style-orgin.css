@@ -209,3 +209,34 @@ footer {
 .footer-center{
   text-align: center;
 }
+
+
+/* 自製虛化背景層 */
+#modal-blur-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+  display: none;
+}
+
+.modal-backdrop {
+  display: none !important;
+}
+
+/* Modal 彈出動畫 */
+.modal.fade .modal-dialog {
+  transform: scale(0.9);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+  opacity: 1;
+}

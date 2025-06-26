@@ -4,9 +4,9 @@
             {
                 "title": "簡介",
                 "subtitle": "",
-                "content": "本班創立以來一直以「科學、資訊、人文」為課程規劃之核心，開設「數位學習實驗班」培育具備科技人文的未來產業人才，透過實作、專題等課程，培養學生靈活思考，重視學習目標的能力，帶領學生成為『自主學習、同理有愛、接軌世界』的未來公民，透過實驗班課程規劃，將程式科技、語文表達、國際視野、專題<span style='color:red'>研究與製作等領域連</span>結整合，以期培養基礎能力與建構健全品格與學習態度，並融入資訊科技等實務精神，並與大學端合作，<span style='color:red'>培育符應二十一世紀的科技人才</span>。<br>",
+                "content": "本班創立以來一直以「**科學、資訊、人文**」為課程規劃之核心，開設「數位學習實驗班」培育具備科技人文的未來產業人才，透過實作、專題等課程，培養學生靈活思考，重視學習目標的能力，帶領學生成為『自主學習、同理有愛、接軌世界』的未來公民，透過實驗班課程規劃，將程式科技、語文表達、國際視野、專題研究與製作等領域連結整合，以期培養基礎能力與建構健全品格與學習態度，並加入資訊科技等實務精神，並與大學端合作，**培育符應二十一世紀的科技人才**。",
                 "images": [
-                    "files\\330229579685486eb1b1a12bc293c071.webp"
+                    "files\\9266b8164fbd4a75925976cdb812acbb.webp"
                 ],
                 "files": [],
                 "date": "2025-04-03",
@@ -176,7 +176,7 @@
                 },
                 {
                     "title": "嘉藥智慧盃全國高中職專題製作競賽",
-                    "content": "恭喜周宜均、林萌、蘇威勳榮獲2024嘉藥智慧盃全國高中職專題製作競賽（商業組）<span style='color:red'>金獎</span>",
+                    "content": "恭喜周宜均、林萌、蘇威勳榮獲2024嘉藥智慧盃全國高中職專題製作競賽<span style='color:red'>（商業組）金獎</span>",
                     "images": [],
                     "files": [],
                     "videos": [],
@@ -218,30 +218,39 @@
             ],
             "admissions": [
                 {
-                    "title": "123123123321",
-                    "subtitle": "",
-                    "content": "3333311111",
-                    "images": [],
+                    "title": "113 學年萬芳高中數位學習實驗班升學榜單（更新）",
+                    "content": "榜單如下附圖",
+                    "images": [
+                        "files\\22ad92c939964d5282a2cafaee798607.webp"
+                    ],
                     "files": [],
+                    "videos": [],
                     "date": null,
-                    "tags": []
+                    "tags": [
+                        "自主學習 同理有愛 接軌世界"
+                    ]
                 },
                 {
-                    "title": "升學成果",
-                    "subtitle": "",
-                    "content": "李志強錄取國立臺灣大學資工系<br><span style='color:red'>張雅雯</span>錄取交通大學電子工程學系<br>",
-                    "images": [
-                        "files\\04a9335ceb694cdfafeea06769a148fa.webp",
-                        "files\\e427e28c98894a29801262009e297e93.webp"
-                    ],
-                    "files": [
-                        "files\\1eb64b20be4b40a2b2ce29ecdcc67750.pdf"
-                    ],
-                    "date": "2024-07-15",
+                    "title": "112 學年萬芳高中數位學習實驗班升學榜單（更新）",
+                    "content": "##112 學年繁星推薦##<br>* 301 陳O　 國立政治大學 金融學系<br>* 301 陳O諼 國立成功大學 測量及空間資訊學系<br>* 301 黃O婷 國立臺灣師範 大學教育學院學士班<br>* 301 何O翰 國立中正大學 資訊管理學系<br>* 301 高O航 國立中興大學 應用數學系應用數學組<br>* 301 張O傑 國立宜蘭大學 電機工程學系<br>* 301 張O睿 國立高雄大學 應用數學系<br>* 301 林O勳 高雄醫學大學 生物科技學系<br>* 301 蔡O修 中原大學 會計學系<br>* 301 鄭O信 中原大學 生物醫學工程學系<br>* 301 鐘O弦 元智大學 電機工程學系（乙組）<br>* 301 王O睿 元智大學 資訊管理學系<br>* 301 孫O萱 中國醫藥大學 公共衛生學院大一不分系<br>* 301 袁O柏 淡江大學 資訊工程學系全英語學士班<br>* 301 沈O瑜 逢甲大學 都市計畫與空間資訊學系<br>##112 學年特殊選才##<br><br>* 301 陳O哲<br>臺北市立大學 資訊科學系<br>國立東華大學 資訊管理學系<br>國立暨南大學 資訊工程學系<br>輔仁大學 人工智慧與資訊安全學士學位學程、中原大學資訊管理學系<br><br>* 301 湯O儀<br>國立中興大學 資訊工程學系資安組<br>國立宜蘭大學 資訊工程學系<br><br>* 301 曾O斌<br>國立高雄大學 資訊管理學系<br>國立宜蘭大學 資訊工程學系<br>臺北市立大學 資訊科學系<br>輔仁大學資訊 管理學系<br><br>* 301 梁O瑄<br>高雄醫學大學醫務管理暨醫療資訊學系<br>",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": null,
                     "tags": [
-                        "升學"
-                    ],
-                    "videos": []
+                        "榜單 升學 資訊"
+                    ]
+                },
+                {
+                    "title": "111 學年萬芳高中數位學習實驗班升學榜單",
+                    "content": "##111 學年特殊選才##<br>* 周O宇 逢甲大學 資訊工程學系<br>* 徐O德 國立宜蘭大學 資訊工程學系(資安組)<br>* 廖O維 大同大學 電機工程學系<br>* 吳O寰 長庚大學 資訊管理學系（乙組）<br>##111 學年繁星推薦##<br>* 吳O瑄 國立中央大學 理學院學士班<br>* 李O毅 國立臺灣師範大學 學習科學學士學位學程<br>* 林O傑 國立臺灣海洋大學 運輸科學學系 B 組<br>* 劉O辰 國立中山大學 化學系英語組<br>* 林O勳 國立高雄大學 應用數學系<br>* 吳O潔 實踐大學 財務金融管理學系（台北校區）<br>* 楊O琍 慈濟大學 醫學資訊學系<br>* 曹O哲 銘傳大學 人工智慧應用學系（桃園校區）<br>##111 學年申請入學##<br>* 王O宇 國立東華大學 資訊工程學系國際組（資安組）<br>* 黃O儒 國防理工學院 電機電子工程學系<br>* 杜O道 淡江大學 資訊工程學系<br>* 莊O翔 淡江大學 資訊工程學系<br>* 潘O鈞 銘傳大學 資訊工程學系<br>* 施O勳 長庚大學 資訊工程學系<br>* 賴O成 逢甲大學 資訊電機學院學士班<br>* 陳O安 大同大學 電機工程學系<br>* 蕭O均 大同大學 資訊經營學系<br>* 陳O柔 淡江大學 大眾傳播學系<br>##111 學年分發入學##<br>* 程O璇 淡江大學 人工智慧學系<br>* 吳O潔 實踐大學 財務金融學系（臺北校區）<br>* 張O荷 國立臺東大學 數位媒體與文教產業學系<br>* 江O朔 輔仁大學 物理學系光電物理組<br>* 邱O字 元智大學 化學工程與材料科學學系<br>* 范O喻 銘傳大學 人工智慧應用學系（桃園校區）<br>* 翁O駿 淡江大學 電機工程學系電機資訊組<br>* 張O朧 中山醫學大學 醫學資訊學系",
+                    "images": [],
+                    "files": [],
+                    "videos": [],
+                    "date": null,
+                    "tags": [
+                        "榜單 升學 資訊"
+                    ]
                 }
             ],
             "alumni": [
@@ -282,9 +291,9 @@
         },
         "news": [
             {
-                "title": "最新消息",
+                "title": "114 學年度數位學習實驗班招生簡章",
                 "subtitle": "",
-                "content": "",
+                "content": "##招生對象及名額##<br>* 自本校 114 學年度高一新生甄選成班，採集中安置方式，男女兼收。<br>* 以興趣志願為主，採自由報名。<br><br>{立即報名}(https://docs.google.com/forms/d/e/1FAIpQLSccszsE5H9T2urhKpZr7ngXwxN6y2xPiUV5d8mTa5CGvb3lgA/closedform)<br><br>## 申請資格##<br>本校高一新生具下列其中之一資格者皆可報名:<br><br>* 數學科會考成績 A<br>* 英文科會考成績 A<br>* 國中階段有資訊相關競賽獲得優異成績表現經審核通過者。<br><br>##說明會日期與測驗##<br>說明會日期：114 年 7 月 10 日(四) 10：00，於活動中心 4F 舉行。<br><br>* 測驗方式：於本校電腦上機測驗。<br>* 測驗內容：運算思維測驗（範圍為國中資訊科技、數學）。<br><br>##放榜日期##<br>114 年 07 月 21 日 (一) 16：00前，公告錄取名單於本校網站。經錄取者，逕行編入本校數位學習實驗班就讀。公告錄取榜單後，不得放棄入班，以免影響其他同學之權益。<br><br>##簡章相關檔案##<br>詳細資訊如：甄選日期時間、地點與方式，可以[點此前往查看或下載簡章](https://drive.google.com/drive/folders/1KMmk2KVWvsSNKrp1tlJhPrD1mtuGjuoh)。",
                 "images": [],
                 "files": [],
                 "date": "2025-04-03",
@@ -292,62 +301,88 @@
                     "教育",
                     "科技",
                     "人文"
+                ],
+                "videos": []
+            },
+            {
+                "title": "113 學年萬芳高中數位學習實驗班升學榜單（更新）",
+                "content": "榜單如下附圖<br>[點此前往查看其他年份的榜單](#admissions)",
+                "images": [
+                    "files\\22ad92c939964d5282a2cafaee798607.webp"
+                ],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "自主學習 同理有愛 接軌世界"
                 ]
             }
         ],
         "events": [
             {
-                "title": "2023專題成果發表會",
+                "title": "萬芳高中第二屆數位學習實驗班成果發表",
                 "subtitle": "",
-                "content": "展示學生專題研究成果",
-                "images": [],
-                "files": [],
-                "date": "2023-06-20",
-                "tags": [
-                    "活動",
-                    "專題"
-                ]
-            },
-            {
-                "title": "海外姐妹校文化交流日",
-                "subtitle": "",
-                "content": "與國際姐妹校進行文化交流",
-                "images": [],
+                "content": "##透過機器學習對木瓜成熟度分級的影像辨識##<br>![0152a5fa702f4fb687a366d195831e85.webp](files/0152a5fa702f4fb687a366d195831e85.webp)<br>袁友柏、鐘亮弦。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/YcwEgbIQ#bHFGMI-OdAMWCVnwG-uilHCBiRX4ojTd2OkhNchcwO8)。<br><br>##必中籃球框 - P5.js 設計##<br>![eead1cb315d54487bee71cf2195c1e25.webp](files/eead1cb315d54487bee71cf2195c1e25.webp)<br>何亞翰、⾼楷航。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/kUpkWYjI#8cG1J7War0qhO5ltFjZUK43ADGFqYqqdRKYv4fN8iMU)。<br><br>##謊言終結者 - 面部微表情##<br>![31c67544d929497c95f7030cffcf348d.webp](files/31c67544d929497c95f7030cffcf348d.webp)<br>陳欣、孫宇萱。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/9E4TSJ7C#zvMA19b7GTbSlbixnTA_-wG5ZrqPvyN2Q0J38RTBEJE)。<br><br>##BLG - 設計遊戲以了解大眾對遊戲式學習之看法##<br>![a6059e3caac6494c87e308d18d88c200.webp](files/a6059e3caac6494c87e308d18d88c200.webp)<br>林佳勳、⿈莉婷。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/cFxERZSD#Vi8JOpzbC85U-JtG2q8O6xiD_c5Nth_buejadH3y4Yk)。<br><br>##IOT Remote 結合Arduino控制家庭電器##<br>![b5898bed2a2b4a5498701df4a234b6e1.webp](files/b5898bed2a2b4a5498701df4a234b6e1.webp)<br>梁芸瑄、陳映諼。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/gMpRwJCY#A8Dx7NzfpOsGDGntYZLkI9fU9RqzGQIUuleoinPmVNg)。<br><br>##健康管理智慧藥盒##<br>![126efbe1e3af40c18158cebcba6fedc0.webp](files/126efbe1e3af40c18158cebcba6fedc0.webp)<br>周妤臻、張瓅心。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/sUwyhaba#1d6V_1PTAN8maj1njY2Zq3TjcfixBqcA5n6j7w7OyeQ)。<br><br>##機械爪臂 - Arduino機械爪臂應用##<br>![e0fa0904c8bf43089cffb7c9811de984.webp](files/e0fa0904c8bf43089cffb7c9811de984.webp)<br>沈家瑜。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/hY4y2QJQ#HFwgPHYwHF9bsFEOFYlol7CUpQ03O5g6YjXiF4iqeGo)。<br><br>##Arduino 技術實現 - 智能辨色調色儀之雛形製作##<br>![969d6935e9204e98b70220f555603cb7.webp](files/969d6935e9204e98b70220f555603cb7.webp)<br>何姵儒。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/UNhmGDCT#Nc1ZsTDm1O4bZYlVjTE-wPaKTbO2nygP48osDlx67Lk)。<br><br>##手機也會發燒？溫度上升對手機影響的研究##<br>![71e5d0037d864d66b87f846adae1613d.webp](files/71e5d0037d864d66b87f846adae1613d.webp)<br>林暉恩、蘇鼎宇。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/ZEZQmAiK#GRsn3vpQbOb7xwdCVoPPDFfNFK7N5FKUI3v6MaVQ7D8)。<br><br>##以機器學習方法對 PubChem 化學資料庫的分子（複雜度）預測##<br>![27c62db294b241a4b0af66818153fff4.webp](files/27c62db294b241a4b0af66818153fff4.webp)<br>梁芸瑄 陳宏哲 蘇鼎宇。指導老師：劉康仁老師。[點此前往查看海報](https://mega.nz/file/EFgzzQgI#Rj_tILTPF2Ep1pbRrmvAJfJHz0_OuJVkeZrIm17AWsU)。<br><br>##飲食基礎 - 蔬果營養價值分析網站與現代人健康意識分析##<br>![dcb23af109ab447595d5e88fa86335ba.webp](files/dcb23af109ab447595d5e88fa86335ba.webp)<br>蔡孟修。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/IQ4FkAhI#qp5D5mlaobqme5p5zTRgWlozKEWKfQMgmCiYGzu88O8)。<br><br>##Arduino 智慧垃圾桶##<br>![98bb96d2b4a940e392358df4b9b38528.webp](files/98bb96d2b4a940e392358df4b9b38528.webp)<br>臧文睿 詹閎竣。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/tRwQQQbY#zeJbfWcD35Ql4YO5Gu9KamlthQAOgNi1ylc59Wzu7TI)。<br><br>##分秒必爭：自動登分機##<br>![3a5c97769e6c49a4bdd5a06801f2e6c9.webp](files/3a5c97769e6c49a4bdd5a06801f2e6c9.webp)<br>劉宇陽。[點此前往查看海報](https://mega.nz/file/kQByEKbQ#xohJh-Nh-N7Vmuztoboix416UGKvlYKZ2ydB1x8CK7E)。<br><br>##設計師想要有個家##<br>![30dbb3cb8e5a42a89ed9b7adb435c5d8.webp](files/30dbb3cb8e5a42a89ed9b7adb435c5d8.webp)<br>陳宏哲。[點此前往查看海報](https://mega.nz/file/UUwzRb4A#zHAoDsMUCZ0irWEiFnzBjUoIoBSZrblp0BH3Np6gvcg)。<br><br>##髮量危機##<br>![ccbeb949f92e4352853066f283673591.webp](files/ccbeb949f92e4352853066f283673591.webp)<br>曾彥斌、湯愷儀。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/tYJWyajR#mQ-7iOPrnDBToAEv4l-xgiKZiO1kFLElo-bsCs7GBc4)。<br><br>##用 Arduino 做出語音辨識鎖##<br>![54ae923c4ed9473c847e10d534e522a6.webp](files/54ae923c4ed9473c847e10d534e522a6.webp)<br>曹硯鈞。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/gEZ12RhB#MGiguFfgF4kjcO8TWFehd3s1M-0_oWpAocFavSah1QA)。<br><br>##Chat GPT 與 LINE Bot 設計英文查詢之應用研究##<br>![3e0ce61246f1486bbba7338ead65756a.webp](files/3e0ce61246f1486bbba7338ead65756a.webp)<br>陳宏哲。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/4dBFkIpK#SVwh6VwsBFwj9qDCaJw_HNQRGgPMKWz04OqH9nrLllQ)。<br><br>##Arduino 智慧發球機##<br>![0aa0b798461a4bc8acfec2b412d54c1a.webp](files/0aa0b798461a4bc8acfec2b412d54c1a.webp)<br>張軒睿 、王宇睿。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/gBBliIKB#3cr8nklvsX4gO4K5mumjf8jAY9-Xle9CsQvExQfhZUU)。<br><br>##自動分類零錢箱##<br>![2956b968404d4298bd8838d3ddc5cad1.webp](files/2956b968404d4298bd8838d3ddc5cad1.webp)<br>鄭弘信、張俊傑。指導老師：劉康仁老師、賴育鍾老師。[點此前往查看海報](https://mega.nz/file/AQQHFSLJ#jwFrQ1ntVJp7LksFMD6vokPpUZJ-qDQuE0k5KBdvRiE)。",
+                "images": [
+                    "!files\\0152a5fa702f4fb687a366d195831e85.webp",
+                    "!files\\eead1cb315d54487bee71cf2195c1e25.webp",
+                    "!files\\31c67544d929497c95f7030cffcf348d.webp",
+                    "!files\\a6059e3caac6494c87e308d18d88c200.webp",
+                    "!files\\b5898bed2a2b4a5498701df4a234b6e1.webp",
+                    "!files\\126efbe1e3af40c18158cebcba6fedc0.webp",
+                    "!files\\e0fa0904c8bf43089cffb7c9811de984.webp",
+                    "!files\\969d6935e9204e98b70220f555603cb7.webp",
+                    "!files\\71e5d0037d864d66b87f846adae1613d.webp",
+                    "!files\\27c62db294b241a4b0af66818153fff4.webp",
+                    "!files\\dcb23af109ab447595d5e88fa86335ba.webp",
+                    "!files\\98bb96d2b4a940e392358df4b9b38528.webp",
+                    "!files\\3a5c97769e6c49a4bdd5a06801f2e6c9.webp",
+                    "!files\\30dbb3cb8e5a42a89ed9b7adb435c5d8.webp",
+                    "!files\\ccbeb949f92e4352853066f283673591.webp",
+                    "!files\\54ae923c4ed9473c847e10d534e522a6.webp",
+                    "!files\\3e0ce61246f1486bbba7338ead65756a.webp",
+                    "!files\\0aa0b798461a4bc8acfec2b412d54c1a.webp",
+                    "!files\\2956b968404d4298bd8838d3ddc5cad1.webp"
+                ],
                 "files": [],
                 "date": "2023-09-15",
                 "tags": [
-                    "活動",
-                    "國際"
+                    "活動 成發"
+                ],
+                "videos": [
+                    "https://youtu.be/8c9tFGQblQg?si=3yNb2Hqotpl0BSs1"
                 ]
             },
             {
-                "title": "2024年資訊科學營",
-                "subtitle": "",
-                "content": "資訊科學相關活動<br><span style='color:red'>媽媽爸爸都有來</span>",
-                "images": [],
-                "files": [],
-                "date": "2024-07-01",
-                "tags": [
-                    "活動",
-                    "資訊"
-                ],
-                "videos": []
-            },
-            {
-                "title": "課程報告",
-                "subtitle": "123",
-                "content": "12312",
+                "title": "萬芳高中第一屆數位學習實驗班成果發表",
+                "content": "",
                 "images": [
-                    "files\\b807f0ff95824e63bc5b4db9c8e772ea.webp",
-                    "files\\cc2a4854d2734b18855375a1236266ce.webp"
+                    "files\\54ce440b92e14f13a19a34fc3fe6c7a1.webp",
+                    "files\\e3ce7b840d484afdadb3364eb7c7a522.webp",
+                    "files\\5162469a733c43aa8b4653121df796eb.webp",
+                    "files\\debb96e438824243ad80b8b8724cb317.webp",
+                    "files\\084764abfa9b4c5fb7b53af59031ba57.webp",
+                    "files\\6f4f0e39411e43be9cb532e4b7801dbe.webp",
+                    "files\\10054e2ecebe4a6faab5da52b86d2ab6.webp",
+                    "files\\8259af07cfa945e09afdaa426555969a.webp",
+                    "files\\e7e3fb8f27194de3ab034f0a96b55e32.webp",
+                    "files\\20679f194d3c43a38b5d2d54db7b39ba.webp",
+                    "files\\b2b56a772a46473ebbae3e16014187c6.webp",
+                    "files\\8fecbe6c63174ea299096b41e24d58a2.webp",
+                    "files\\293498c2a4bf481e9b312c3ad8303ad9.webp",
+                    "files\\2ead067fb3a34a538e50ef5c25881467.webp",
+                    "files\\5685417be495424990ed20b30b5411aa.webp",
+                    "files\\9eb26ef618de4901bb8f241338e4b0f6.webp",
+                    "files\\da524f457da445e9857bef1eebfc3861.webp",
+                    "files\\bcb6f94104a74fdca76ab65d97da2954.webp",
+                    "files\\75b22950e9c64c7fb3b7c2d1b9cbfc21.webp",
+                    "files\\fa271d4299a34c63ae962f43ff457f19.webp"
                 ],
                 "files": [],
-                "date": "2024-01-10",
+                "videos": [],
+                "date": null,
                 "tags": [
-                    "課程"
-                ],
-                "videos": [
-                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    "活動 成發"
                 ]
             }
         ]
@@ -356,14 +391,76 @@
         "core": [
             {
                 "title": "核心課程",
-                "content": "數位實驗班的核心課程包含程式設計、資料處理、專題製作與表達訓練，融合跨領域能力。",
+                "content": "數位實驗班的核心課程包含<br>1. 程式設計<br>2. <span style='color:red'>資料處理</span><br>3. 專題製作<br>4. **表達訓練**<br><br>融合跨領域能力。",
                 "images": [],
                 "files": [],
                 "date": "2025-04-04",
                 "tags": [
                     "課程",
                     "核心"
+                ],
+                "videos": []
+            },
+            {
+                "title": "核心課程1",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "科技學習"
                 ]
+            },
+            {
+                "title": "核心課程2",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "科技學習"
+                ]
+            },
+            {
+                "title": "核心課程3",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "dk ru5vm",
+                    "6vu6"
+                ]
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
             }
         ],
         "projects": [
@@ -375,12 +472,84 @@
                 "videos": [],
                 "date": null,
                 "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
             }
         ],
         "trainings": [
             {
                 "title": "我是第一個培訓項目",
                 "content": "呵呵<br>嘻嘻<br>他的<br>她的<br>ㄏㄏ",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
                 "images": [],
                 "files": [],
                 "videos": [],
@@ -399,35 +568,409 @@
                 "videos": [],
                 "date": "",
                 "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
             }
         ],
-        "admissions": [],
-        "projects": []
+        "admissions": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ],
+        "projects": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ]
     },
     "admissions": {
         "targets": [
             {
-                "title": "招生對象與條件",
-                "content": "對資訊科技有興趣、具備邏輯思考與創新精神之學生皆可報名。",
-                "date": "2025-04-04",
+                "title": "114 學年度數位學習實驗班招生簡章",
+                "subtitle": "",
+                "content": "##招生對象及名額##<br>* 自本校 114 學年度高一新生甄選成班，採集中安置方式，男女兼收。<br>* 以興趣志願為主，採自由報名。<br><br>{立即報名}(https://docs.google.com/forms/d/e/1FAIpQLSccszsE5H9T2urhKpZr7ngXwxN6y2xPiUV5d8mTa5CGvb3lgA/closedform)<br><br>## 申請資格##<br>本校高一新生具下列其中之一資格者皆可報名:<br><br>* 數學科會考成績 A<br>* 英文科會考成績 A<br>* 國中階段有資訊相關競賽獲得優異成績表現經審核通過者。<br><br>##說明會日期與測驗##<br>說明會日期：114 年 7 月 10 日(四) 10：00，於活動中心 4F 舉行。<br><br>* 測驗方式：於本校電腦上機測驗。<br>* 測驗內容：運算思維測驗（範圍為國中資訊科技、數學）。<br><br>##放榜日期##<br>114 年 07 月 21 日 (一) 16：00前，公告錄取名單於本校網站。經錄取者，逕行編入本校數位學習實驗班就讀。公告錄取榜單後，不得放棄入班，以免影響其他同學之權益。<br><br>##簡章相關檔案##<br>詳細資訊如：甄選日期時間、地點與方式，可以[點此前往查看或下載簡章](https://drive.google.com/drive/folders/1KMmk2KVWvsSNKrp1tlJhPrD1mtuGjuoh)。",
+                "images": [],
+                "files": [],
+                "date": "2025-04-03",
                 "tags": [
-                    "招生"
+                    "自主學習 同理有愛 接軌世界"
+                ],
+                "videos": []
+            },
+            {
+                "title": "113 學年度數位學習實驗班招生簡章",
+                "content": "##招生對象及名額##<br>* 自本校113學年度高一新生甄選成班，採集中安置方式，男女兼收。<br>* 以興趣志願為主，採自由報名。<br>##申請資格##<br>本校高一新生具下列其中之一資格者皆可報名:<br><br>* 數學科會考成績A<br>* 英文科會考成績A<br>* 國中階段有資訊相關競賽獲得優異成績表現經審核通過者。<br>##說明會日期與測驗##<br>說明會日期：113 年 7 月 11 日（四） 10：00，於活動中心 3F 視聽教室（二）舉行。<br><br>* 測驗方式：於本校電腦上機測驗。<br>* 測驗內容：運算思維測驗（範圍為國中資訊科技、數學）。<br>##放榜日期##<br>113 年 07 月 23 日（二)）16：00前，公告錄取名單於本校網站。經錄取者，逕行編入本校數位學習實驗班就讀。公告錄取榜單後，不得放棄入班，以免影響其他同學之權益。<br>本次甄選相關事宜如有疑義，請洽研發處試務組，電話：02-22309585#127。<br><br>詳細資訊可以[點此前往查看或下載簡章](https://mega.nz/file/lBJnhbaL#f80LcAkkSlh9EEkCpB1bf8Y3Doo50KTjDKJ_tOw59pY)。",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "主動學習 暖心共感 放眼國際"
                 ]
+            },
+            {
+                "title": "112 學年度數位學習實驗班招生簡章",
+                "content": "![6ada5b94d5084a77bbb2b8bdebc6f9b3.webp](files/6ada5b94d5084a77bbb2b8bdebc6f9b3.webp)<br>112 學年度數位學習實驗班招生簡章已經公告！<br>##申請資格：##<br>* 數學科會考成績 A<br>* 英文科會考成績 A<br>* 國中階段有資訊相關競賽獲得優異成績表現經審核通過者。<br>說明會日期：112 年 7 月 14 日（五）10：00，於活動中心 4F 舉行。<br><br>報名時間、報名地點、甄選資料及繳交地點、等等的詳細資料請下載完整的招生簡章，請[點此前往下載](https://mega.nz/file/EEhmFAAZ#BbZRlGqWjfLJuEiOG6WI9QAPNXcOwfnHD84tlTzemcg)，以及若有需要海報可[在此下載數位學習實驗班海報](https://mega.nz/file/AdozEIKZ#aQ1tIX4aqq-8Q9fI6Y5NnHDE37qhedYAr5jRhXjA8lY)。",
+                "images": [
+                    "!files\\6ada5b94d5084a77bbb2b8bdebc6f9b3.webp"
+                ],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            },
+            {
+                "title": "111 學年度數位學習實驗班招生簡章",
+                "content": "##招生對象及名額##<br>* 自本校111學年度高一新生甄選成班，採集中安置方式，男女兼收，35人成立ㄧ班。<br>* 以興趣志願為主，採自由報名。<br><br>##申請資格##<br>本校高一新生具下列其中之一資格者皆可報名：<br><br>* 數學科會考成績A<br>* 英文科會考成績A<br>* 國中階段有資訊相關競賽獲得優異成績表現經審核通過者。<br><br>##報名##<br>* 時間：<br>111 年 07 月 21 日（四）10:00～12:00 於活動中心四樓<br>111 年 07 月 22 日（五）～07 月 27 日（三）08:00～12:00 於教務處課務組（仁愛樓 2F）<br><br>* 費用：免費<br>* 方式：採現場報名，繳交相關資料（家長同意書、書面審查資料）<br><br>##甄選##<br>111 年 07 月 27 日（三）12:00 前，繳交報名表與書面審查資料（占總成績20%）<br>111 年 07 月 28 日（四）16:00 前，網路公告報名結果與進行面試時程<br><span style='color:red'>111 年 08 月 02 日（二）08:00，面試（佔總成績50%）、實作測驗（佔總成績30%）</span><br>111 年 08 月 03 日（三）16:00 前，網路公告錄取名單<br><br>##實作測驗##<br>* 方式：於指定的時間內，以[Scratch 線上版](https://scratch.mit.edu/)進行開發與製作，並繳交作品。<br>* 內容：於測驗前另行公布。<br><br>##簡章檔案##<br>實驗課程規畫和其他詳細內容請參閱附檔的簡章。<br><br>[111學年度數位學習實驗班招生簡章0610.docx](https://mega.nz/file/RUZgFK7I#TdsUWT5I0zz3E_XnWgS36jL0SVHBVF0iJFmrLyEOtSI)",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
             }
         ],
         "process": [],
-        "dates": []
+        "dates": [
+            {
+                "title": "114 學年度數位學習實驗班招生說明會",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "2025-07-10 (四)",
+                "tags": []
+            }
+        ]
     },
     "campus": {
-        "clubs": [],
-        "sharing": [],
-        "environment": []
+        "clubs": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ],
+        "sharing": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ],
+        "environment": [
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
+            }
+        ]
     },
     "resources": {
         "faq": [
             {
                 "title": "這是個好問題",
-                "content": "1233211234567",
+                "content": "**Q**：來實驗班好嗎？<br>**A**：非常的好啊！<br><br>**Q**：來實驗班不好嗎？<br>**A**：非常的好啊！",
                 "images": [],
                 "files": [],
                 "date": "2025-04-04",
@@ -436,19 +979,73 @@
                     "faq"
                 ],
                 "videos": []
-            }
-        ],
-        "downloads": [
+            },
             {
-                "title": "我是要下載的東西",
+                "title": "新項目",
                 "content": "",
-                "images": [
-                    "files\\6ff3c23611514d94abc733484e23a5ac.webp"
-                ],
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": "",
+                "tags": []
+            },
+            {
+                "title": "新項目",
+                "content": "",
+                "images": [],
                 "files": [],
                 "videos": [],
                 "date": null,
                 "tags": []
+            }
+        ],
+        "downloads": [
+            {
+                "title": "歷年實施計畫",
+                "content": "{點我查看歷年實施計畫檔案}(https://mega.nz/folder/EJwHVI7S#4EzcI9KN82BYA2iftTrp4w)",
+                "images": [],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": [
+                    "成果 計畫 實行"
+                ]
             }
         ],
         "transport": []
