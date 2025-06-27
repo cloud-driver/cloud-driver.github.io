@@ -670,89 +670,6 @@
                 "date": null,
                 "tags": []
             }
-        ],
-        "projects": [
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": "",
-                "tags": []
-            },
-            {
-                "title": "新項目",
-                "content": "",
-                "images": [],
-                "files": [],
-                "videos": [],
-                "date": null,
-                "tags": []
-            }
         ]
     },
     "admissions": {
@@ -799,13 +716,23 @@
                 "videos": [],
                 "date": null,
                 "tags": []
+            },
+            {
+                "title": "110 學年度數位學習實驗班招生簡章",
+                "content": "",
+                "images": [
+                    "files\\1b6529de0a9c4c97af8f591a233a43b4.webp"
+                ],
+                "files": [],
+                "videos": [],
+                "date": null,
+                "tags": []
             }
         ],
-        "process": [],
         "dates": [
             {
                 "title": "114 學年度數位學習實驗班招生說明會",
-                "content": "",
+                "content": "地點：萬芳高級中學",
                 "images": [],
                 "files": [],
                 "videos": [],

@@ -108,9 +108,8 @@ fetch('data/data.json')
     }
 
     if (pathname.includes("achievements.html")) {
-      renderAchievementBlock('achievement-competitions', data.achievements.competitions);
-      renderAchievementBlock('achievement-admissions', data.achievements.admissions);
-      renderAchievementBlock('achievement-projects', data.achievements.projects);
+      renderAchievementBlock('achievement-competitions', data.home.achievements.competitions);
+      renderAchievementBlock('achievement-admissions', data.home.achievements.admissions);
     }
 
     if (pathname.includes("admissions.html")) {
