@@ -255,37 +255,13 @@
             ],
             "alumni": [
                 {
-                    "title": "AAA",
-                    "subtitle": "聯合國青年代表",
-                    "content": "擔任聯合國青年代表，推動數位平權<br>出版《科技與人文的交會》專書",
-                    "images": [
-                        "files\\61bcaa805f634046b6d1141c2cbc567e.webp"
-                    ],
+                    "title": "待更新，敬請期待",
+                    "content": "",
+                    "images": [],
                     "files": [],
-                    "date": "2024-11-15",
-                    "tags": [
-                        "校友",
-                        "國際"
-                    ],
-                    "videos": []
-                },
-                {
-                    "title": "BBB",
-                    "subtitle": "AI科技新創公司創辦人",
-                    "content": "創辦AI科技新創公司，致力於智慧醫療應用開發<br>榮獲2024年十大傑出青年",
-                    "images": [
-                        "files\\aa762539d3e94e0996b00ced83a37db5.webp",
-                        "files\\bd31d522167c499fb415bf8e36f585b8.webp"
-                    ],
-                    "files": [],
-                    "date": "2024-10-01",
-                    "tags": [
-                        "校友",
-                        "科技"
-                    ],
-                    "videos": [
-                        "files\\71fd3ad65e1f48fbbac70019ceb2ea86.mp4"
-                    ]
+                    "videos": [],
+                    "date": null,
+                    "tags": []
                 }
             ]
         },
