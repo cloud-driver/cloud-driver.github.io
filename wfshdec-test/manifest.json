@@ -3,7 +3,7 @@
   "short_name": "數位實驗班",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#67a8c4",
   "theme_color": "#67a8c4",
   "description": "萬芳高中數位學習實驗班官方網站，提供課程特色、學生成就、招生資訊等。",
   "lang": "zh-Hant",
