@@ -1,0 +1,88 @@
+main {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* 網站整體字體與背景設定 */
+body {
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  margin: 0;
+  padding-top: 70px; /* 預留空間給 fixed-top 導覽列 */
+}
+
+/* 卡片樣式 */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* 標題樣式 */
+h1, h2, h3, h4 {
+  font-weight: bold;
+}
+
+/* 自訂按鈕顏色 */
+.btn-success {
+  background-color: #00c300;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #00a000;
+}
+
+/* 響應式強化 */
+@media (max-width: 576px) {
+  .card {
+    padding: 1.5rem;
+  }
+}
+
+/* 暗色模式樣式 */
+body.dark-mode {
+  background: linear-gradient(to right, #2c3e50, #4b6cb7);
+  color: #f8f9fa;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .card {
+  background-color: #1e1e2f !important;
+  color: #f8f9fa;
+}
+
+body.dark-mode .navbar a.nav-link,
+body.dark-mode .navbar-brand {
+  color: #f8f9fa !important;
+}
+
+body.dark-mode .btn-success {
+  background-color: #4b6cb7;
+}
+body.dark-mode .btn-success:hover {
+  background-color: #1a3981;
+}
+
+body.dark-mode .btn-outline-secondary {
+  color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #f8f9fa;
+  color: #1e1e2f;
+}
+
+
+/* 🌙 模式切換動畫效果 */
+body, .card, .navbar, .btn {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+*, *::before, *::after {
+  transition: all 0.5s ease;
+}
