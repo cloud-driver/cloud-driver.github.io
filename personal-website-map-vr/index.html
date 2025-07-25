@@ -4,17 +4,39 @@
   <meta charset="UTF-8">
   <title>個人網站地圖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="個人網站地圖 - 探索我的個人簡介、成長經歷和專題介紹">
   <link rel="stylesheet" href="style/style.css">
+  <!-- 添加網站圖標 -->
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <!-- 預加載關鍵圖片 -->
+  <link rel="preload" href="img/map.png" as="image">
 </head>
 <body>
   <div class="map-container">
     <img src="img/map.png" alt="地圖背景" class="map-bg">
-    <img src="img/個人簡介.png" class="house" alt="個人簡介" data-link="pages/intro.html" style="top: 2%; left: 79%;">
-    <img src="img/成長經歷.png" class="house" alt="成長經歷" data-link="pages/growth.html" style="top: 35%; left: 52%;">
-    <img src="img/實驗班的歷練.png" class="house" alt="實驗班的歷練" data-link="pages/lab.html" style="top: 77%; left: 28%;">
-    <img src="img/營隊參與.png" class="house" alt="營隊參與" data-link="pages/camp.html" style="top: 35%; left: 30%;">
-    <img src="img/Gripmind專題介紹.png" class="house" alt="Gripmind專題介紹" data-link="pages/gripmind.html" style="top: 68%; left: 72%;">
+    <!-- 移除內聯樣式，改由 JavaScript 控制位置 -->
+    <img src="img/個人簡介.png" class="house" alt="個人簡介" data-link="pages/intro.html">
+    <img src="img/成長經歷.png" class="house" alt="成長經歷" data-link="pages/growth.html">
+    <img src="img/實驗班的歷練.png" class="house" alt="實驗班的歷練" data-link="pages/lab.html">
+    <img src="img/營隊參與.png" class="house" alt="營隊參與" data-link="pages/camp.html">
+    <img src="img/Gripmind專題介紹.png" class="house" alt="Gripmind專題介紹" data-link="pages/gripmind.html">
   </div>
+  
+  <!-- 添加音效控制 -->
+  <div id="sound-control" style="position: fixed; top: 20px; right: 20px; z-index: 10; cursor: pointer;">
+    <img src="img/sound-on.png" alt="音效開關" id="sound-icon" style="width: 30px; height: 30px;">
+  </div>
+  
+  <!-- 添加背景音樂 -->
+  <audio id="background-music" loop>
+    <source src="audio/background.mp3" type="audio/mp3">
+  </audio>
+  
+  <!-- 添加點擊音效 -->
+  <audio id="click-sound">
+    <source src="audio/click.mp3" type="audio/mp3">
+  </audio>
+  
   <script src="script/script.js"></script>
 </body>
 </html>
