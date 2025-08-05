@@ -1,0 +1,8 @@
+  // 房子的原始百分比位置數據
+  const housePositions = [
+    { id: '個人簡介', top: 17, left: 65 },
+    { id: '成長經歷', top: 33, left: 47 },
+    { id: '實驗班的歷練', top: 60, left: 26 },
+    { id: '營隊參與', top: 35, left:26 },
+    { id: 'Gripmind專題介紹', top: 55, left: 60 }
+  ];

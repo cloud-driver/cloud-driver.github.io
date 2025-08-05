@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (loader.parentNode) {
             loader.remove();
           }
+          
+          // 圖片加載完成後立即定位房子
+          positionHouses();
         }, 500);
       }, 500);
     }
@@ -76,11 +79,28 @@ document.addEventListener('DOMContentLoaded', () => {
   tooltip.className = 'tooltip';
   document.body.appendChild(tooltip);
 
-  // 初始化房子位置
+  // 初始化房子位置（也會在圖片加載完成後執行）
   positionHouses();
   
   // 當窗口大小改變時重新定位房子
-  window.addEventListener('resize', positionHouses);
+  window.addEventListener('resize', () => {
+    positionHouses();
+  });
+  
+  // 監聽屏幕方向變化
+  window.addEventListener('orientationchange', () => {
+    setTimeout(positionHouses, 300); // 延遲執行以確保方向已完全變化
+  });
+  
+  // 監聽滾動事件，更新提示文字位置
+  window.addEventListener('scroll', () => {
+    if (tooltip.style.opacity === '1') {
+      const lastEvent = window.lastMouseEvent;
+      if (lastEvent) {
+        updateTooltipPosition(lastEvent);
+      }
+    }
+  });
 
   houses.forEach(house => {
     // 點擊事件
@@ -122,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    house.addEventListener('mousemove', updateTooltipPosition);
+    house.addEventListener('mousemove', (e) => {
+      window.lastMouseEvent = e; // 保存最後的滑鼠事件
+      updateTooltipPosition(e);
+    });
     
     house.addEventListener('mouseout', () => {
       tooltip.style.opacity = '0';
@@ -137,21 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (translateMatch && translateMatch[1] && translateMatch[2]) {
           const translateX = translateMatch[1];
           const translateY = translateMatch[2];
-          
-          // 檢查是否有縮放因子
-          const distanceFromEdge = Math.min(
-            parseFloat(house.style.left || '50'), 
-            parseFloat(house.style.top || '50'), 
-            100 - parseFloat(house.style.left || '50'), 
-            100 - parseFloat(house.style.top || '50')
-          );
-          
-          if (distanceFromEdge < 20) {
-            const scaleFactor = Math.max(0.8, 1 - (20 - distanceFromEdge) / 100);
-            house.style.transform = `translate(${translateX}, ${translateY}) scale(${scaleFactor})`;
-          } else {
-            house.style.transform = `translate(${translateX}, ${translateY})`;
-          }
+          house.style.transform = `translate(${translateX}, ${translateY})`;
         } else {
           house.style.transform = '';
         }
@@ -161,10 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 更新提示文字位置
+  // 更新提示文字位置 - 使用 pageX/pageY 而不是 clientX/clientY 以支持滾動
   function updateTooltipPosition(e) {
-    tooltip.style.left = `${e.clientX + 15}px`;
-    tooltip.style.top = `${e.clientY + 15}px`;
+    tooltip.style.left = `${e.pageX + 15}px`;
+    tooltip.style.top = `${e.pageY + 15}px`;
   }
 
   // 添加返回按鈕（如果不是主頁）
@@ -226,123 +235,101 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// 根據螢幕比例重新定位房子
+// 定位房子 - 使用固定的百分比位置
 function positionHouses() {
+  const mapBg = document.querySelector('.map-bg');
   const mapContainer = document.querySelector('.map-container');
-  const containerWidth = mapContainer.offsetWidth;
-  const containerHeight = mapContainer.offsetHeight;
-  const currentAspectRatio = containerWidth / containerHeight;
   
-  // 設計時的參考尺寸和比例
-  const designWidth = 1920; // 假設設計時的寬度
-  const designHeight = 1080; // 假設設計時的高度
-  const designAspectRatio = designWidth / designHeight;
+  // 確保地圖已經加載並有尺寸
+  if (!mapBg.complete || mapBg.naturalWidth === 0) {
+    // 如果地圖還沒加載完成，等待加載後再定位
+    mapBg.onload = positionHouses;
+    return;
+  }
   
-  // 房子的原始位置數據（基於設計尺寸）
+  // 獲取地圖的實際顯示尺寸
+  const mapRect = mapBg.getBoundingClientRect();
+  const mapDisplayWidth = mapRect.width;
+  const mapDisplayHeight = mapRect.height;
+  
+  // 確保地圖容器高度足夠
+  mapContainer.style.height = `${mapDisplayHeight}px`;
+  
+  // 房子的原始百分比位置數據
   const housePositions = [
-    { id: '個人簡介', top: 17, left: 88 },
-    { id: '成長經歷', top: 47, left: 60 },
-    { id: '實驗班的歷練', top: 89, left: 36 },
-    { id: '營隊參與', top: 46, left: 40 },
-    { id: 'Gripmind專題介紹', top: 80, left: 80 }
+    { id: '個人簡介', top: 20, left: 88 },
+    { id: '成長經歷', top: 46.5, left: 60.5 },
+    { id: '實驗班的歷練', top: 85, left: 36 },
+    { id: '營隊參與', top: 46, left: 36 },
+    { id: 'Gripmind專題介紹', top: 75, left: 79 }
   ];
-  
+
   // 獲取所有房子元素
   const houses = document.querySelectorAll('.house');
-  
-  // 計算比例調整因子
-  const ratioAdjustment = currentAspectRatio / designAspectRatio;
-  
-  // 遍歷每個房子，根據其ID找到對應的位置數據
+
+  // 遍歷每個房子，設置位置
   houses.forEach(house => {
     const alt = house.alt;
     const position = housePositions.find(pos => alt.includes(pos.id));
-    
+
     if (position) {
-      // 根據螢幕比例調整位置
-      let adjustedLeft = position.left;
-      let adjustedTop = position.top;
+      // 直接使用百分比位置計算像素位置
+      // 這樣無論地圖如何縮放，房子相對於地圖的位置都保持不變
+      const displayX = (position.left / 100) * mapDisplayWidth;
+      const displayY = (position.top / 100) * mapDisplayHeight;
       
-      // 根據螢幕比例調整左右位置
-      if (ratioAdjustment > 1) {
-        // 螢幕比設計時更寬
-        // 對於靠近邊緣的元素，進行更多調整
-        if (position.left < 20) {
-          // 靠左邊緣的元素
-          adjustedLeft = position.left / ratioAdjustment;
-        } else if (position.left > 80) {
-          // 靠右邊緣的元素
-          adjustedLeft = 100 - ((100 - position.left) / ratioAdjustment);
-        } else {
-          // 中間的元素，按比例調整
-          const distanceFromCenter = Math.abs(position.left - 50);
-          const adjustmentFactor = distanceFromCenter / 50; // 0到1之間的值
-          
-          // 根據距離中心的遠近，逐漸增加調整強度
-          if (position.left < 50) {
-            adjustedLeft = position.left - (position.left * adjustmentFactor * (1 - 1/ratioAdjustment));
-          } else {
-            adjustedLeft = position.left + ((100 - position.left) * adjustmentFactor * (1 - 1/ratioAdjustment));
-          }
-        }
-      } else if (ratioAdjustment < 1) {
-        // 螢幕比設計時更高
-        // 對於靠近上下邊緣的元素，進行更多調整
-        if (position.top < 20) {
-          // 靠上邊緣的元素
-          adjustedTop = position.top / (1/ratioAdjustment);
-        } else if (position.top > 80) {
-          // 靠下邊緣的元素
-          adjustedTop = 100 - ((100 - position.top) / (1/ratioAdjustment));
-        } else {
-          // 中間的元素，按比例調整
-          const distanceFromCenter = Math.abs(position.top - 50);
-          const adjustmentFactor = distanceFromCenter / 50; // 0到1之間的值
-          
-          // 根據距離中心的遠近，逐漸增加調整強度
-          if (position.top < 50) {
-            adjustedTop = position.top - (position.top * adjustmentFactor * (1 - ratioAdjustment));
-          } else {
-            adjustedTop = position.top + ((100 - position.top) * adjustmentFactor * (1 - ratioAdjustment));
-          }
-        }
-      }
-      
-      // 應用調整後的位置
-      house.style.top = `${adjustedTop}%`;
-      house.style.left = `${adjustedLeft}%`;
-      
+      // 設置位置 (相對於地圖容器)
+      house.style.left = `${displayX}px`;
+      house.style.top = `${displayY}px`;
+
       // 計算元素的實際尺寸
       const houseWidth = house.offsetWidth;
       const houseHeight = house.offsetHeight;
-      
+
       // 調整位置，使元素的中心點對齊定位點
       house.style.marginLeft = `-${houseWidth / 2}px`;
       house.style.marginTop = `-${houseHeight / 2}px`;
       
-      // 根據元素位置調整大小
-      // 靠近邊緣的元素可以稍微縮小
-      const distanceFromEdge = Math.min(
-        adjustedLeft, 
-        adjustedTop, 
-        100 - adjustedLeft, 
-        100 - adjustedTop
-      );
-      
-      // 距離邊緣越近，縮放比例越小（但不小於0.8）
-      const scaleFactor = Math.max(0.8, 1 - (20 - distanceFromEdge) / 100);
-      
-      if (distanceFromEdge < 20) {
-        house.style.transform = `scale(${scaleFactor})`;
-      }
+      // 根據屏幕大小調整房子大小
+      const screenSizeRatio = Math.min(mapDisplayWidth / 1920, mapDisplayHeight / 1080);
+      const adjustedSize = Math.min(326 * screenSizeRatio, 326); // 最大不超過原始大小
+      house.style.width = `${adjustedSize}px`;
     }
   });
+  
+  // 檢查是否為縱向屏幕
+  checkOrientation();
 }
 
-// 添加視差效果 (優化版)
+// 檢查屏幕方向並顯示/隱藏旋轉提示
+function checkOrientation() {
+  const rotationNotice = document.querySelector('.rotation-notice');
+  const mapContainer = document.querySelector('.map-container');
+  
+  if (window.innerHeight > window.innerWidth) {
+    // 縱向屏幕
+    rotationNotice.style.display = 'flex';
+    mapContainer.style.filter = 'blur(5px)';
+  } else {
+    // 橫向屏幕
+    rotationNotice.style.display = 'none';
+    mapContainer.style.filter = 'none';
+  }
+}
+
+// 添加視差效果 - 僅在滑鼠移動時
 document.addEventListener('mousemove', (e) => {
+  // 保存最後的滑鼠事件，用於滾動時更新提示文字位置
+  window.lastMouseEvent = e;
+  
+  // 檢查是否為縱向屏幕
+  if (window.innerHeight > window.innerWidth) {
+    return; // 縱向屏幕不執行視差效果
+  }
+  
   const houses = document.querySelectorAll('.house');
   
+  // 使用相對於視窗的位置計算
   const mouseX = e.clientX / window.innerWidth;
   const mouseY = e.clientY / window.innerHeight;
   
@@ -370,3 +357,6 @@ document.addEventListener('mousemove', (e) => {
     }
   });
 });
+
+// 監聽窗口大小變化，檢查方向
+window.addEventListener('resize', checkOrientation);

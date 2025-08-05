@@ -14,7 +14,7 @@
 <body>
   <div class="map-container">
     <img src="img/map.png" alt="地圖背景" class="map-bg">
-    <!-- 移除內聯樣式，改由 JavaScript 控制位置 -->
+    <!-- 移除內聯樣式，由 JavaScript 控制位置 -->
     <img src="img/個人簡介.png" class="house" alt="個人簡介" data-link="pages/intro.html">
     <img src="img/成長經歷.png" class="house" alt="成長經歷" data-link="pages/growth.html">
     <img src="img/實驗班的歷練.png" class="house" alt="實驗班的歷練" data-link="pages/lab.html">
@@ -22,9 +22,15 @@
     <img src="img/Gripmind專題介紹.png" class="house" alt="Gripmind專題介紹" data-link="pages/gripmind.html">
   </div>
   
+  <!-- 添加旋轉提示 -->
+  <div class="rotation-notice">
+    <div class="rotation-icon">⟳</div>
+    <p>請將畫面旋轉90度</p>
+  </div>
+  
   <!-- 添加音效控制 -->
-  <div id="sound-control" style="position: fixed; top: 20px; right: 20px; z-index: 10; cursor: pointer;">
-    <img src="img/sound-on.png" alt="音效開關" id="sound-icon" style="width: 30px; height: 30px;">
+  <div id="sound-control">
+    <img src="img/sound-off.png" alt="音效開關" id="sound-icon">
   </div>
   
   <!-- 添加背景音樂 -->

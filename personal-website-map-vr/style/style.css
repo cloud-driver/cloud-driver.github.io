@@ -7,30 +7,29 @@
 body, html {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
+  overflow: auto; /* 允許滾動 */
 }
 
 .map-container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  height: auto; /* 改為自動高度，不再強制 100vh */
+  min-height: 100vh; /* 最小高度為視窗高度 */
+  overflow: visible; /* 允許內容溢出 */
 }
 
 .map-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 100%; /* 寬度總是 100% */
+  height: auto; /* 高度自適應保持比例 */
+  position: relative; /* 改為相對定位，不再是絕對定位 */
+  display: block; /* 確保圖片作為塊元素 */
   z-index: 0;
 }
 
 .house {
   position: absolute;
-  width: 17vw;
+  width: 326px; /* 固定 px，基於 17% of 1920 */
   max-width: 360px;
   cursor: pointer;
   z-index: 1;
@@ -46,7 +45,7 @@ body, html {
 
 /* 添加提示文字樣式 */
 .tooltip {
-  position: absolute;
+  position: fixed; /* 改為 fixed，跟隨滑鼠 */
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 5px 10px;
@@ -106,15 +105,69 @@ body, html {
   100% { transform: rotate(360deg); }
 }
 
-/* 響應式設計 */
+/* 音效控制固定在視窗 */
+#sound-control {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+#sound-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* 旋轉提示樣式 */
+.rotation-notice {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.rotation-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(90deg); }
+}
+
+/* 響應式設計 - 僅調整大小，不調整位置 */
 @media (max-width: 768px) {
   .house {
-    width: 25vw;
+    width: 200px;
   }
 }
 
 @media (max-width: 480px) {
   .house {
-    width: 30vw;
+    width: 150px;
+  }
+}
+
+/* 縱向螢幕樣式 */
+@media (orientation: portrait) {
+  .rotation-notice {
+    display: flex;
+  }
+  
+  .map-container {
+    filter: blur(5px);
   }
 }
