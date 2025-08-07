@@ -1,4 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const houses = document.querySelectorAll('.house');
+  const contentBox = document.getElementById('content-box');
+  const contentTitle = contentBox.querySelector('.content-title');
+  const contentBody = contentBox.querySelector('.content-body');
+  const contentData = document.getElementById('content-data');
+  const closeButton = contentBox.querySelector('.content-close');
+
+  // 關閉方框
+  function closeContentBox() {
+    contentBox.classList.remove('active');
+    contentBox.style.transform = 'translate(-50%, -50%) scale(0)';
+    contentBox.style.opacity = '0';
+    contentBox.style.visibility = 'hidden'; // 隱藏方框
+    contentBox.style.left = ''; // 重置位置
+    contentBox.style.top = ''; // 重置位置
+    document.querySelector('.map-container').classList.remove('blur-background');
+  }
+
+  // 點擊房子時顯示方框
+  houses.forEach(house => {
+    house.addEventListener('click', (e) => {
+      const contentId = house.getAttribute('data-content');
+      const contentElement = contentData.querySelector(`#${contentId}`);
+
+      if (contentElement) {
+        // 設置方框內容
+        contentTitle.textContent = house.alt;
+        contentBody.innerHTML = contentElement.innerHTML;
+
+        // 計算方框初始位置（點擊位置）
+        const clickX = e.clientX; // 滑鼠點擊的 X 座標
+        const clickY = e.clientY; // 滑鼠點擊的 Y 座標
+
+        // 每次點擊都重置方框位置
+        contentBox.style.left = `${clickX}px`;
+        contentBox.style.top = `${clickY}px`;
+        contentBox.style.transform = 'translate(-50%, -50%) scale(0)';
+        contentBox.style.opacity = '0';
+        contentBox.style.visibility = 'visible';
+
+        // 顯示方框並移動到螢幕中央
+        setTimeout(() => {
+          contentBox.style.left = '50%';
+          contentBox.style.top = '50%';
+          contentBox.style.transform = 'translate(-50%, -50%) scale(1)';
+          contentBox.style.opacity = '1';
+          contentBox.classList.add('active');
+          document.querySelector('.map-container').classList.add('blur-background');
+        }, 50);
+      } else {
+        console.error(`未找到內容 ID: ${contentId}`);
+      }
+    });
+  });
+
+  // 關閉按鈕事件
+  closeButton.addEventListener('click', closeContentBox);
+
+  // 按下 ESC 鍵關閉方框
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && contentBox.classList.contains('active')) {
+      closeContentBox();
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
   // 顯示加載動畫
   const loader = document.createElement('div');
   loader.className = 'loader';
@@ -102,19 +169,198 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 音效控制
+  const soundControl = document.getElementById('sound-control');
+  const soundIcon = document.getElementById('sound-icon');
+  const backgroundMusic = document.getElementById('background-music');
+  const clickSound = document.getElementById('click-sound');
+  
+  let soundEnabled = false;
+  
+  soundControl.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    
+    if (soundEnabled) {
+      soundIcon.src = 'img/sound-on.png';
+      backgroundMusic.play().catch(e => console.log('無法播放背景音樂:', e));
+    } else {
+      soundIcon.src = 'img/sound-off.png';
+      backgroundMusic.pause();
+    }
+  });
+
+  // 創建內容容器
+  const contentContainer = document.createElement('div');
+  contentContainer.className = 'content-container';
+  contentContainer.innerHTML = '<div style="padding: 20px;">Loading...</div>'; // 添加初始內容
+  document.body.appendChild(contentContainer);
+
+  // 關閉內容容器函數
+  function closeContentContainer() {
+    console.log('關閉內容容器');
+    contentContainer.classList.remove('active');
+    
+    // 恢復背景
+    setTimeout(() => {
+      document.querySelector('.map-container').classList.remove('blur-background');
+    }, 300);
+  }
+
+  // 當按ESC鍵時關閉內容容器
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && contentContainer.classList.contains('active')) {
+      closeContentContainer();
+    } else if (e.key === 'Escape' && !window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
+      window.location.href = '../index.html';
+    }
+  });
+
+  // 為每個房子添加點擊事件
   houses.forEach(house => {
-    // 點擊事件
-    house.addEventListener('click', () => {
+    house.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('房子點擊:', house.alt); // 添加調試日誌
+      
       const target = house.getAttribute('data-link');
-      if (target) {
-        // 添加過渡效果
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.5s';
-        
-        setTimeout(() => {
-          window.location.href = target;
-        }, 500);
+      const title = house.alt;
+      
+      if (!target) {
+        console.error('房子沒有 data-link 屬性');
+        return;
       }
+      
+      console.log('目標頁面:', target);
+      
+      // 播放點擊音效
+      if (soundEnabled && clickSound) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(e => console.log('無法播放點擊音效:', e));
+      }
+      
+      // 獲取房子的位置
+      const houseRect = house.getBoundingClientRect();
+      const houseX = houseRect.left + houseRect.width / 2;
+      const houseY = houseRect.top + houseRect.height / 2;
+      
+      // 設置內容容器初始位置（從房子中心點開始）
+      contentContainer.style.top = `${houseY}px`;
+      contentContainer.style.left = `${houseX}px`;
+      contentContainer.style.transform = 'translate(-50%, -50%) scale(0)';
+      
+      // 立即將背景模糊化
+      document.querySelector('.map-container').classList.add('blur-background');
+      
+      // 顯示一個簡單的加載提示
+      contentContainer.innerHTML = `
+        <div class="content-header">
+          <h2 class="content-title">${title}</h2>
+          <button class="content-close">&times;</button>
+        </div>
+        <div class="content-body">
+          <div style="text-align: center; padding: 20px;">
+            <div class="loader-spinner" style="margin: 0 auto;"></div>
+            <p style="margin-top: 15px;">正在加載內容...</p>
+          </div>
+        </div>
+      `;
+      
+      // 添加關閉按鈕事件
+      const closeButton = contentContainer.querySelector('.content-close');
+      if (closeButton) {
+        closeButton.addEventListener('click', closeContentContainer);
+      }
+      
+      // 立即顯示容器，不要等待 fetch
+      setTimeout(() => {
+        contentContainer.classList.add('active');
+      }, 50);
+      
+      // 使用 fetch 獲取頁面內容
+      console.log('開始獲取頁面內容');
+      fetch(target)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          console.log('頁面請求成功');
+          return response.text();
+        })
+        .then(html => {
+          console.log('頁面內容獲取成功');
+          
+          try {
+            // 解析HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // 獲取頁面主要內容
+            const content = doc.querySelector('main') || doc.querySelector('body');
+            
+            if (!content) {
+              throw new Error('無法找到頁面主要內容');
+            }
+            
+            // 設置內容容器
+            contentContainer.innerHTML = `
+              <div class="content-header">
+                <h2 class="content-title">${title}</h2>
+                <button class="content-close">&times;</button>
+              </div>
+              <div class="content-body"></div>
+            `;
+            
+            // 添加內容
+            contentContainer.querySelector('.content-body').appendChild(content.cloneNode(true));
+            
+            // 重新添加關閉按鈕事件
+            contentContainer.querySelector('.content-close').addEventListener('click', closeContentContainer);
+            
+            console.log('內容已加載到容器中');
+          } catch (parseError) {
+            console.error('解析HTML時出錯:', parseError);
+            contentContainer.innerHTML = `
+              <div class="content-header">
+                <h2 class="content-title">${title}</h2>
+                <button class="content-close">&times;</button>
+              </div>
+              <div class="content-body">
+                <p>載入內容時發生錯誤。請稍後再試。</p>
+              </div>
+            `;
+            contentContainer.querySelector('.content-close').addEventListener('click', closeContentContainer);
+          }
+        })
+        .catch(error => {
+          console.error('獲取頁面內容時出錯:', error);
+          
+          // 如果獲取內容失敗，顯示錯誤訊息
+          contentContainer.innerHTML = `
+            <div class="content-header">
+              <h2 class="content-title">${title}</h2>
+              <button class="content-close">&times;</button>
+            </div>
+            <div class="content-body">
+              <p>無法載入內容。您想直接前往該頁面嗎？</p>
+              <button id="direct-link" style="padding: 8px 15px; margin-top: 10px; cursor: pointer;">前往頁面</button>
+            </div>
+          `;
+          
+          // 添加關閉按鈕事件
+          contentContainer.querySelector('.content-close').addEventListener('click', closeContentContainer);
+          
+          // 添加直接跳轉按鈕事件
+          const directLinkButton = contentContainer.querySelector('#direct-link');
+          if (directLinkButton) {
+            directLinkButton.addEventListener('click', () => {
+              document.body.style.opacity = '0';
+              document.body.style.transition = 'opacity 0.5s';
+              
+              setTimeout(() => {
+                window.location.href = target;
+              }, 500);
+            });
+          }
+        });
     });
 
     // 滑鼠懸停顯示提示文字
@@ -190,49 +436,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(backButton);
   }
 
-  // 添加鍵盤導航
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !window.location.pathname.endsWith('index.html') && !window.location.pathname.endsWith('/')) {
-      window.location.href = '../index.html';
-    }
-  });
-
   // 頁面載入時的淡入效果
   document.body.style.opacity = '0';
   document.body.style.transition = 'opacity 1s';
   setTimeout(() => {
     document.body.style.opacity = '1';
   }, 100);
-
-  // 音效控制
-  const soundControl = document.getElementById('sound-control');
-  const soundIcon = document.getElementById('sound-icon');
-  const backgroundMusic = document.getElementById('background-music');
-  const clickSound = document.getElementById('click-sound');
-  
-  let soundEnabled = false;
-  
-  soundControl.addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    
-    if (soundEnabled) {
-      soundIcon.src = 'img/sound-on.png';
-      backgroundMusic.play().catch(e => console.log('無法播放背景音樂:', e));
-    } else {
-      soundIcon.src = 'img/sound-off.png';
-      backgroundMusic.pause();
-    }
-  });
-  
-  // 點擊房子時播放音效
-  document.querySelectorAll('.house').forEach(house => {
-    house.addEventListener('click', () => {
-      if (soundEnabled) {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(e => console.log('無法播放點擊音效:', e));
-      }
-    });
-  });
 });
 
 // 定位房子 - 使用固定的百分比位置
@@ -301,6 +510,17 @@ function positionHouses() {
   checkOrientation();
 }
 
+// 即時更新位置的事件監聽
+window.addEventListener('resize', () => {
+  positionHouses(); // 直接呼叫，確保即時更新
+});
+
+// 監聽屏幕方向變化
+window.addEventListener('orientationchange', () => {
+  setTimeout(positionHouses, 100); // 縮短延遲時間以提高即時性
+});
+
+
 // 檢查屏幕方向並顯示/隱藏旋轉提示
 function checkOrientation() {
   const rotationNotice = document.querySelector('.rotation-notice');
@@ -313,7 +533,9 @@ function checkOrientation() {
   } else {
     // 橫向屏幕
     rotationNotice.style.display = 'none';
-    mapContainer.style.filter = 'none';
+    if (!document.querySelector('.content-container.active')) {
+      mapContainer.style.filter = 'none';
+    }
   }
 }
 
@@ -325,6 +547,11 @@ document.addEventListener('mousemove', (e) => {
   // 檢查是否為縱向屏幕
   if (window.innerHeight > window.innerWidth) {
     return; // 縱向屏幕不執行視差效果
+  }
+  
+  // 如果內容容器是活動的，不應用視差效果
+  if (document.querySelector('.content-container.active')) {
+    return;
   }
   
   const houses = document.querySelectorAll('.house');
@@ -360,3 +587,8 @@ document.addEventListener('mousemove', (e) => {
 
 // 監聽窗口大小變化，檢查方向
 window.addEventListener('resize', checkOrientation);
+
+// 添加錯誤處理
+window.addEventListener('error', function(e) {
+  console.error('全局錯誤:', e.message, 'at', e.filename, ':', e.lineno);
+});

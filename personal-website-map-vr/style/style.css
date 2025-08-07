@@ -17,6 +17,7 @@ body, html {
   height: auto; /* 改為自動高度，不再強制 100vh */
   min-height: 100vh; /* 最小高度為視窗高度 */
   overflow: visible; /* 允許內容溢出 */
+  transition: filter 0.5s ease; /* 添加過渡效果 */
 }
 
 .map-bg {
@@ -148,16 +149,92 @@ body, html {
   100% { transform: rotate(90deg); }
 }
 
+.content-container {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  overflow: auto;
+  z-index: 50;
+  transition: all 0.5s ease-out; /* 動畫效果 */
+  padding: 25px;
+  color: #333;
+  max-height: 80vh;
+  max-width: 80vw;
+  width: 80vw;
+  height: 80vh;
+  transform: translate(-50%, -50%) scale(0); /* 初始縮放 */
+  opacity: 0; /* 初始透明度 */
+  visibility: hidden; /* 初始不可見 */
+}
+
+.content-container.active {
+  visibility: visible;
+}
+
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.content-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.content-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.content-close:hover {
+  color: #000;
+}
+
+.content-body {
+  line-height: 1.6;
+}
+
+/* 背景模糊效果 */
+.blur-background {
+  filter: blur(5px);
+  pointer-events: none;
+}
+
 /* 響應式設計 - 僅調整大小，不調整位置 */
 @media (max-width: 768px) {
   .house {
     width: 200px;
+  }
+  
+  .content-container {
+    max-width: 90vw;
+    padding: 15px;
   }
 }
 
 @media (max-width: 480px) {
   .house {
     width: 150px;
+  }
+  
+  .content-container {
+    max-width: 95vw;
+    padding: 10px;
+  }
+  
+  .content-title {
+    font-size: 20px;
   }
 }
 
