@@ -660,12 +660,8 @@ function enableGyroscopeEffect() {
       }
       
       const houses = document.querySelectorAll('.house');
-      
-      // 使用陀螺儀數據計算傾斜角度
-      // beta 是裝置的前後傾斜角度，範圍通常在 -90 到 90 度之間
-      // gamma 是裝置的左右傾斜角度，範圍通常在 -90 到 90 度之間
-      const tiltX = e.beta / 70; // 將角度轉換為 -1 到 1 的範圍
-      const tiltY = e.gamma / 70;  // 將角度轉換為 -1 到 1 的範圍
+      const tiltX = e.beta / 60; // 將角度轉換為 -1 到 1 的範圍
+      const tiltY = e.gamma / 60;  // 將角度轉換為 -1 到 1 的範圍
       
       houses.forEach((house, index) => {
         if (!house.classList.contains('hover')) {

@@ -2,61 +2,138 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>個人簡介</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="個人簡介 - 了解我的背景與經歷">
-  <link rel="stylesheet" href="../style/style.css">
-  <!-- 添加網站圖標 -->
-  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+  <title>個人簡介 - 吳宥萱</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
+      background-color: #f5f5f5;
+      min-height: 500px; /* 設置最小高度 */
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .profile-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+    }
+    .profile-header {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+      margin: -20px -20px 20px -20px;
+    }
+    .profile-header h1 {
+      font-size: 2.2em;
+      margin: 0;
+    }
+    .profile-header p {
+      font-size: 1.1em;
+      margin: 5px 0 0;
+      opacity: 0.9;
+    }
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: block;
+      border: 5px solid white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .profile-image:hover {
+      transform: scale(1.05);
+    }
+    .profile-content {
+      text-align: left;
+      line-height: 1.6;
+    }
+    .profile-content h2 {
+      color: #2575fc;
+      font-size: 1.5em;
+      margin: 20px 0 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+    .profile-content p {
+      margin-bottom: 15px;
+    }
+    .highlight {
+      background-color: #e9f5ff;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #2575fc;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .profile-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      .profile-header h1 {
+        font-size: 1.8em;
+      }
+      .profile-image {
+        width: 120px;
+        height: 120px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="content-container">
-    <h1>個人簡介</h1>
-    <div class="intro-section">
+  <div class="profile-container">
+    <div class="profile-header">
+      <a href="intro.html" target="_blank" style="text-decoration:none; color: white;"><h1>吳宥萱</h1></a>
+    </div>
+    <img src="../img/profile-photo.png" alt="吳宥萱個人照片" class="profile-image">
+    <div class="profile-content">
       <h2>關於我</h2>
+      <p>我是吳宥萱，目前就讀於臺北市立萬芳高中數位學習實驗班，致力於特殊選才。我熱衷於程式設計、機電整合與單簧管演奏，擁有多元的才華與堅毅的性格。</p>
+      
+      <h2>獲獎紀錄－資訊機電類</h2>
       <p>
-        我是一位熱衷於學習與探索的學生，對於電機工程與數位科技有著濃厚的興趣。在高中期間，我參與了數位學習實驗班，接觸了程式設計、3D建模、物聯網及機械設計等領域，透過專案與競賽累積了豐富的實作經驗。
+        1. <span class="highlight">2025年第二十四屆 旺宏科學獎  電子電機類</span> <span class="highlight">佳作</span><br>
+        2. 2025年全國AIxSTEM智能照護創新大賽  高中職組 <span class="highlight">冠軍</span><br>
+        3. 2025年全國大專校院暨高中職i-Life競賽  創新創意組 <span class="highlight">冠軍</span><br>
+        4. 2025年全國醫工日創新醫材競賽  高中職創意組 <span class="highlight">第一名</span><br>
+        5. 2025年全國高中職學校 高齡安養小論文競賽 <span class="highlight">第一名</span><br>
+        6. 2025年教育部全國中學生網站小論文寫作比賽 資訊類 <span class="highlight">優等</span><br>
+        7. 2024年臺北市政府STEAM跨域競賽 龍舟競賽類 <span class="highlight">第二名</span><br>
       </p>
+      
+      <h2>獲獎紀錄－單簧管獨奏類</h2>
       <p>
-        除了學術與技術方面的追求，我也熱愛音樂，從小學習單簧管，並在多個全國性音樂比賽中獲得佳績。音樂磨練了我的紀律與堅毅，讓我在面對挑戰時能保持專注與耐心。
+        1. 2024年BUFFET CRAMPON 台灣單簧管音樂大賽 <span class="highlight">複賽</span><br>
+        2. 2022年BUFFET CRAMPON 台灣單簧管音樂大賽 <span class="highlight">決賽</span><br>
+        3. 2022年亞太盃國際音樂大賽 單簧管獨奏國中組 <span class="highlight">第二名</span><br>
+        4. 2022年臺北市學生音樂比賽 單簧管獨奏國中組 <span class="highlight">第二名</span><br>
+        5. 2021年台灣卓越盃音樂公開賽 單簧管獨奏國中組 <span class="highlight">第三名</span><br>
+        6. 2020年臺北市文化盃音樂大賽 單簧管獨奏國中組 <span class="highlight">第一名</span><br>
+        7. 2020年台灣卓越盃音樂公開賽 單簧管獨奏國小組 <span class="highlight">第二名</span><br>
+        8. 2019年亞太盃國際音樂大賽 單簧管獨奏國小高年級組 <span class="highlight">第一名</span><br>
+        9. 2019年臺北市文化盃音樂大賽 單簧管獨奏國小高年級組 <span class="highlight">第五名</span><br>
       </p>
-    </div>
-    <div class="intro-section">
-      <h2>家庭背景</h2>
+      <h2>專業才能</h2>
       <p>
-        我的父親從事業務工作，經常出差奔波；母親則是藥劑師，同時兼任保健食品研發顧問。雖然我是家中的獨生子女，但父母從不溺愛我，他們長期投入自行車與馬拉松競賽，並從小帶我參與各種體能挑戰，讓我深刻體會到「不輕言放棄」的精神。
+        1. 單簧管演奏<br>
+        2. 寫程式與機電整合
       </p>
+      
+      <h2>幹部經歷</h2>
       <p>
-        母親對我的課業表現要求嚴格，常提醒我：「考試成績不一定要是最好的，但一定要有好的學習態度。」因此，無論是學業還是技藝，我總是全力以赴。父母在工作之餘也積極參與志工活動，這種家庭氛圍感染了我，讓我從小就樂於助人，並曾在小學時期獲得道德優良代表的肯定。
+        1. 高二下：外掃股長<br>
+        2. 高一下：風紀幹事<br>
+        3. 高一上：學藝股長
       </p>
-    </div>
-    <div class="intro-section">
-      <h2>我的特質與能力</h2>
-      <ul>
-        <li><strong>團隊合作能力</strong>：多次與同學分工合作，完成高品質的專題作品。</li>
-        <li><strong>跨領域學習</strong>：結合硬體與程式設計，製作創新的握力測試裝置。</li>
-        <li><strong>程式設計</strong>：熟練 Python、C++、HTML 等語言，並應用於專題與競賽中。</li>
-        <li><strong>社會覺察與合作</strong>：關注高齡化議題，設計專題以解決相關問題。</li>
-        <li><strong>問題解決</strong>：在班級中擔任幹部，解決秩序問題，營造更好的學習環境。</li>
-      </ul>
     </div>
   </div>
-  
-  <!-- 添加音效控制 -->
-  <div id="sound-control">
-    <img src="../img/sound-off.png" alt="音效開關" id="sound-icon">
-  </div>
-  
-  <!-- 添加背景音樂 -->
-  <audio id="background-music" loop>
-    <source src="../audio/background.mp3" type="audio/mp3">
-    您的瀏覽器不支援音頻播放。
-  </audio>
-  <audio id="click-sound">
-    <source src="../audio/click.mp3" type="audio/mp3">
-    您的瀏覽器不支援音頻播放。
-  </audio>
-  
-  <script src="../script/script.js"></script>
 </body>
 </html>

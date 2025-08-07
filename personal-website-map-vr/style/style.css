@@ -168,6 +168,12 @@ body, html {
   visibility: hidden; /* 初始不可見 */
 }
 
+.content-body {
+  height: calc(100% - 60px); /* 減去標題欄高度，假設標題欄為 60px */
+  overflow-y: hidden;
+  padding: 20px;
+}
+
 .content-container.active {
   visibility: visible;
 }

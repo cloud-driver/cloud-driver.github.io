@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成長經歷 - 吳宥萱</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .growth-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+    }
+    .growth-header {
+      background: linear-gradient(135deg, #4f74b4 0%, #2575fc 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+      margin: -20px -20px 20px -20px;
+    }
+    .growth-header h1 {
+      font-size: 2.2em;
+      margin: 0;
+    }
+    .timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #4f74b4;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+      transform: translateX(0); /* 確保線條精確居中 */
+    }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background-color: white;
+      border: 4px solid #2575fc;
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+      right: -12.5px; /* 精確調整位置，考慮到寬度和邊框 */
+    }
+    .left {
+      left: 0;
+    }
+    .right {
+      left: 50%;
+    }
+    .right::after {
+      left: -12.5px; /* 精確調整位置 */
+      right: auto;
+    }
+    .timeline-content {
+      padding: 20px;
+      background-color: #f9f9f9;
+      position: relative;
+      border-radius: 6px;
+      text-align: left;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .timeline-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .timeline-content h2 {
+      margin-top: 0;
+      color: #11998e;
+      font-size: 1.5em;
+    }
+    .timeline-content p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+    .highlight {
+      background-color: #e9f5ff;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #11998e;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .growth-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      .growth-header h1 {
+        font-size: 1.8em;
+      }
+      .timeline::after {
+        left: 31px;
+        margin-left: 0; /* 移除偏移 */
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 20px;
+        text-align: left;
+      }
+      .timeline-item::after {
+        left: 18px; /* 手機版時調整圓點位置 */
+        right: auto;
+      }
+      .right {
+        left: 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="growth-container">
+    <div class="growth-header">
+      <a href="growth.html" target="_blank" style="text-decoration:none; color: white;"><h1>成長經歷</h1></a>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <h2>家庭背景與啟發</h2>
+          <p>我的父親是一名業務工作者，母親是藥劑師兼保健食品研發顧問。雖然我是家中唯一的孩子，但父母從不溺愛我。他們長期投入自行車與馬拉松競賽，獲獎無數，並從小帶領我挑戰體能極限，讓我學會<span class="highlight">不輕言放棄</span>的信念。</p>
+          <p>母親對我的課業要求嚴格，總是叮囑：「<span class="highlight">成績不一定要最好，但學習態度必須端正。</span>」這句話深深影響了我，不論是學業還是技藝，我都全力以赴。</p>
+        </div>
+      </div>
+      <div class="timeline-item right">
+        <div class="timeline-content">
+          <h2>從音樂磨出韌性</h2>
+          <p>從小我就對音樂有敏銳的感知，小學一年級加入安坑國小管樂團，開始學習單簧管。經過日復一日的苦練，我成為樂團首席，並在多項全國競賽中獲得佳績，如<span class="highlight">亞太盃國際音樂大賽冠軍</span>與<span class="highlight">卓越盃音樂公開賽亞軍</span>。</p>
+          <p>進入大安國中管樂團後，我挑戰更高難度的降E調單簧管，承擔表演中切換音階的獨奏重任，曾登上國家音樂廳演出，獲得指揮老師的肯定。音樂形塑了我的<span class="highlight">紀律與堅毅</span>，讓我知道成功沒有捷徑，只有努力。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
