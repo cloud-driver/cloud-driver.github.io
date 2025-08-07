@@ -585,6 +585,47 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
+if ('DeviceOrientationEvent' in window) {
+  window.addEventListener('deviceorientation', (e) => {
+    // 檢查是否為手機裝置，且不是內容容器活動狀態
+    if (window.innerWidth > 768 || document.querySelector('.content-container.active')) {
+      return;
+    }
+    
+    const houses = document.querySelectorAll('.house');
+    
+    // 使用陀螺儀數據計算傾斜角度
+    // beta 是裝置的前後傾斜角度，範圍通常在 -90 到 90 度之間
+    // gamma 是裝置的左右傾斜角度，範圍通常在 -90 到 90 度之間
+    const tiltX = e.gamma / 90; // 將角度轉換為 -1 到 1 的範圍
+    const tiltY = e.beta / 90;  // 將角度轉換為 -1 到 1 的範圍
+    
+    houses.forEach((house, index) => {
+      if (!house.classList.contains('hover')) {
+        const depth = 1 + (index % 3) * 0.05; // 不同深度的視差效果
+        const moveX = tiltX * 10 * depth; // 根據左右傾斜移動
+        const moveY = tiltY * 10 * depth; // 根據前後傾斜移動
+        
+        // 獲取當前的transform樣式
+        const currentTransform = house.style.transform;
+        
+        // 如果已經有scale變換，保留它
+        if (currentTransform && currentTransform.includes('scale')) {
+          const scaleMatch = currentTransform.match(/scale\(([^)]+)\)/);
+          if (scaleMatch && scaleMatch[1]) {
+            const scale = scaleMatch[1];
+            house.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
+          } else {
+            house.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          }
+        } else {
+          house.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        }
+      }
+    });
+  });
+}
+
 // 監聽窗口大小變化，檢查方向
 window.addEventListener('resize', checkOrientation);
 
