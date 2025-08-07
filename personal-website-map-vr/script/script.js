@@ -585,46 +585,162 @@ document.addEventListener('mousemove', (e) => {
   });
 });
 
-if ('DeviceOrientationEvent' in window) {
-  window.addEventListener('deviceorientation', (e) => {
-    // 檢查是否為手機裝置，且不是內容容器活動狀態
-    if (window.innerWidth > 768 || document.querySelector('.content-container.active')) {
-      return;
+// 在頁面載入時檢查是否支援陀螺儀並新增權限按鈕
+document.addEventListener('DOMContentLoaded', () => {
+  // 檢查是否支援陀螺儀
+  if ('DeviceOrientationEvent' in window) {
+    // 檢查是否為觸控裝置（通常表示為手機或平板）
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+      // 創建陀螺儀權限按鈕
+      const gyroButton = document.createElement('button');
+      gyroButton.className = 'gyro-permission-button';
+      gyroButton.textContent = '啟用陀螺儀效果';
+      gyroButton.style.position = 'fixed';
+      gyroButton.style.bottom = '20px';
+      gyroButton.style.right = '20px';
+      gyroButton.style.padding = '10px 15px';
+      gyroButton.style.backgroundColor = '#4CAF50';
+      gyroButton.style.color = 'white';
+      gyroButton.style.border = 'none';
+      gyroButton.style.borderRadius = '5px';
+      gyroButton.style.cursor = 'pointer';
+      gyroButton.style.zIndex = '1000';
+
+      // 將按鈕添加到頁面
+      document.body.appendChild(gyroButton);
+
+      // 按鈕點擊事件 - 請求陀螺儀存取權
+      gyroButton.addEventListener('click', () => {
+        if ('DeviceOrientationEvent' in window) {
+          // 檢查是否需要請求權限（主要針對 iOS）
+          if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+              .then(permissionState => {
+                if (permissionState === 'granted') {
+                  alert('陀螺儀存取權已授權，效果已啟用！');
+                  gyroButton.style.display = 'none'; // 隱藏按鈕
+                  enableGyroscopeEffect(); // 啟用陀螺儀效果
+                } else {
+                  alert('陀螺儀存取權被拒絕，無法啟用效果。');
+                }
+              })
+              .catch(error => {
+                console.error('請求陀螺儀權限時出錯:', error);
+                alert('無法請求陀螺儀權限，請檢查裝置設定。');
+              });
+          } else {
+            // Android 等裝置通常不需要明確權限，直接啟用
+            alert('陀螺儀效果已啟用！');
+            gyroButton.style.display = 'none'; // 隱藏按鈕
+            enableGyroscopeEffect(); // 啟用陀螺儀效果
+          }
+        } else {
+          alert('您的裝置不支援陀螺儀功能。');
+        }
+      });
+
+      // 檢查是否已經有權限（針對已授權的裝置）
+      if (typeof DeviceOrientationEvent.requestPermission !== 'function') {
+        gyroButton.style.display = 'none'; // Android 等裝置隱藏按鈕
+        enableGyroscopeEffect(); // 直接啟用陀螺儀效果
+      }
     }
-    
-    const houses = document.querySelectorAll('.house');
-    
-    // 使用陀螺儀數據計算傾斜角度
-    // beta 是裝置的前後傾斜角度，範圍通常在 -90 到 90 度之間
-    // gamma 是裝置的左右傾斜角度，範圍通常在 -90 到 90 度之間
-    const tiltX = e.gamma / 90; // 將角度轉換為 -1 到 1 的範圍
-    const tiltY = e.beta / 90;  // 將角度轉換為 -1 到 1 的範圍
-    
-    houses.forEach((house, index) => {
-      if (!house.classList.contains('hover')) {
-        const depth = 1 + (index % 3) * 0.05; // 不同深度的視差效果
-        const moveX = tiltX * 10 * depth; // 根據左右傾斜移動
-        const moveY = tiltY * 10 * depth; // 根據前後傾斜移動
-        
-        // 獲取當前的transform樣式
-        const currentTransform = house.style.transform;
-        
-        // 如果已經有scale變換，保留它
-        if (currentTransform && currentTransform.includes('scale')) {
-          const scaleMatch = currentTransform.match(/scale\(([^)]+)\)/);
-          if (scaleMatch && scaleMatch[1]) {
-            const scale = scaleMatch[1];
-            house.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
+  }
+});
+
+// 啟用陀螺儀效果的函數
+function enableGyroscopeEffect() {
+  if ('DeviceOrientationEvent' in window) {
+    window.addEventListener('deviceorientation', (e) => {
+      // 檢查是否為內容容器活動狀態
+      if (document.querySelector('.content-container.active')) {
+        return;
+      }
+      
+      const houses = document.querySelectorAll('.house');
+      
+      // 使用陀螺儀數據計算傾斜角度
+      // beta 是裝置的前後傾斜角度，範圍通常在 -90 到 90 度之間
+      // gamma 是裝置的左右傾斜角度，範圍通常在 -90 到 90 度之間
+      const tiltX = e.gamma / 90; // 將角度轉換為 -1 到 1 的範圍
+      const tiltY = e.beta / 90;  // 將角度轉換為 -1 到 1 的範圍
+      
+      houses.forEach((house, index) => {
+        if (!house.classList.contains('hover')) {
+          const depth = 1 + (index % 3) * 0.05; // 不同深度的視差效果
+          const moveX = tiltX * 10 * depth; // 根據左右傾斜移動
+          const moveY = tiltY * 10 * depth; // 根據前後傾斜移動
+          
+          // 獲取當前的transform樣式
+          const currentTransform = house.style.transform;
+          
+          // 如果已經有scale變換，保留它
+          if (currentTransform && currentTransform.includes('scale')) {
+            const scaleMatch = currentTransform.match(/scale\(([^)]+)\)/);
+            if (scaleMatch && scaleMatch[1]) {
+              const scale = scaleMatch[1];
+              house.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
+            } else {
+              house.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
           } else {
             house.style.transform = `translate(${moveX}px, ${moveY}px)`;
           }
+        }
+      });
+    });
+  }
+}
+
+// 添加視差效果 - 滑鼠移動（僅非觸控裝置）
+document.addEventListener('mousemove', (e) => {
+  // 保存最後的滑鼠事件，用於滾動時更新提示文字位置
+  window.lastMouseEvent = e;
+  
+  // 檢查是否為觸控裝置，如果是則不執行滑鼠視差效果
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) {
+    return;
+  }
+  
+  // 如果內容容器是活動的，不應用視差效果
+  if (document.querySelector('.content-container.active')) {
+    return;
+  }
+  
+  const houses = document.querySelectorAll('.house');
+  
+  // 使用相對於視窗的位置計算
+  const mouseX = e.clientX / window.innerWidth;
+  const mouseY = e.clientY / window.innerHeight;
+  
+  houses.forEach((house, index) => {
+    if (!house.classList.contains('hover')) {
+      const depth = 1 + (index % 3) * 0.05; // 不同深度的視差效果
+      const moveX = (mouseX - 0.5) * 10 * depth;
+      const moveY = (mouseY - 0.5) * 10 * depth;
+      
+      // 獲取當前的transform樣式
+      const currentTransform = house.style.transform;
+      
+      // 如果已經有scale變換，保留它
+      if (currentTransform && currentTransform.includes('scale')) {
+        const scaleMatch = currentTransform.match(/scale\(([^)]+)\)/);
+        if (scaleMatch && scaleMatch[1]) {
+          const scale = scaleMatch[1];
+          house.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
         } else {
           house.style.transform = `translate(${moveX}px, ${moveY}px)`;
         }
+      } else {
+        house.style.transform = `translate(${moveX}px, ${moveY}px)`;
       }
-    });
+    }
   });
-}
+});
+
 
 // 監聽窗口大小變化，檢查方向
 window.addEventListener('resize', checkOrientation);
