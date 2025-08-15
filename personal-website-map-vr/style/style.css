@@ -8,35 +8,34 @@ body, html {
   width: 100%;
   height: 100%;
   font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
-  overflow: auto; /* 允許滾動 */
+  overflow: auto;
 }
 
 .map-container {
   position: relative;
   width: 100%;
-  height: auto; /* 改為自動高度，不再強制 100vh */
-  min-height: 100vh; /* 最小高度為視窗高度 */
-  overflow: visible; /* 允許內容溢出 */
-  transition: filter 0.5s ease; /* 添加過渡效果 */
+  height: auto;
+  min-height: 100vh;
+  overflow: visible;
+  transition: filter 0.5s ease;
 }
 
 .map-bg {
-  width: 100%; /* 寬度總是 100% */
-  height: auto; /* 高度自適應保持比例 */
-  position: relative; /* 改為相對定位，不再是絕對定位 */
-  display: block; /* 確保圖片作為塊元素 */
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
   z-index: 0;
 }
 
 .house {
   position: absolute;
-  width: 326px; /* 固定 px，基於 17% of 1920 */
+  width: 326px;
   max-width: 360px;
   cursor: pointer;
   z-index: 1;
   transition: transform 0.3s, filter 0.3s;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
-  /* 確保元素中心點對齊定位點 */
   transform-origin: center center;
 }
 
@@ -44,9 +43,9 @@ body, html {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 
-/* 添加提示文字樣式 */
+/* 提示文字樣式 */
 .tooltip {
-  position: fixed; /* 改為 fixed，跟隨滑鼠 */
+  position: fixed;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 5px 10px;
@@ -59,7 +58,7 @@ body, html {
   white-space: nowrap;
 }
 
-/* 添加返回按鈕樣式 */
+/* 返回按鈕樣式 */
 .back-button {
   position: fixed;
   bottom: 20px;
@@ -77,7 +76,7 @@ body, html {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* 添加加載動畫 */
+/* 加載動畫 */
 .loader {
   position: fixed;
   top: 0;
@@ -110,7 +109,7 @@ body, html {
 #sound-control {
   position: fixed;
   top: 20px;
-  right: 20px;
+  right: 40px;
   z-index: 10;
   cursor: pointer;
 }
@@ -156,20 +155,20 @@ body, html {
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
   overflow: auto;
   z-index: 50;
-  transition: all 0.5s ease-out; /* 動畫效果 */
+  transition: all 0.5s ease-out;
   padding: 25px;
   color: #333;
   max-height: 80vh;
   max-width: 80vw;
   width: 80vw;
   height: 80vh;
-  transform: translate(-50%, -50%) scale(0); /* 初始縮放 */
+  transform: translate(-50%, -50%) scale(0);
   opacity: 0; /* 初始透明度 */
-  visibility: hidden; /* 初始不可見 */
+  visibility: hidden;
 }
 
 .content-body {
-  height: calc(100% - 60px); /* 減去標題欄高度，假設標題欄為 60px */
+  height: calc(100% - 60px);
   padding: 20px;
 }
 
@@ -215,7 +214,6 @@ body, html {
   pointer-events: none;
 }
 
-/* 響應式設計 - 僅調整大小，不調整位置 */
 @media (max-width: 768px) {
   .house {
     width: 200px;
@@ -242,7 +240,7 @@ body, html {
   }
 }
 
-/* 縱向螢幕樣式 */
+/* 縱向 */
 @media (orientation: portrait) {
   .rotation-notice {
     display: flex;
@@ -253,7 +251,6 @@ body, html {
   }
 }
 
-/* 專門為 gripmind 內容添加的樣式 */
 #gripmind-container {
   width: 100%;
   height: 100%;
