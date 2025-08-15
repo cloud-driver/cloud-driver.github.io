@@ -660,8 +660,8 @@ function enableGyroscopeEffect() {
       }
       
       const houses = document.querySelectorAll('.house');
-      const tiltX = e.beta / 60; // 將角度轉換為 -1 到 1 的範圍
-      const tiltY = e.gamma / 60;  // 將角度轉換為 -1 到 1 的範圍
+      const tiltX = e.beta / 40; // 將角度轉換為 -1 到 1 的範圍
+      const tiltY = e.gamma / 40;  // 將角度轉換為 -1 到 1 的範圍
       
       houses.forEach((house, index) => {
         if (!house.classList.contains('hover')) {
