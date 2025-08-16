@@ -262,3 +262,7 @@ body, html {
   display: block;
   margin-bottom: 15px;
 }
+/* 替代方案：直接使用 CSS cursor 屬性設置自定義鼠標 */
+body, html {
+  cursor: url('../img/cursor.ani'), auto !important;
+}
