@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style/style.css">
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <link rel="preload" href="img/map.png" as="image">
+  <link rel="preload" href="audio/background.mp3" as="audio">
 </head>
 <body>
   <div class="map-container">
@@ -35,11 +36,6 @@
     <source src="audio/background.mp3" type="audio/mp3">
   </audio>
 
-  <!-- 添加點擊音效 -->
-  <audio id="click-sound">
-    <source src="audio/click.mp3" type="audio/mp3">
-  </audio>
-
   <!-- 方框容器 -->
   <div class="content-container" id="content-box">
     <div class="content-header">
@@ -51,16 +47,16 @@
 
   <div id="content-data" style="display: none;">
     <div id="intro" style="overflow: hidden;">
-      <iframe src="pages/intro.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe src="pages/intro.html" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflow: hidden;"></iframe>
     </div>
     <div id="growth" style="overflow: hidden;">
-      <iframe src="pages/growth.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe src="pages/growth.html" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflow: hidden;"></iframe>
     </div>
     <div id="lab" style="overflow: hidden;">
-      <iframe src="pages/lab.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe src="pages/lab.html" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflow: hidden;"></iframe>
     </div>
     <div id="camp" style="overflow: hidden;">
-      <iframe src="pages/kurs.html" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe src="pages/kurs.html" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0; overflow: hidden;"></iframe>
     </div>
     <div id="gripmind">
       <div id="gripmind-container">

@@ -195,17 +195,23 @@ document.addEventListener('DOMContentLoaded', () => {
   contentContainer.innerHTML = '<div style="padding: 20px;">Loading...</div>'; // 添加初始內容
   document.body.appendChild(contentContainer);
 
-  // 關閉內容容器函數
   function closeContentContainer() {
     console.log('關閉內容容器');
     contentContainer.classList.remove('active');
     
-    // 恢復背景
+    // 立即設置樣式以觸發關閉動畫
+    contentContainer.style.transform = 'translate(-50%, -50%) scale(0)';
+    contentContainer.style.opacity = '0';
+    
+    // 在動畫完成後完全隱藏容器並重置位置
     setTimeout(() => {
+      contentContainer.style.visibility = 'hidden';
+      contentContainer.style.left = '';
+      contentContainer.style.top = '';
       document.querySelector('.map-container').classList.remove('blur-background');
-    }, 300);
+    }, 500); // 與 CSS 中的 transition 時間匹配 (0.5s)
   }
-
+  
   // 當按ESC鍵時關閉內容容器
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && contentContainer.classList.contains('active')) {

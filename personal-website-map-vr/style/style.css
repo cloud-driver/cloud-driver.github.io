@@ -153,23 +153,22 @@ body, html {
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  overflow: auto;
   z-index: 50;
   transition: all 0.5s ease-out;
-  padding: 25px;
+  padding: 15px; /* 減少內邊距以增加內容空間 */
   color: #333;
-  max-height: 80vh;
-  max-width: 80vw;
-  width: 80vw;
-  height: 80vh;
+  max-height: 85vh; /* 增加最大高度 */
+  max-width: 85vw; /* 增加最大寬度 */
+  width: 85vw;
+  height: 85vh;
   transform: translate(-50%, -50%) scale(0);
-  opacity: 0; /* 初始透明度 */
+  opacity: 0;
   visibility: hidden;
 }
 
 .content-body {
-  height: calc(100% - 60px);
-  padding: 20px;
+  height: calc(100% - 50px); /* 減少標題欄高度，增加內容區域 */
+  padding: 10px; /* 減少內邊距 */
 }
 
 .content-container.active {
