@@ -181,10 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
     soundEnabled = !soundEnabled;
     
     if (soundEnabled) {
-      soundIcon.src = 'img/sound-on.png';
+      soundIcon.src = 'img/sound-on.webp';
       backgroundMusic.play().catch(e => console.log('無法播放背景音樂:', e));
     } else {
-      soundIcon.src = 'img/sound-off.png';
+      soundIcon.src = 'img/sound-off.webp';
       backgroundMusic.pause();
     }
   });
