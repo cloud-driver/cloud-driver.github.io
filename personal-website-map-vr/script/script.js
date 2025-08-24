@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('overlay');
   const houses = document.querySelectorAll('.house');
   const contentBox = document.getElementById('content-box');
   const contentTitle = contentBox.querySelector('.content-title');
@@ -8,13 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 關閉方框
   function closeContentBox() {
+    overlay.classList.remove('active');
     contentBox.classList.remove('active');
     contentBox.style.transform = 'translate(-50%, -50%) scale(0)';
     contentBox.style.opacity = '0';
-    contentBox.style.visibility = 'hidden'; // 隱藏方框
-    contentBox.style.left = ''; // 重置位置
-    contentBox.style.top = ''; // 重置位置
-    document.querySelector('.map-container').classList.remove('blur-background');
+    contentBox.style.visibility = 'hidden';
+    document.querySelector('.map-container')
+            .classList.remove('blur-background');
   }
 
   // 點擊房子時顯示方框
@@ -49,15 +50,19 @@ document.addEventListener('DOMContentLoaded', () => {
           document.querySelector('.map-container').classList.add('blur-background');
         }, 50);
       } else {
-        console.error(`未找到內容 ID: ${contentId}`);
+        // console.error(`未找到內容 ID: ${contentId}`);
       }
+      overlay.classList.add('active');
+      contentBox.classList.add('active');
+      contentBox.style.visibility = 'visible';
     });
   });
 
-  // 關閉按鈕事件
+  // 點 overlay 就關閉
+  overlay.addEventListener('click', closeContentBox);
+  // 點關閉鈕
   closeButton.addEventListener('click', closeContentBox);
-
-  // 按下 ESC 鍵關閉方框
+  // ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && contentBox.classList.contains('active')) {
       closeContentBox();
@@ -112,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         tempImg.onerror = () => {
-          console.error(`無法加載圖片: ${img.src}`);
+          // console.error(`無法加載圖片: ${img.src}`);
           loadedImages++;
           checkAllImagesLoaded();
         };
@@ -196,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(contentContainer);
 
   function closeContentContainer() {
-    console.log('關閉內容容器');
+    // console.log('關閉內容容器');
     contentContainer.classList.remove('active');
     
     // 立即設置樣式以觸發關閉動畫
@@ -225,22 +230,14 @@ document.addEventListener('DOMContentLoaded', () => {
   houses.forEach(house => {
     house.addEventListener('click', function(e) {
       e.preventDefault();
-      console.log('房子點擊:', house.alt); // 添加調試日誌
+      // console.log('房子點擊:', house.alt); // 添加調試日誌
       
       const target = house.getAttribute('data-link');
       const title = house.alt;
       
       if (!target) {
-        console.error('房子沒有 data-link 屬性');
+        // console.error('房子沒有 data-link 屬性');
         return;
-      }
-      
-      console.log('目標頁面:', target);
-      
-      // 播放點擊音效
-      if (soundEnabled && clickSound) {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(e => console.log('無法播放點擊音效:', e));
       }
       
       // 獲取房子的位置
@@ -282,17 +279,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 50);
       
       // 使用 fetch 獲取頁面內容
-      console.log('開始獲取頁面內容');
+      // console.log('開始獲取頁面內容');
       fetch(target)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          console.log('頁面請求成功');
+          // console.log('頁面請求成功');
           return response.text();
         })
         .then(html => {
-          console.log('頁面內容獲取成功');
+          // console.log('頁面內容獲取成功');
           
           try {
             // 解析HTML
@@ -321,9 +318,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // 重新添加關閉按鈕事件
             contentContainer.querySelector('.content-close').addEventListener('click', closeContentContainer);
             
-            console.log('內容已加載到容器中');
+            // console.log('內容已加載到容器中');
           } catch (parseError) {
-            console.error('解析HTML時出錯:', parseError);
+            // console.error('解析HTML時出錯:', parseError);
             contentContainer.innerHTML = `
               <div class="content-header">
                 <h2 class="content-title">${title}</h2>
@@ -337,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
         .catch(error => {
-          console.error('獲取頁面內容時出錯:', error);
+          // console.error('獲取頁面內容時出錯:', error);
           
           // 如果獲取內容失敗，顯示錯誤訊息
           contentContainer.innerHTML = `
@@ -633,7 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
               })
               .catch(error => {
-                console.error('請求陀螺儀權限時出錯:', error);
+                // console.error('請求陀螺儀權限時出錯:', error);
                 alert('無法請求陀螺儀權限，請檢查裝置設定。');
               });
           } else {
@@ -751,3 +748,4 @@ window.addEventListener('resize', checkOrientation);
 window.addEventListener('error', function(e) {
   console.error('全局錯誤:', e.message, 'at', e.filename, ':', e.lineno);
 });
+

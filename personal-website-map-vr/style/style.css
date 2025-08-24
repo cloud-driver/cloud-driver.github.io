@@ -91,13 +91,18 @@ body, html {
   transition: opacity 0.5s;
 }
 
+/* 自定 spinner */
 .loader-spinner {
   width: 50px;
   height: 50px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
+  border: 5px solid #fff;
+  border-top-color: #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 @keyframes spin {
@@ -148,40 +153,52 @@ body, html {
   100% { transform: rotate(90deg); }
 }
 
+/* 1. 調整 content-container */
 .content-container {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  z-index: 50;
-  transition: all 0.5s ease-out;
-  padding: 15px; /* 減少內邊距以增加內容空間 */
-  color: #333;
-  max-height: 85vh; /* 增加最大高度 */
-  max-width: 85vw; /* 增加最大寬度 */
-  width: 85vw;
-  height: 85vh;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
   visibility: hidden;
+  position: fixed;           /* 固定在視窗上 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;                /* 視窗寬度的 90%，可依需求調整 */
+  max-width: 800px;          /* 最大寬度 */
+  max-height: 80vh;          /* 最大高度為視窗高度的 80% */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  overflow: hidden;          /* 隱藏超出外框的部分 */
+  display: flex;
+  flex-direction: column;    /* 頭部與內容用 flex 排版 */
+  z-index: 999;              /* 確保蓋在最上層 */
 }
 
+/* 2. 樣式表頭保持原有 */
+.content-header {
+  flex: 0 0 auto;            /* 高度依內容自適 */
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 3. 讓內容區可捲動並填滿剩餘高度 */
 .content-body {
-  height: calc(100% - 50px); /* 減少標題欄高度，增加內容區域 */
-  padding: 10px; /* 減少內邊距 */
+  flex: 1 1 auto;            /* 佔滿剩餘空間 */
+  overflow-y: auto;          /* 垂直捲動 */
+  padding: 20px;
+}
+
+/* 4. （選用）手機尺寸微調 */
+@media (max-width: 600px) {
+  .content-container {
+    width: 95%;
+    max-height: 90vh;
+  }
 }
 
 .content-container.active {
   visibility: visible;
-}
-
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
 }
 
 .content-title {
@@ -264,4 +281,20 @@ body, html {
 /* 替代方案：直接使用 CSS cursor 屬性設置自定義鼠標 */
 body, html {
   cursor: url('../img/cursor.ani'), auto !important;
+}
+
+/* 放在 style.css 最後面 */
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;              /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.2);
+  z-index: 10;
+}
+#overlay.active {
+  display: block;
+}
+/* 確保 modal 在 overlay 之上 */
+#content-box {
+  z-index: 11;
 }

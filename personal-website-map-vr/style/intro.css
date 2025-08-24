@@ -1,0 +1,81 @@
+body {
+    font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
+    background-color: #f5f5f5;
+    min-height: 500px; /* 設置最小高度 */
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+.profile-header {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px 10px 0 0;
+    margin: -20px -20px 20px -20px;
+}
+.profile-header h1 {
+    font-size: 2.2em;
+    margin: 0;
+}
+.profile-header p {
+    font-size: 1.1em;
+    margin: 5px 0 0;
+    opacity: 0.9;
+}
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    border: 5px solid white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+.profile-image:hover {
+    transform: scale(1.05);
+}
+.profile-content {
+    text-align: left;
+    line-height: 1.6;
+}
+.profile-content h2 {
+    color: #2575fc;
+    font-size: 1.5em;
+    margin: 20px 0 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+.profile-content p {
+    margin-bottom: 15px;
+}
+.highlight {
+    background-color: #e9f5ff;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #2575fc;
+    font-weight: bold;
+}
+@media (max-width: 600px) {
+    .profile-container {
+    margin: 10px;
+    padding: 15px;
+    }
+    .profile-header h1 {
+    font-size: 1.8em;
+    }
+    .profile-image {
+    width: 120px;
+    height: 120px;
+    }
+}
