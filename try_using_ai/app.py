@@ -3,6 +3,7 @@ import secrets
 from google.genai import Client
 from google.genai import types
 from flask import Flask, request, render_template
+import os
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -36,5 +37,4 @@ def page_not_found(error):
     return render_template("404.html") , 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
-    
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))    
