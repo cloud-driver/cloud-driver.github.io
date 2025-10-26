@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>第二關 - 身份驗證</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>第二關 - 身份驗證</h1>
+        <p class="intro">
+            Alex 成功地進入了 CyberGuard 的辦公室，他打開了電腦後發現電腦竟然被程式鎖定了，他必須回答一些問題驗明身分才有辦法啟動電腦。
+        </p>
+        <div class="question" id="question1">
+            <p>1. SHA-256 是不是一種加密？</p>
+            <button onclick="checkAnswer(1, true, this)">是</button>
+            <button onclick="checkAnswer(1, false, this)">否</button>
+        </div>
+        <div class="question" id="question2">
+            <p>2. 防火牆可以管控個人電腦與外界的連線狀況？</p>
+            <button onclick="checkAnswer(2, true, this)">是</button>
+            <button onclick="checkAnswer(2, false, this)">否</button>
+        </div>
+        <div class="question" id="question3">
+            <p>3. HTTP是否經過加密？</p>
+            <button onclick="checkAnswer(3, true, this)">是</button>
+            <button onclick="checkAnswer(3, false, this)">否</button>
+        </div>
+        <div class="question" id="question4">
+            <p>4. RSA是否為非對稱式金鑰加密？</p>
+            <button onclick="checkAnswer(4, true, this)">是</button>
+            <button onclick="checkAnswer(4, false, this)">否</button>
+        </div>
+        <!-- Optionally add more questions here -->
+        <div id="nextLevel" style="display:none;">
+            <button onclick="window.location.href='level3.html';">前往下一關</button>
+        </div>
+    </div>
+    <script src="level2.js"></script>
+</body>
+</html>
