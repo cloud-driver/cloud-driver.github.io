@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-m-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 測試前端 (for app.py)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 20px; background-color: #f4f7f6; }
+        h1 { color: #333; }
+        h2 { border-bottom: 2px solid #00b900; padding-bottom: 10px; color: #007300; }
+        .container { max-width: 900px; margin: auto; }
+        .section { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        input[type="text"], input[type="password"] { width: 300px; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { padding: 10px 15px; background-color: #008cff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px 2px; font-size: 14px; }
+        button:hover { background-color: #0070cc; }
+        .oauth-section button { background-color: #28a745; }
+        .oauth-section button:hover { background-color: #218838; }
+        #response-output { background: #2a2a2e; color: #a5c2e3; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; font-family: "SF Mono", "Consolas", "Menlo", monospace; margin-top: 15px; }
+        #captcha-container { margin: 10px 0; }
+        #captcha-image { border: 1px solid #ddd; border-radius: 4px; vertical-align: middle; }
+        #token-display { color: #d9534f; font-family: monospace; font-size: 12px; max-width: 100%; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>API 測試介面</h1>
+
+        <h2>伺服器回應 (JSON)</h2>
+        <div class="section">
+            <pre id="response-output">{ "message": "尚未發送請求" }</pre>
+        </div>
+
+        <h2>1. 身份驗證 & 註冊</h2>
+        <div class="section">
+            <div id="captcha-container">
+                <img id="captcha-image" src="" alt="驗證碼載入中..." width="160" height="60">
+                <button id="btn-refresh-captcha">刷新驗證碼</button>
+            </div>
+            
+            <input type="text" id="reg-username" placeholder="註冊用帳號">
+            <input type="password" id="reg-password" placeholder="註冊用密碼">
+            <input type="password" id="reg-confirm" placeholder="確認密碼">
+            <input type="text" id="reg-email" placeholder="註冊用 Gmail (例如: user@gmail.com)">
+            <button id="btn-register">註冊 (Register)</button>
+            <hr style="margin: 20px 0;">
+
+            <input type="text" id="login-username" placeholder="登入用帳號">
+            <input type="password" id="login-password" placeholder="登入用密碼">
+            <input type="text" id="login-captcha" placeholder="輸入上方驗證碼">
+            <button id="btn-login">帳密登入 (Login)</button>
+        </div>
+
+        <h2>2. 帳號管理 (需登入取得 JWT)</h2>
+        <div class="section">
+            <strong>目前 JWT Token:</strong>
+            <p id="token-display">尚未登入</p>
+
+            <button id="btn-get-profile">取得個人資料 (Get Profile)</button>
+            <hr style="margin: 20px 0;">
+
+            <input type="text" id="change-username" placeholder="新的使用者名稱">
+            <button id="btn-change-username">變更使用者名稱</button>
+            <hr style="margin: 20px 0;">
+
+            <input type="password" id="change-old-pass" placeholder="舊密碼">
+            <input type="password" id="change-new-pass" placeholder="新密碼">
+            <input type="password" id="change-confirm-pass" placeholder="確認新密碼">
+            <button id="btn-change-password">變更密碼</button>
+        </div>
+
+        <h2>3. OAuth 登入 & 綁定</h2>
+        <div class="section oauth-section">
+            <p>
+                <strong>注意：</strong> 點擊後會導向 LINE/Google 頁面。完成授權後，您會被導向 API 回調 URL (例如 /api/callback/line)，
+                瀏覽器會**直接顯示 API 回傳的 JSON**。<br>
+                如果是登入流程，您需要從該 JSON 頁面**手動複製 "token"**，然後貼回此頁面的 "目前 JWT Token" 欄位來測試「帳號管理」功能。
+            </p>
+            <input type="text" id="manual-token" placeholder="手動貼上從 Callback 取得的 Token">
+            <button id="btn-set-token">手動設定 Token</button>
+            <hr style="margin: 20px 0;">
+
+            <h3>A. 快速登入 (未登入狀態)</h3>
+            <button id="btn-login-line">使用 LINE 登入/註冊</button>
+            <button id="btn-login-google">使用 Google 登入/註冊</button>
+
+            <h3>B. 帳號綁定 (需先用帳密登入)</h3>
+            <button id="btn-link-line">綁定 LINE 帳號 (需登入)</button>
+            <button id="btn-link-google">綁定 Google 帳號 (需登入)</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://delivery-wqwi.onrender.com';
+        let jwtToken = null;
+        let captchaToken = null;
+
+        // ---- DOM 元素 ----
+        const responseOutput = document.getElementById('response-output');
+        const captchaImage = document.getElementById('captcha-image');
+        const tokenDisplay = document.getElementById('token-display');
+
+        // ---- 輔助函式 ----
+        function displayResponse(data) {
+            responseOutput.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function getAuthHeader() {
+            if (!jwtToken) {
+                alert("錯誤：此操作需要 JWT Token。請先登入。");
+                return null;
+            }
+            return {
+                'Authorization': `Bearer ${jwtToken}`,
+                'Content-Type': 'application/json'
+            };
+        }
+
+        // ---- API 函式 ----
+
+        // 1. 載入驗證碼
+        async function loadCaptcha() {
+            try {
+                const response = await fetch(`${API_URL}/api/captcha`);
+                const data = await response.json();
+                if (response.ok) {
+                    captchaImage.src = data.image;
+                    captchaToken = data.captcha_token;
+                } else {
+                    displayResponse(data);
+                }
+            } catch (error) {
+                displayResponse({ error: "無法連接到 API 伺服器", details: error.message });
+            }
+        }
+
+        // 2. 註冊
+        async function registerUser() {
+            const payload = {
+                username: document.getElementById('reg-username').value,
+                password: document.getElementById('reg-password').value,
+                confirm_password: document.getElementById('reg-confirm').value,
+                email: document.getElementById('reg-email').value
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                displayResponse(data);
+                loadCaptcha(); 
+            } catch (error) {
+                displayResponse({ error: "註冊失敗", details: error.message });
+            }
+        }
+
+        // 3. 登入
+        async function loginUser() {
+            const payload = {
+                username: document.getElementById('login-username').value,
+                password: document.getElementById('login-password').value,
+                captcha_answer: document.getElementById('login-captcha').value,
+                captcha_token: captchaToken
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                displayResponse(data);
+                if (response.ok && data.token) {
+                    jwtToken = data.token;
+                    tokenDisplay.textContent = jwtToken;
+                }
+                loadCaptcha(); // 刷新驗證碼
+            } catch (error) {
+                displayResponse({ error: "登入失敗", details: error.message });
+            }
+        }
+
+        // 4. 取得 Profile
+        async function getProfile() {
+            const headers = getAuthHeader();
+            if (!headers) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/profile`, {
+                    method: 'GET',
+                    headers: headers
+                });
+                const data = await response.json();
+                displayResponse(data);
+            } catch (error) {
+                displayResponse({ error: "取得 Profile 失敗", details: error.message });
+            }
+        }
+        
+        // 5. 變更使用者名稱
+        async function changeUsername() {
+            const headers = getAuthHeader();
+            if (!headers) return;
+
+            const payload = {
+                new_username: document.getElementById('change-username').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/user/username`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                displayResponse(data);
+                if (response.ok && data.token) {
+                    jwtToken = data.token; // 更新 token
+                    tokenDisplay.textContent = jwtToken;
+                }
+            } catch (error) {
+                displayResponse({ error: "變更使用者名稱失敗", details: error.message });
+            }
+        }
+
+        // 6. 變更密碼
+        async function changePassword() {
+            const headers = getAuthHeader();
+            if (!headers) return;
+
+            const payload = {
+                old_password: document.getElementById('change-old-pass').value,
+                new_password: document.getElementById('change-new-pass').value,
+                confirm_password: document.getElementById('change-confirm-pass').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/user/password`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                displayResponse(data);
+            } catch (error) {
+                displayResponse({ error: "變更密碼失敗", details: error.message });
+            }
+        }
+
+        // 7. OAuth 登入
+        async function oauthLogin(provider) {
+            try {
+                const response = await fetch(`${API_URL}/api/login/${provider}/init`);
+                const data = await response.json();
+                if (response.ok) {
+                    window.location.href = data.auth_url; // 導向授權頁面
+                } else {
+                    displayResponse(data);
+                }
+            } catch (error) {
+                displayResponse({ error: `OAuth ${provider} 登入初始化失敗`, details: error.message });
+            }
+        }
+
+        // 8. OAuth 綁定
+        async function oauthLink(provider) {
+            const headers = getAuthHeader();
+            if (!headers) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/link/${provider}/init`, {
+                    method: 'GET',
+                    headers: headers
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    window.location.href = data.auth_url; // 導向授權頁面
+                } else {
+                    displayResponse(data);
+                }
+            } catch (error) {
+                displayResponse({ error: `OAuth ${provider} 綁定初始化失敗`, details: error.message });
+            }
+        }
+
+        // 9. 手動設定 Token
+        function setManualToken() {
+            const token = document.getElementById('manual-token').value;
+            if (token) {
+                jwtToken = token;
+                tokenDisplay.textContent = jwtToken;
+                displayResponse({ message: "Token 已手動設定" });
+            } else {
+                alert("請在輸入框貼上 Token");
+            }
+        }
+
+        // ---- 事件綁定 ----
+        document.getElementById('btn-refresh-captcha').addEventListener('click', loadCaptcha);
+        document.getElementById('btn-register').addEventListener('click', registerUser);
+        document.getElementById('btn-login').addEventListener('click', loginUser);
+        document.getElementById('btn-get-profile').addEventListener('click', getProfile);
+        document.getElementById('btn-change-username').addEventListener('click', changeUsername);
+        document.getElementById('btn-change-password').addEventListener('click', changePassword);
+        document.getElementById('btn-login-line').addEventListener('click', () => oauthLogin('line'));
+        document.getElementById('btn-login-google').addEventListener('click', () => oauthLogin('google'));
+        document.getElementById('btn-link-line').addEventListener('click', () => oauthLink('line'));
+        document.getElementById('btn-link-google').addEventListener('click', () => oauthLink('google'));
+        document.getElementById('btn-set-token').addEventListener('click', setManualToken);
+
+        // 頁面載入時自動載入驗證碼
+        window.onload = loadCaptcha;
+    </script>
+</body>
+</html>
