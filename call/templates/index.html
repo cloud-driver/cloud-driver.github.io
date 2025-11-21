@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Party Call</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: sans-serif; background-color: #121212; color: white; height: 100vh; display: flex; flex-direction: column; }
+        
+        /* 登入介面 */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a1a; z-index: 999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; gap: 20px;
+        }
+        
+        input { padding: 12px; font-size: 18px; text-align: center; border-radius: 8px; border: none; width: 250px; }
+        
+        .btn-group { display: flex; gap: 15px; }
+        
+        button {
+            padding: 15px 30px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px;
+            color: white; font-weight: bold; transition: 0.2s;
+        }
+        
+        .btn-voice { background: #28a745; } /* 綠色 */
+        .btn-voice:hover { background: #218838; }
+        
+        .btn-screen { background: #007bff; } /* 藍色 */
+        .btn-screen:hover { background: #0056b3; }
+
+        /* 主畫面 */
+        #main-interface { display: none; flex-direction: column; height: 100%; }
+
+        .header {
+            padding: 10px 20px; background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* 視訊網格：自動適應人數 */
+        .video-grid {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* 自動排版 */
+            gap: 10px;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .video-card {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16/9; /* 保持比例 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+
+        video { width: 100%; height: 100%; object-fit: contain; }
+
+        .label {
+            position: absolute; bottom: 10px; left: 10px;
+            background: rgba(0,0,0,0.7); padding: 4px 8px;
+            border-radius: 4px; font-size: 12px; color: #fff;
+        }
+
+        /* 自己的畫面邊框顏色 */
+        .local-border { border: 2px solid #007bff !important; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2>WebRTC 多人通話</h2>
+        <input id="roomInput" type="text" placeholder="輸入房間號碼 (如: 101)" value="101">
+        <div class="btn-group">
+            <button class="btn-voice" onclick="startApp('voice')">🎤 語音加入</button>
+            <button class="btn-screen" onclick="startApp('screen')">🖥️ 直播螢幕 + 語音</button>
+        </div>
+    </div>
+
+    <div id="main-interface">
+        <div class="header">
+            <span id="status">Status: Connected</span>
+            <span id="room-display">Room: -</span>
+        </div>
+        <div class="video-grid" id="videoGrid">
+            </div>
+    </div>
+
+    <script>
+        const socket = io({ autoConnect: false }); // 先不連線，等選好模式
+        
+        let localStream;
+        let peers = {}; 
+        let myId = null;
+        
+        const rtcConfig = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] 
+        };
+
+        // 1. 啟動應用程式
+        async function startApp(mode) {
+            const room = document.getElementById('roomInput').value;
+            if (!room) return alert("請輸入房間號碼");
+
+            try {
+                // 根據模式取得串流
+                if (mode === 'voice') {
+                    localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                } else {
+                    // 螢幕 + 麥克風
+                    const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+                    const micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                    
+                    // 合併軌道
+                    localStream = new MediaStream([
+                        ...screenStream.getVideoTracks(),
+                        ...micStream.getAudioTracks()
+                    ]);
+                }
+
+                // 顯示介面
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-interface').style.display = 'flex';
+                document.getElementById('room-display').innerText = `Room: ${room}`;
+                
+                // 顯示自己的畫面
+                addVideoCard('local', localStream, true);
+
+                // 連線到伺服器
+                socket.connect();
+                socket.emit('join', room);
+
+            } catch (err) {
+                console.error(err);
+                alert("無法取得設備權限：" + err.message);
+            }
+        }
+
+        // 2. Socket 事件監聽
+        socket.on('connect', () => {
+            myId = socket.id;
+            document.getElementById('status').innerText = "Status: Online (ID: " + myId.substr(0,4) + ")";
+        });
+
+        // 當有人新加入：我(舊人)主動打電話給他
+        socket.on('user-connected', (userId) => {
+            console.log("New user connected:", userId);
+            connectToNewUser(userId);
+        });
+
+        // 當有人離開
+        socket.on('user-disconnected', (userId) => {
+            if (peers[userId]) {
+                peers[userId].close();
+                delete peers[userId];
+            }
+            removeVideoCard(userId);
+        });
+
+        // 接收 Offer (新人打給我)
+        socket.on('offer', async (data) => {
+            const pc = createPeerConnection(data.from);
+            peers[data.from] = pc;
+            await pc.setRemoteDescription(new RTCSessionDescription(data.offer));
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            socket.emit('answer', { answer: answer, to: data.from });
+        });
+
+        // 接收 Answer (我打給新人，他回覆了)
+        socket.on('answer', async (data) => {
+            const pc = peers[data.from];
+            if (pc) {
+                await pc.setRemoteDescription(new RTCSessionDescription(data.answer));
+            }
+        });
+
+        // 接收 ICE Candidate (網路路徑交換)
+        socket.on('candidate', async (data) => {
+            const pc = peers[data.from];
+            if (pc) {
+                await pc.addIceCandidate(new RTCIceCandidate(data.candidate));
+            }
+        });
+
+        // 3. WebRTC 核心邏輯
+        function createPeerConnection(userId) {
+            const pc = new RTCPeerConnection(rtcConfig);
+
+            // 當發現網路路徑時，傳給對方
+            pc.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit('candidate', { candidate: event.candidate, to: userId });
+                }
+            };
+
+            // 當收到對方的影像/聲音時
+            pc.ontrack = (event) => {
+                // 確保只新增一次
+                if (!document.getElementById(`video-${userId}`)) {
+                    addVideoCard(userId, event.streams[0], false);
+                }
+            };
+
+            // 將我自己的畫面/聲音加入連線
+            if (localStream) {
+                localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+            }
+
+            return pc;
+        }
+
+        // 主動發起連線
+        async function connectToNewUser(userId) {
+            const pc = createPeerConnection(userId);
+            peers[userId] = pc;
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            socket.emit('offer', { offer: offer, to: userId });
+        }
+
+        // 4. UI 輔助函式
+        function addVideoCard(userId, stream, isLocal) {
+            const grid = document.getElementById('videoGrid');
+            
+            // 如果已經存在就移除舊的 (避免重複)
+            removeVideoCard(userId);
+
+            const card = document.createElement('div');
+            card.className = `video-card ${isLocal ? 'local-border' : ''}`;
+            card.id = `card-${userId}`;
+
+            const video = document.createElement('video');
+            video.id = `video-${userId}`;
+            video.autoplay = true;
+            video.playsInline = true;
+            video.srcObject = stream;
+            
+            // ⚠️ 重要：如果是自己，一定要靜音，否則會回音嘯叫
+            // 如果是別人，一定不能靜音 (muted=false)
+            if (isLocal) {
+                video.muted = true;
+            }
+
+            const label = document.createElement('div');
+            label.className = 'label';
+            label.innerText = isLocal ? "Me" : `User ${userId.substr(0,4)}`;
+
+            card.appendChild(video);
+            card.appendChild(label);
+            grid.appendChild(card);
+        }
+
+        function removeVideoCard(userId) {
+            const card = document.getElementById(`card-${userId}`);
+            if (card) card.remove();
+        }
+    </script>
+</body>
+</html>
