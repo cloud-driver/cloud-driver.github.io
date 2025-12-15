@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Confirmation - Foodie</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "primary-dark": "#d64b0a",
+                        "background-light": "#fcfaf9","background-dark": "#1a120e",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#261a15",
+                        "border-light": "#efe6e1",
+                        "border-dark": "#3d2e26",
+                        "text-main": "#2b1c15",
+                        "text-secondary": "#8c6b5d",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "none": "0",
+                        "sm": "0.375rem",
+                        "DEFAULT": "0.75rem",
+                        "md": "1rem",
+                        "lg": "1.25rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "soft": "0 4px 20px -2px rgba(236, 91, 19, 0.05)",
+                        "card": "0 2px 10px -2px rgba(0, 0, 0, 0.02), 0 10px 25px -5px rgba(0, 0, 0, 0.02)"
+                    }
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #e7d7cf;
+        border-radius: 20px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+        background-color: #4a3b32;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body text-text-main dark:text-gray-100 min-h-screen flex flex-col overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+<header class="sticky top-0 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-xl border-b border-border-light dark:border-border-dark px-6 py-4 transition-all duration-300">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-primary text-white rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-2xl">lunch_dining</span>
+</div>
+<h2 class="text-xl font-extrabold tracking-tight font-display text-text-main dark:text-white">Foodie</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-semibold text-text-secondary hover:text-primary transition-colors" href="#">Restaurants</a>
+<a class="text-sm font-semibold text-text-secondary hover:text-primary transition-colors" href="#">Offers</a>
+<a class="text-sm font-semibold text-text-secondary hover:text-primary transition-colors" href="#">My Orders</a>
+<div class="relative group cursor-pointer p-2">
+<span class="material-symbols-outlined text-2xl text-text-main group-hover:text-primary transition-colors">shopping_bag</span>
+<span class="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white ring-2 ring-white dark:ring-surface-dark">3</span>
+</div>
+</nav>
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-white dark:ring-border-dark shadow-sm cursor-pointer hover:ring-primary transition-all" data-alt="User profile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDfeZaSeCSXQNeyqdyDbYho0N3qZodn3KPVdZE3_hsSdrgwOV29y6_jXmtWE1cCgpEG9jIa_Pf8GTcq4zqNwQjDACiukzts8kl6DnwI_x-uOidmgMwmHNl_MlvB19_wnpXrBBCCP_-bSe45Dw7c96lj4X-eE6unrCqp-QeE_ruhKPzfIicWHIN18OEPynCbrIXPfadW2huShMO4tVxnoIkZ-5GkOzQV-19DzaTxP1wQIeST9XL0EQUGLaELoyn1LitGj-Cw6yBBylVt");'></div>
+</div>
+</div>
+</header>
+<div class="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 py-8">
+<div class="mb-8 flex items-center gap-2 text-sm font-medium text-text-secondary dark:text-gray-400">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-lg">restaurant_menu</span>
+            Menu
+        </a>
+<span class="material-symbols-outlined text-base opacity-50">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Cart</a>
+<span class="material-symbols-outlined text-base opacity-50">chevron_right</span>
+<span class="text-text-main dark:text-white font-bold bg-white dark:bg-surface-dark px-2 py-0.5 rounded-md shadow-sm border border-border-light dark:border-border-dark">Review &amp; Pay</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+<div class="flex flex-col gap-2 mb-2">
+<h1 class="text-3xl md:text-4xl font-display font-black tracking-tight text-text-main dark:text-white">Confirm Order</h1>
+<p class="text-text-secondary dark:text-gray-400 text-lg">Please verify your delivery details and payment method.</p>
+</div>
+<section class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-6 lg:p-8 shadow-card hover:shadow-lg transition-shadow duration-300">
+<div class="flex items-center gap-4 mb-6">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">location_on</span>
+</div>
+<h2 class="text-xl font-bold font-display">Delivery Details</h2>
+</div>
+<div class="w-full h-48 rounded-xl overflow-hidden mb-6 relative group border border-border-light dark:border-border-dark">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Map showing street view" data-location="New York City" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBBcLAlXcemG5AwNoOmk818_PTNS7o6jzLGerNirkEZleYCKt981-Amrm72gAkYlVnyIIJ4FiPNhJYeMy1hhYdtl62rBS3GkzK_PgNGGq14rljQsGPAaamAenngtEQex4XKnl2ZXSzIKx11cSBIHAcRp8buy3US0pTgTBUpuuSK0DEKS1e61riXsbJBZPNG2tA_TjUqT31_68NNwC4GF_EuB9_bGZ34h2KFyIaBbRvHMlo1Wf6z0fk3mxAcRpTRt_J81baKK_jka0sL");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4 bg-white dark:bg-surface-dark px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs font-bold">15-20 min away</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl bg-background-light dark:bg-surface-dark/50 border border-border-light dark:border-border-dark mb-6 group hover:border-primary/30 transition-colors">
+<div class="flex gap-4 items-center">
+<div class="size-10 rounded-full bg-white dark:bg-surface-dark flex items-center justify-center border border-border-light dark:border-border-dark text-text-secondary shadow-sm">
+<span class="material-symbols-outlined">home</span>
+</div>
+<div>
+<p class="font-bold text-text-main dark:text-white text-base">Home Address</p>
+<p class="text-text-secondary dark:text-gray-400 text-sm">123 Main Street, Apt 4B, New York, NY 10012</p>
+</div>
+</div>
+<button class="text-primary font-bold text-sm px-4 py-2 bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark hover:border-primary hover:text-primary rounded-lg transition-all shadow-sm">Change</button>
+</div>
+<div class="space-y-2">
+<label class="flex items-center gap-2 text-sm font-bold text-text-main dark:text-white">
+<span class="material-symbols-outlined text-base text-text-secondary">sticky_note_2</span>
+                        Delivery Instructions
+                    </label>
+<textarea class="w-full rounded-xl border border-border-light dark:border-border-dark bg-background-light dark:bg-surface-dark/50 text-text-main dark:text-white p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none text-sm placeholder:text-gray-400 transition-all" placeholder="Ex: Gate code is 1234, leave at front door..." rows="2"></textarea>
+</div>
+</section>
+<section class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-6 lg:p-8 shadow-card hover:shadow-lg transition-shadow duration-300">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">payments</span>
+</div>
+<h2 class="text-xl font-bold font-display">Payment Method</h2>
+</div>
+<div class="flex items-center gap-1.5 text-green-700 dark:text-green-400 text-[11px] font-bold uppercase tracking-wider bg-green-100 dark:bg-green-900/30 px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-base">lock</span>
+                        Secure SSL
+                    </div>
+</div>
+<div class="space-y-3">
+<label class="group relative flex items-center justify-between p-4 rounded-xl border-2 border-primary bg-primary/[0.02] cursor-pointer transition-all">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center">
+<input checked="" class="peer appearance-none w-5 h-5 rounded-full border border-gray-300 checked:border-primary checked:border-[6px] transition-all bg-white" name="payment" type="radio"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-white dark:bg-white/10 h-10 w-14 rounded-md border border-gray-100 dark:border-gray-700 flex items-center justify-center shadow-sm">
+<img alt="Visa" class="h-5 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3ztGgZQQM4WxIvoWChu-FOVv5Ei5ZMblBZtHFItLuX5J4G7FeVDYTAgkTbiZdfDVwRexNvRDAco24s8sDZ5RDAHPnnbaG4gvCm84CuovMCdmWvPa4rF0m7pjwfEQpW-DpVijODIPDaYmaRatsZGr9y_gZ4n7FlF-j1Syc2VChvllD3__lAhpcq-83JpdGtw35ue7gXaxI6ehAkFxkKL1u2eManpxDrf74GiyiWQuBaWymY7zU25VZ_HAcGogRKPy_cyvsJRb6-p5M"/>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-text-main dark:text-white text-sm">Visa ending in 4242</span>
+<span class="text-xs text-text-secondary dark:text-gray-400">Expires 12/25</span>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-2xl">check_circle</span>
+</label>
+<label class="group flex items-center justify-between p-4 rounded-xl border border-border-light dark:border-border-dark hover:border-primary/50 hover:bg-background-light/50 bg-white dark:bg-surface-dark cursor-pointer transition-all">
+<div class="flex items-center gap-4">
+<div class="relative flex items-center justify-center">
+<input class="peer appearance-none w-5 h-5 rounded-full border border-gray-300 checked:border-primary checked:border-[6px] transition-all bg-transparent" name="payment" type="radio"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-black text-white h-10 w-14 rounded-md flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined">ios</span>
+</div>
+<span class="font-bold text-text-main dark:text-white text-sm">Apple Pay</span>
+</div>
+</div>
+</label>
+<button class="mt-2 flex items-center gap-2 text-primary font-bold text-sm px-4 py-2 hover:bg-primary/5 rounded-lg w-fit transition-colors group">
+<div class="bg-primary/10 rounded-full p-1 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg block">add</span>
+</div>
+                        Add New Card
+                    </button>
+</div>
+</section>
+</div>
+<div class="lg:col-span-5 xl:col-span-4">
+<div class="sticky top-24 space-y-4">
+<div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark shadow-xl shadow-gray-200/50 dark:shadow-none overflow-hidden flex flex-col transition-colors duration-300">
+<div class="p-6 border-b border-border-light dark:border-border-dark bg-background-light/50 dark:bg-surface-dark">
+<div class="flex items-start gap-4">
+<div class="size-14 rounded-xl bg-cover bg-center shrink-0 shadow-sm border border-border-light dark:border-border-dark" data-alt="Burger King logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhBP5WnRN8rcF024Hh8RJ5Am2G-cyWk6Cco1rrK8J276hd7sL-MPtP-5sJDKjDOvDdOUFsNM7juhnChZBpJRcI4PE2FXWj5l68rM9HbIKIeclK4b7osWHWt4B_RDvdzqEhUI0LoCbvNFPzYK6INZlQGXGSZ_rgpc3BClI30IGy8cYhP9wLLlcFCsZhwnQEJn0ZZQxXnAcZs1T3njPZDg1ydaYphtNS_Ut9uO9uRtiN28dul36Q6ByzmvyidyVcG79udGuiOyj-FzZw");'></div>
+<div class="flex-1">
+<h3 class="font-bold text-lg text-text-main dark:text-white font-display leading-tight">Burger King</h3>
+<div class="flex items-center gap-3 text-xs font-medium text-text-secondary dark:text-gray-400 mt-2">
+<div class="flex items-center gap-1 bg-white dark:bg-white/5 px-2 py-1 rounded shadow-sm border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-sm text-primary">schedule</span>
+<span>35-45 min</span>
+</div>
+<div class="flex items-center gap-1 bg-white dark:bg-white/5 px-2 py-1 rounded shadow-sm border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-sm text-primary">distance</span>
+<span>1.2 mi</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 flex flex-col gap-6 max-h-[350px] overflow-y-auto">
+<div class="flex gap-4 group">
+<div class="bg-primary/10 text-primary font-bold text-xs h-6 w-6 rounded-md flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-white transition-colors">1x</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold text-sm text-text-main dark:text-white">Double Cheeseburger</p>
+<p class="font-bold text-sm text-text-main dark:text-white">$12.50</p>
+</div>
+<p class="text-xs text-text-secondary dark:text-gray-500 leading-relaxed">No onions, Extra pickles, Medium rare</p>
+</div>
+</div>
+<div class="flex gap-4 group">
+<div class="bg-primary/10 text-primary font-bold text-xs h-6 w-6 rounded-md flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-white transition-colors">1x</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold text-sm text-text-main dark:text-white">Large Fries</p>
+<p class="font-bold text-sm text-text-main dark:text-white">$4.00</p>
+</div>
+</div>
+</div>
+<div class="flex gap-4 group">
+<div class="bg-primary/10 text-primary font-bold text-xs h-6 w-6 rounded-md flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-white transition-colors">1x</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<p class="font-bold text-sm text-text-main dark:text-white">Vanilla Shake</p>
+<p class="font-bold text-sm text-text-main dark:text-white">$5.50</p>
+</div>
+<p class="text-xs text-text-secondary dark:text-gray-500 leading-relaxed">Extra whipped cream</p>
+</div>
+</div>
+</div>
+<div class="px-6 py-4 bg-background-light/30 dark:bg-white/5 border-t border-dashed border-border-light dark:border-border-dark">
+<div class="flex justify-between items-center mb-3">
+<p class="text-sm font-bold text-text-main dark:text-white">Driver Tip</p>
+<span class="text-xs text-text-secondary font-medium">100% goes to driver</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark py-2 text-xs font-bold text-text-secondary hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm">10%</button>
+<button class="rounded-lg bg-primary text-white border border-primary py-2 text-xs font-bold shadow-md shadow-primary/20 ring-2 ring-primary/20">15%</button>
+<button class="rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark py-2 text-xs font-bold text-text-secondary hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm">20%</button>
+<button class="rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark py-2 text-xs font-bold text-text-secondary hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm">Other</button>
+</div>
+</div>
+<div class="bg-background-light dark:bg-surface-dark px-6 py-6 space-y-3">
+<div class="flex justify-between text-sm text-text-secondary dark:text-gray-400">
+<span>Subtotal</span>
+<span class="font-medium text-text-main dark:text-white">$22.00</span>
+</div>
+<div class="flex justify-between text-sm text-text-secondary dark:text-gray-400">
+<span>Delivery Fee</span>
+<span class="font-medium text-text-main dark:text-white">$1.99</span>
+</div>
+<div class="flex justify-between text-sm text-text-secondary dark:text-gray-400">
+<span>Service Fee</span>
+<span class="font-medium text-text-main dark:text-white">$2.50</span>
+</div>
+<div class="flex justify-between text-sm text-primary font-bold">
+<span>Driver Tip (15%)</span>
+<span>$3.30</span>
+</div>
+<div class="h-px w-full bg-border-light dark:border-border-dark my-3"></div>
+<div class="flex justify-between items-end mb-4">
+<span class="text-lg font-bold text-text-main dark:text-white">Total</span>
+<div class="text-right">
+<span class="text-2xl font-black text-text-main dark:text-white font-display tracking-tight">$29.79</span>
+</div>
+</div>
+<button class="group w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-primary/30 transition-all transform active:scale-[0.98] flex items-center justify-between">
+<span>Place Order</span>
+<div class="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform">
+<span class="material-symbols-outlined text-lg block">arrow_forward</span>
+</div>
+</button>
+<p class="text-center text-[11px] text-text-secondary dark:text-gray-500 mt-3 leading-tight">
+                            By placing your order, you agree to our <a class="underline hover:text-primary" href="#">Terms of Service</a> and <a class="underline hover:text-primary" href="#">Privacy Policy</a>.
+                        </p>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-4 flex gap-3 shadow-sm">
+<div class="flex-1 flex items-center gap-3 px-4 bg-background-light dark:bg-surface-dark/50 rounded-xl border border-transparent focus-within:border-primary focus-within:bg-white dark:focus-within:bg-surface-dark transition-all">
+<span class="material-symbols-outlined text-text-secondary">local_offer</span>
+<input class="bg-transparent w-full py-3 outline-none text-sm text-text-main dark:text-white placeholder:text-text-secondary/50 font-medium" placeholder="Add promo code" type="text"/>
+</div>
+<button class="bg-text-main dark:bg-white text-white dark:text-text-main font-bold text-sm px-6 rounded-xl hover:opacity-90 shadow-lg shadow-black/10 transition-opacity">Apply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Interaction script for visualization
+    const tipButtons = document.querySelectorAll('.grid.grid-cols-4 button');
+    tipButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Reset all
+            tipButtons.forEach(b => {
+                b.className = "rounded-lg bg-white dark:bg-surface-dark border border-border-light dark:border-border-dark py-2 text-xs font-bold text-text-secondary hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm";
+            });
+            // Set active
+            e.target.className = "rounded-lg bg-primary text-white border border-primary py-2 text-xs font-bold shadow-md shadow-primary/20 ring-2 ring-primary/20";
+        });
+    });
+</script>
+
+</body></html>

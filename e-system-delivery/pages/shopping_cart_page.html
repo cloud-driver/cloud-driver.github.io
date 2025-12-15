@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shopping Cart - Bot Appétit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#c96a54",
+                    secondary: "#d98e79",
+                    "primary-dark": "#a85642",
+                    "background-light": "#fdfbf7",
+                    "background-dark": "#2c241b",
+                    "surface-light": "#ffffff",
+                    "surface-dark": "#3e3228",
+                    "text-main-light": "#5d4037",
+                    "text-main-dark": "#eaddcf",
+                },
+                fontFamily: {
+                    display: ["Caveat", "cursive"],
+                    sans: ["Nunito", "sans-serif"],
+                },
+                borderRadius: {
+                    DEFAULT: "1rem",
+                    'xl': "1.5rem",
+                    '2xl': "2rem",
+                    '3xl': "3rem",
+                },
+            },
+        },
+    };
+</script>
+<style>
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d98e79; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #c96a54; }
+    .handwritten-shadow { text-shadow: 2px 2px 0px rgba(0,0,0,0.1); }
+    .material-symbols-outlined { vertical-align: middle; }
+</style>
+</head>
+<body class="bg-gradient-to-b from-background-light to-[#ffeacc] dark:from-background-dark dark:to-[#1a1510] min-h-screen font-sans text-text-main-light dark:text-text-main-dark transition-colors duration-300">
+
+<nav class="w-full px-6 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md bg-background-light/80 dark:bg-background-dark/80 transition-colors border-b border-white/20 dark:border-white/5">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='restaurant_menu_page.html'">
+        <div class="w-12 h-12 rounded-full bg-[#e8c675] flex items-center justify-center shadow-md overflow-hidden relative border-2 border-[#8c6b45]">
+            <span class="material-symbols-outlined text-3xl text-[#8c6b45]">arrow_back</span>
+        </div>
+        <span class="font-display text-3xl font-bold text-primary hidden md:block">Bot Appétit</span>
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="p-2.5 rounded-full bg-surface-light dark:bg-surface-dark shadow-sm border border-primary/10 text-primary hover:scale-105 transition-transform flex items-center justify-center" onclick="document.documentElement.classList.toggle('dark')">
+            <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+        </button>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-10 text-center sm:text-left flex flex-col sm:flex-row items-end gap-4 border-b border-primary/10 pb-6">
+        <div>
+            <h1 class="font-display text-5xl md:text-6xl text-text-main-light dark:text-primary mb-2 handwritten-shadow">Your Cart</h1>
+            <p class="text-lg opacity-70">Review your customized cravings before checkout.</p>
+        </div>
+        <div class="hidden sm:block ml-auto text-right">
+            <p class="font-bold text-primary text-lg" id="header-count">0 Items</p>
+        </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+        <div class="flex-1 space-y-6" id="cart-container">
+            <div class="text-center py-20 opacity-50">
+                <span class="material-symbols-outlined text-6xl mb-4">shopping_basket</span>
+                <p class="text-2xl font-display">Your cart is empty...</p>
+                <a href="restaurant_menu_page.html" class="underline mt-2 block">Go get some food!</a>
+            </div>
+        </div>
+
+        <div class="lg:w-1/3">
+            <div class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-xl border border-primary/10 sticky top-24">
+                <div class="flex justify-between items-center mb-6 border-b border-primary/10 pb-4">
+                    <h2 class="font-display text-4xl text-primary">Order Summary</h2>
+                </div>
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between text-gray-600 dark:text-gray-300 font-bold text-sm">
+                        <span>Subtotal</span>
+                        <span id="summary-subtotal">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600 dark:text-gray-300 font-bold text-sm">
+                        <span>Delivery Fee</span>
+                        <span id="summary-delivery">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600 dark:text-gray-300 font-bold text-sm">
+                        <span>Tax (8%)</span>
+                        <span id="summary-tax">$0.00</span>
+                    </div>
+                </div>
+                <div class="border-t-2 border-dashed border-primary/20 my-6"></div>
+                <div class="flex justify-between items-end mb-8">
+                    <span class="font-display text-3xl font-bold">Total</span>
+                    <span class="text-3xl font-extrabold text-primary font-sans" id="summary-total">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-full shadow-lg hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 group">
+                    <span class="material-symbols-outlined group-hover:animate-bounce">shopping_cart_checkout</span>
+                    <span class="text-lg">Checkout Now</span>
+                </button>
+                <div class="mt-4 text-center">
+                    <a class="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary underline decoration-dashed decoration-2 underline-offset-4" href="restaurant_menu_page.html">Continue Shopping</a>
+                </div>
+            </div>
+
+            <div id="free-delivery-box" class="mt-6 bg-yellow-100 dark:bg-yellow-900/20 rounded-2xl p-4 border border-yellow-200 dark:border-yellow-800/50 flex items-center gap-4 shadow-sm hidden">
+                <div class="w-10 h-10 rounded-full bg-yellow-200 dark:bg-yellow-800/50 flex items-center justify-center text-yellow-700 dark:text-yellow-300">
+                    <span class="material-symbols-outlined text-2xl">local_offer</span>
+                </div>
+                <div>
+                    <p class="font-bold text-yellow-800 dark:text-yellow-200 text-sm">Free Delivery Status</p>
+                    <p class="text-yellow-700 dark:text-yellow-300 text-xs" id="free-delivery-text">Add more to your cart.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Constants
+    const STORAGE_KEY = 'bot_appetit_cart';
+    const TAX_RATE = 0.08;
+    const DELIVERY_FEE = 4.50;
+    const FREE_DELIVERY_THRESHOLD = 50.00;
+
+    let cart = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCart();
+        renderCart();
+    });
+
+    function loadCart() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try {
+                cart = JSON.parse(stored);
+            } catch (e) {
+                console.error("Cart parse error", e);
+                cart = [];
+            }
+        }
+    }
+
+    function saveCart() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+        renderCart();
+    }
+
+    function updateQty(index, change) {
+        if (cart[index]) {
+            cart[index].qty += change;
+            if (cart[index].qty < 1) cart[index].qty = 1;
+            saveCart();
+        }
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        saveCart();
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            // 使用 SweetAlert2 (如果有引入) 或原生 alert
+            alert("您的購物車是空的！");
+            return;
+        }
+        window.location.href = "checkout-payment_method.html";
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cart-container');
+        const headerCount = document.getElementById('header-count');
+        
+        // Summary Elements
+        const elSubtotal = document.getElementById('summary-subtotal');
+        const elDelivery = document.getElementById('summary-delivery');
+        const elTax = document.getElementById('summary-tax');
+        const elTotal = document.getElementById('summary-total');
+        const elFreeDelBox = document.getElementById('free-delivery-box');
+        const elFreeDelText = document.getElementById('free-delivery-text');
+
+        if (cart.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-20 opacity-50 flex flex-col items-center">
+                    <span class="material-symbols-outlined text-6xl mb-4">shopping_basket</span>
+                    <p class="text-2xl font-display">Your cart is empty...</p>
+                    <a href="restaurant_menu_page.html" class="underline mt-2 block text-primary font-bold">Go get some food!</a>
+                </div>
+            `;
+            headerCount.innerText = "0 Items";
+            elSubtotal.innerText = "$0.00";
+            elTax.innerText = "$0.00";
+            elDelivery.innerText = "$0.00";
+            elTotal.innerText = "$0.00";
+            elFreeDelBox.classList.add('hidden');
+            return;
+        }
+
+        let subtotal = 0;
+        let totalQty = 0;
+        let html = '';
+
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.qty;
+            subtotal += itemTotal;
+            totalQty += item.qty;
+
+            // Render options tags
+            let optionsHtml = '';
+            if (item.options && item.options.length > 0) {
+                item.options.forEach(opt => {
+                    optionsHtml += `<span class="px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 text-xs font-bold uppercase tracking-wider border border-orange-100 dark:border-orange-800/50">${opt}</span>`;
+                });
+            }
+            // Render note
+            if (item.note) {
+                 optionsHtml += `<span class="px-3 py-1 rounded-full bg-gray-50 dark:bg-gray-800 text-gray-500 text-xs font-bold italic border border-gray-200 dark:border-gray-700">Note: ${item.note}</span>`;
+            }
+
+            html += `
+            <div class="group bg-surface-light dark:bg-surface-dark rounded-3xl p-5 shadow-lg border border-primary/5 hover:border-primary/30 transition-all duration-300 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative animate-[fadeIn_0.5s_ease-out]">
+                <div class="w-full sm:w-36 h-36 rounded-2xl overflow-hidden flex-shrink-0 shadow-md">
+                    <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="flex-1 text-center sm:text-left w-full flex flex-col h-full justify-between">
+                    <div>
+                        <div class="flex justify-between items-start w-full mb-2">
+                            <h3 class="font-sans text-2xl font-bold text-text-main-light dark:text-text-main-dark leading-tight">${item.title}</h3>
+                            <span class="font-extrabold text-xl text-primary">$${itemTotal.toLocaleString()}</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4 justify-center sm:justify-start">
+                            ${optionsHtml}
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-2 pt-4 border-t border-primary/5 dark:border-white/5">
+                        <div class="flex items-center bg-background-light dark:bg-background-dark rounded-full px-1 py-1 shadow-inner border border-primary/10">
+                            <button onclick="updateQty(${index}, -1)" class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-white dark:hover:bg-surface-dark shadow-sm transition-all">
+                                <span class="material-symbols-outlined text-lg">remove</span>
+                            </button>
+                            <span class="font-bold text-lg w-10 text-center font-sans">${item.qty}</span>
+                            <button onclick="updateQty(${index}, 1)" class="w-8 h-8 rounded-full flex items-center justify-center text-primary hover:bg-white dark:hover:bg-surface-dark shadow-sm transition-all">
+                                <span class="material-symbols-outlined text-lg">add</span>
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="removeItem(${index})" class="flex items-center gap-1.5 text-xs font-bold text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors px-4 py-2 rounded-full bg-gray-50 dark:bg-white/5 hover:bg-red-50 dark:hover:bg-red-900/20">
+                                <span class="material-symbols-outlined text-base">delete</span>
+                                <span>Remove</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+
+        container.innerHTML = html;
+        headerCount.innerText = `${totalQty} Items`;
+
+        // Calculate Totals
+        const tax = subtotal * TAX_RATE;
+        let delivery = DELIVERY_FEE;
+        
+        // Free Delivery Logic
+        elFreeDelBox.classList.remove('hidden');
+        if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+            delivery = 0;
+            elFreeDelText.innerHTML = `<span class="text-green-600 font-bold">You've unlocked Free Delivery!</span>`;
+        } else {
+            const remaining = FREE_DELIVERY_THRESHOLD - subtotal;
+            elFreeDelText.innerHTML = `Add <span class="font-bold text-primary">$${remaining.toFixed(2)}</span> more for Free Delivery.`;
+        }
+
+        const total = subtotal + tax + delivery;
+
+        elSubtotal.innerText = `$${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        elTax.innerText = `$${tax.toFixed(2)}`;
+        elDelivery.innerText = delivery === 0 ? "Free" : `$${delivery.toFixed(2)}`;
+        elTotal.innerText = `$${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+    }
+</script>
+
+</body>
+</html>

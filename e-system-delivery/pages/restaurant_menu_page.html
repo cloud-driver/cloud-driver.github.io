@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Bot Appétit - 餐廳菜單</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D97757", // Main Terracotta color
+                        "primary-hover": "#C55B3E",
+                        secondary: "#F2E8DC",
+                        accent: "#F9DCC4",
+                        "text-main": "#5D4037",
+                        "background-light": "#FFF8F0", 
+                        "background-dark": "#1F1D1B",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#2C2A28",
+                        "border-light": "#E6D5C4",
+                        "border-dark": "#3E3B38",
+                        // Mappings for the modal structure
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#2C2A28",
+                    },
+                    fontFamily: {
+                        sans: ["'Noto Sans TC'", "sans-serif"],
+                        display: ["'Playfair Display'", "serif"],
+                        hand: ["'Caveat'", "cursive"], // Added for modal headers
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': "1.5rem",
+                        '2xl': "2rem",
+                        '3xl': "2.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb {
+            background-color: #D97757;
+            border-radius: 20px;
+            border: 3px solid transparent;
+            background-clip: content-box;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        /* Modal Specific Styles */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #D97757; border-radius: 20px; }
+        
+        input[type="radio"]:checked, input[type="checkbox"]:checked {
+            background-color: #D97757;
+            border-color: #D97757;
+            color: #D97757;
+        }
+        input[type="radio"]:focus, input[type="checkbox"]:focus {
+            --tw-ring-color: #D97757;
+            box-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-gray-200 transition-colors duration-300 font-sans min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 glass-effect border-b border-border-light dark:border-border-dark px-6 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="homepage_(store_listing).html" class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary to-orange-400 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <span class="material-icons-round text-white text-xl">arrow_back</span>
+                </div>
+                <span class="text-2xl font-display font-bold text-primary dark:text-orange-400 italic">Bot Appétit</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-4">
+                <div class="relative group">
+                    <input class="pl-10 pr-4 py-2 rounded-full bg-secondary dark:bg-card-dark border-none focus:ring-2 focus:ring-primary text-sm w-64 transition-all" placeholder="搜尋美食..." type="text"/>
+                    <span class="material-icons-round absolute left-3 top-2 text-gray-500 dark:text-gray-400 text-lg">search</span>
+                </div>
+                <button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+                    <span class="material-icons-round text-xl dark:hidden">dark_mode</span>
+                    <span class="material-icons-round text-xl hidden dark:block text-yellow-400">light_mode</span>
+                </button>
+            </div>
+            <button class="md:hidden text-text-main dark:text-white">
+                <span class="material-icons-round text-3xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 py-8">
+        <header class="relative rounded-3xl overflow-hidden shadow-2xl mb-10 group">
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-10"></div>
+            <img id="hero-image" alt="Restaurant Interior" class="w-full h-64 md:h-80 object-cover transform group-hover:scale-105 transition-transform duration-700" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop&q=80"/>
+            
+            <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 z-20 flex flex-col md:flex-row items-end md:items-center justify-between gap-4 bg-gradient-to-t from-black/80 to-transparent">
+                <div class="text-white">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-primary px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">義式料理</span>
+                        <span class="bg-green-600 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                            <span class="material-icons-round text-[10px]">eco</span> 素食友善
+                        </span>
+                    </div>
+                    <h1 id="restaurant-name" class="text-4xl md:text-5xl font-display font-bold mb-2 text-shadow-sm">Pasta Paradise</h1>
+                    <div class="flex items-center gap-4 text-sm md:text-base opacity-90">
+                        <div class="flex items-center text-yellow-400">
+                            <span class="material-icons-round">star</span>
+                            <span class="ml-1 font-bold text-white">4.8</span>
+                            <span class="text-gray-300 ml-1 font-normal">(500+)</span>
+                        </div>
+                        <span class="flex items-center gap-1"><span class="material-icons-round text-sm">schedule</span> 30-40 分鐘</span>
+                        <span class="flex items-center gap-1"><span class="material-icons-round text-sm">attach_money</span> $$$</span>
+                    </div>
+                </div>
+                <button class="bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/40 text-white rounded-full p-3 transition-all transform hover:scale-110 shadow-lg">
+                    <span class="material-icons-round text-2xl">favorite_border</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <aside class="lg:w-1/4">
+                <div class="sticky top-24 space-y-2">
+                    <h3 class="text-lg font-bold mb-4 px-2 font-display text-primary dark:text-orange-400">菜單分類</h3>
+                    <nav class="space-y-1">
+                        <a class="flex items-center justify-between px-4 py-3 bg-primary text-white rounded-xl shadow-md transition-all" href="#popular">
+                            <span class="font-medium">人氣精選</span>
+                            <span class="material-icons-round text-sm">local_fire_department</span>
+                        </a>
+                        <a class="flex items-center justify-between px-4 py-3 hover:bg-secondary dark:hover:bg-card-dark rounded-xl transition-all group" href="#main">
+                            <span class="group-hover:text-primary transition-colors">主廚特製</span>
+                            <span class="material-icons-round text-sm opacity-0 group-hover:opacity-100 transition-opacity">restaurant</span>
+                        </a>
+                        <a class="flex items-center justify-between px-4 py-3 hover:bg-secondary dark:hover:bg-card-dark rounded-xl transition-all group" href="#pasta">
+                            <span class="group-hover:text-primary transition-colors">義大利麵</span>
+                            <span class="material-icons-round text-sm opacity-0 group-hover:opacity-100 transition-opacity">dinner_dining</span>
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <div class="lg:w-3/4 space-y-10">
+                
+                <section id="popular">
+                    <h2 class="text-2xl font-display font-bold mb-6 flex items-center gap-2 text-text-main dark:text-white">
+                        <span class="material-icons-round text-orange-500">local_fire_department</span>
+                        人氣精選
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="menu-item bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-4 flex gap-4 hover:shadow-xl transition-all group relative overflow-hidden">
+                            <div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+                                <img class="item-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1612874742237-6526221588e3?w=500&auto=format&fit=crop&q=60"/>
+                            </div>
+                            <div class="flex flex-col flex-grow justify-between">
+                                <div>
+                                    <h3 class="item-title font-bold text-lg text-text-main dark:text-gray-100 mb-1">黑松露培根蛋麵</h3>
+                                    <p class="item-desc text-sm text-gray-500 dark:text-gray-400 line-clamp-2">正宗羅馬風味，使用佩科里諾乾酪與現刨黑松露。</p>
+                                </div>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="item-price font-bold text-lg text-primary" data-price="380">$380</span>
+                                    <button onclick="openModal(this)" class="w-8 h-8 rounded-full bg-secondary dark:bg-gray-700 hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors flex items-center justify-center">
+                                        <span class="material-icons-round text-lg">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-item bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-4 flex gap-4 hover:shadow-xl transition-all group relative overflow-hidden">
+                            <div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+                                <img class="item-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&auto=format&fit=crop&q=60"/>
+                            </div>
+                            <div class="flex flex-col flex-grow justify-between">
+                                <div>
+                                    <h3 class="item-title font-bold text-lg text-text-main dark:text-gray-100 mb-1">經典瑪格麗特</h3>
+                                    <p class="item-desc text-sm text-gray-500 dark:text-gray-400 line-clamp-2">新鮮番茄醬底、莫扎瑞拉起司與羅勒葉。</p>
+                                </div>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="item-price font-bold text-lg text-primary" data-price="320">$320</span>
+                                    <button onclick="openModal(this)" class="w-8 h-8 rounded-full bg-secondary dark:bg-gray-700 hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors flex items-center justify-center">
+                                        <span class="material-icons-round text-lg">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="main">
+                    <h2 class="text-2xl font-display font-bold mb-6 flex items-center gap-2 text-text-main dark:text-white">
+                        <span class="material-icons-round text-primary">restaurant</span>
+                        主廚特製
+                    </h2>
+                    <div class="grid md:grid-cols-1 gap-6">
+                        <div class="menu-item bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-0 flex flex-col md:flex-row hover:shadow-xl transition-all group overflow-hidden">
+                            <div class="md:w-64 h-48 md:h-auto flex-shrink-0 bg-gray-200 overflow-hidden relative">
+                                <span class="absolute top-2 left-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded shadow">推薦</span>
+                                <img class="item-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&auto=format&fit=crop&q=60"/>
+                            </div>
+                            <div class="flex flex-col flex-grow p-6 justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="item-title font-bold text-xl text-text-main dark:text-gray-100">炭烤肋眼牛排 (12oz)</h3>
+                                        <span class="text-xs font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">美國Prime級</span>
+                                    </div>
+                                    <p class="item-desc text-gray-600 dark:text-gray-300 mb-4">選用頂級美國Prime肋眼部位，大火炭烤鎖住肉汁，搭配烤蒜頭與海鹽。</p>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="item-price font-bold text-2xl text-primary" data-price="980">$980</span>
+                                    <button onclick="openModal(this)" class="bg-primary hover:bg-orange-600 text-white px-6 py-2 rounded-xl font-medium transition-colors shadow-lg shadow-primary/30 flex items-center gap-2">
+                                        <span>客製化</span>
+                                        <span class="material-icons-round text-sm">tune</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="pasta">
+                    <h2 class="text-2xl font-display font-bold mb-6 flex items-center gap-2 text-text-main dark:text-white">
+                        <span class="material-icons-round text-primary">dinner_dining</span>
+                        義大利麵
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="menu-item bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-4 flex gap-4 hover:shadow-xl transition-all group relative overflow-hidden">
+                            <div class="w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+                                <img class="item-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=500"/>
+                            </div>
+                            <div class="flex flex-col flex-grow justify-between">
+                                <div>
+                                    <h3 class="item-title font-bold text-lg text-text-main dark:text-gray-100 mb-1">威尼斯海鮮麵</h3>
+                                    <p class="item-desc text-sm text-gray-500 dark:text-gray-400 line-clamp-2">鮮蝦、蛤蠣、透抽，番茄紅醬。</p>
+                                </div>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="item-price font-bold text-lg text-primary" data-price="420">$420</span>
+                                    <button onclick="openModal(this)" class="w-8 h-8 rounded-full bg-secondary dark:bg-gray-700 hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors flex items-center justify-center">
+                                        <span class="material-icons-round text-lg">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-6 right-6 z-40">
+        <button id="cart-btn" class="group flex items-center justify-center bg-primary hover:bg-orange-600 text-white rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 pl-4 pr-6 py-4 h-14">
+            <span class="relative mr-3">
+                <span class="material-icons-round text-2xl">shopping_cart</span>
+                <span id="cart-count" class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-primary hidden">0</span>
+            </span>
+            <span class="font-bold text-lg">購物車</span>
+            <span id="cart-total" class="ml-2 pl-2 border-l border-white/30 text-sm font-medium opacity-90">$0</span>
+        </button>
+    </div>
+
+    <div id="customization-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm transition-all duration-300 hidden opacity-0">
+        <div class="bg-surface-light dark:bg-surface-dark w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden transform transition-all scale-95 ring-1 ring-white/20" id="modal-content">
+            
+            <div class="relative h-48 sm:h-56 flex-shrink-0">
+                <img id="modal-img" alt="Food Image" class="w-full h-full object-cover" src=""/>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white rounded-full p-2 transition-colors z-10">
+                    <span class="material-icons-round">close</span>
+                </button>
+                <div class="absolute bottom-4 left-6 text-white pr-4">
+                    <h2 id="modal-title" class="text-3xl font-bold font-display tracking-wide drop-shadow-md">Dish Name</h2>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="bg-primary/90 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-sm">Popular</span>
+                        <span class="flex text-yellow-400 text-sm">
+                            <span class="material-icons-round text-sm">star</span>
+                            <span class="material-icons-round text-sm">star</span>
+                            <span class="material-icons-round text-sm">star</span>
+                            <span class="material-icons-round text-sm">star</span>
+                            <span class="material-icons-round text-sm">star_half</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8 bg-surface-light dark:bg-surface-dark">
+                <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <p id="modal-desc" class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                        Description goes here...
+                    </p>
+                    <div class="flex-shrink-0">
+                        <span id="modal-base-price" class="text-2xl font-bold text-primary whitespace-nowrap">$0</span>
+                    </div>
+                </div>
+
+                <hr class="border-stone-100 dark:border-stone-800"/>
+
+                <form id="customization-form">
+                    <div class="mb-6">
+                        <h3 class="font-hand font-bold text-2xl mb-3 flex items-center text-text-main dark:text-gray-200">
+                            <span class="material-icons-round text-primary mr-2 text-xl">straighten</span> 
+                            份量選擇 (Size)
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer relative group">
+                                <input checked="" class="peer sr-only option-input" name="size" type="radio" value="0"/>
+                                <div class="p-4 rounded-2xl border-2 border-stone-200 dark:border-stone-700 peer-checked:border-primary peer-checked:bg-primary/5 hover:border-primary/50 transition-all text-center h-full flex flex-col justify-center">
+                                    <span class="block font-bold text-text-main dark:text-gray-200">標準 (Regular)</span>
+                                </div>
+                                <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 text-primary transition-opacity transform scale-0 peer-checked:scale-100 duration-200">
+                                    <span class="material-icons-round text-xl">check_circle</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative group">
+                                <input class="peer sr-only option-input" name="size" type="radio" value="30"/>
+                                <div class="p-4 rounded-2xl border-2 border-stone-200 dark:border-stone-700 peer-checked:border-primary peer-checked:bg-primary/5 hover:border-primary/50 transition-all text-center h-full flex flex-col justify-center">
+                                    <span class="block font-bold text-text-main dark:text-gray-200">加大 (Large)</span>
+                                    <span class="text-xs text-stone-500 dark:text-stone-400 mt-1">+ $30</span>
+                                </div>
+                                <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 text-primary transition-opacity transform scale-0 peer-checked:scale-100 duration-200">
+                                    <span class="material-icons-round text-xl">check_circle</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="font-hand font-bold text-2xl mb-3 flex items-center text-text-main dark:text-gray-200">
+                            <span class="material-icons-round text-primary mr-2 text-xl">add_circle_outline</span> 
+                            加點配料 (Extras)
+                        </h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between p-3 border border-stone-200 dark:border-stone-700 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-800/50 cursor-pointer transition-colors group">
+                                <div class="flex items-center">
+                                    <input class="rounded text-primary focus:ring-primary border-stone-300 dark:border-stone-600 w-5 h-5 mr-4 option-input" type="checkbox" value="25"/>
+                                    <div>
+                                        <span class="block font-medium text-text-main dark:text-gray-200 group-hover:text-primary transition-colors">加量起司 (Extra Cheese)</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-semibold text-text-main dark:text-gray-200">+$25</span>
+                            </label>
+                            <label class="flex items-center justify-between p-3 border border-stone-200 dark:border-stone-700 rounded-2xl hover:bg-stone-50 dark:hover:bg-stone-800/50 cursor-pointer transition-colors group">
+                                <div class="flex items-center">
+                                    <input class="rounded text-primary focus:ring-primary border-stone-300 dark:border-stone-600 w-5 h-5 mr-4 option-input" type="checkbox" value="15"/>
+                                    <div>
+                                        <span class="block font-medium text-text-main dark:text-gray-200 group-hover:text-primary transition-colors">半熟蛋 (Soft Boiled Egg)</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-semibold text-text-main dark:text-gray-200">+$15</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-hand font-bold text-2xl mb-3 flex items-center text-text-main dark:text-gray-200">
+                            <span class="material-icons-round text-primary mr-2 text-xl">edit_note</span> 
+                            備註 (Instructions)
+                        </h3>
+                        <textarea class="w-full rounded-2xl border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-sm focus:ring-primary focus:border-primary resize-none p-4 placeholder-stone-400 text-text-main dark:text-gray-200" placeholder="例如：不要蔥、醬料分開..." rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="p-6 border-t border-stone-100 dark:border-stone-800 bg-surface-light dark:bg-surface-dark flex flex-col sm:flex-row items-center gap-4">
+                <div class="flex items-center bg-stone-100 dark:bg-stone-800 rounded-full px-3 py-1.5 shadow-inner w-full sm:w-auto justify-between sm:justify-start">
+                    <button onclick="updateQty(-1)" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-500 hover:text-primary hover:bg-white dark:hover:bg-stone-700 transition-colors shadow-sm">
+                        <span class="material-icons-round text-lg">remove</span>
+                    </button>
+                    <span id="modal-qty" class="w-10 text-center font-bold text-lg text-text-main dark:text-gray-200">1</span>
+                    <button onclick="updateQty(1)" class="w-8 h-8 rounded-full flex items-center justify-center text-stone-500 hover:text-primary hover:bg-white dark:hover:bg-stone-700 transition-colors shadow-sm">
+                        <span class="material-icons-round text-lg">add</span>
+                    </button>
+                </div>
+                <button onclick="addToOrder()" class="flex-1 bg-primary hover:bg-primary-hover text-white rounded-full py-3.5 px-6 shadow-lg shadow-primary/30 flex items-center justify-between group transition-all transform active:scale-[0.98] w-full sm:w-auto">
+                    <span class="font-bold tracking-wide">加入訂單</span>
+                    <span id="modal-total-price" class="bg-white/20 px-3 py-1 rounded-full text-sm font-bold group-hover:bg-white/30 transition-colors">$0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Global State ---
+        let currentItemBasePrice = 0;
+        let currentQty = 1;
+        
+        // 初始化：從 LocalStorage 讀取購物車狀態 (確保跳頁回來數字是對的)
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartUI();
+            
+            // 讀取 URL 參數 (這部分保持不變)
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name');
+            const img = params.get('img');
+            
+            if (name) {
+                document.getElementById('restaurant-name').textContent = decodeURIComponent(name);
+                document.title = `${decodeURIComponent(name)} - 菜單`;
+            }
+            if (img) {
+                document.getElementById('hero-image').src = decodeURIComponent(img);
+            }
+
+            // 綁定計算總價事件
+            const inputs = document.querySelectorAll('.option-input');
+            inputs.forEach(input => {
+                input.addEventListener('change', calculateModalTotal);
+            });
+            
+            // 綁定購物車按鈕點擊事件 -> 跳轉到購物車頁面
+            document.getElementById('cart-btn').addEventListener('click', () => {
+                window.location.href = 'shopping_cart_page.html';
+            });
+        });
+
+        // --- 購物車核心邏輯 (LocalStorage) ---
+        const STORAGE_KEY = 'bot_appetit_cart';
+
+        function getCart() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cart = getCart();
+            let count = 0;
+            let total = 0;
+
+            cart.forEach(item => {
+                count += item.qty;
+                total += item.price * item.qty; // 這裡的 price 是單價 (含選配)
+            });
+
+            const countBadge = document.getElementById('cart-count');
+            const totalText = document.getElementById('cart-total');
+            const cartBtn = document.getElementById('cart-btn');
+
+            if (count > 0) {
+                countBadge.textContent = count;
+                countBadge.classList.remove('hidden');
+                totalText.textContent = `$${total.toLocaleString()}`;
+            } else {
+                countBadge.classList.add('hidden');
+                totalText.textContent = `$0`;
+            }
+        }
+
+        // --- Modal Logic ---
+
+        function openModal(btn) {
+            const menuItem = btn.closest('.menu-item');
+            const img = menuItem.querySelector('.item-img').src;
+            const title = menuItem.querySelector('.item-title').textContent;
+            const desc = menuItem.querySelector('.item-desc').textContent;
+            const priceStr = menuItem.querySelector('.item-price').getAttribute('data-price');
+            
+            currentItemBasePrice = parseInt(priceStr);
+            currentQty = 1;
+
+            // Populate Modal
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal-base-price').textContent = `$${currentItemBasePrice}`;
+            document.getElementById('modal-qty').textContent = currentQty;
+
+            // Reset Form
+            document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+            document.querySelectorAll('input[type="radio"][value="0"]').forEach(el => el.checked = true);
+            document.querySelector('textarea').value = '';
+
+            calculateModalTotal();
+
+            // Show Modal
+            const modal = document.getElementById('customization-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                document.getElementById('modal-content').classList.remove('scale-95');
+                document.getElementById('modal-content').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customization-modal');
+            modal.classList.add('opacity-0');
+            document.getElementById('modal-content').classList.remove('scale-100');
+            document.getElementById('modal-content').classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function updateQty(change) {
+            const newQty = currentQty + change;
+            if (newQty >= 1) {
+                currentQty = newQty;
+                document.getElementById('modal-qty').textContent = currentQty;
+                calculateModalTotal();
+            }
+        }
+
+        function calculateModalTotal() {
+            let addOnTotal = 0;
+            document.querySelectorAll('.option-input:checked').forEach(input => {
+                addOnTotal += parseInt(input.value);
+            });
+            const singleItemTotal = currentItemBasePrice + addOnTotal;
+            const finalTotal = singleItemTotal * currentQty;
+            
+            document.getElementById('modal-total-price').textContent = `$${finalTotal}`;
+            return singleItemTotal; // 回傳「單品總價」（不含數量）
+        }
+
+        function addToOrder() {
+            // 1. 蒐集選擇的選項名稱
+            const selectedOptions = [];
+            let addOnTotal = 0;
+            
+            document.querySelectorAll('.option-input:checked').forEach(input => {
+                const val = parseInt(input.value);
+                addOnTotal += val;
+                
+                // 嘗試抓取選項的文字標籤 (例如 "加大", "加量起司")
+                // HTML 結構是 label -> div -> span.block
+                const labelText = input.closest('label').querySelector('.block').textContent.trim();
+                // 排除預設的 "標準" (value=0) 不顯示，除非你想顯示
+                if (val > 0 || input.type === 'radio') { 
+                     // 簡單優化：只顯示有加價的或是尺寸選擇
+                    selectedOptions.push(labelText);
+                }
+            });
+
+            const finalSinglePrice = currentItemBasePrice + addOnTotal;
+            const note = document.querySelector('textarea').value.trim();
+            const title = document.getElementById('modal-title').textContent;
+            const img = document.getElementById('modal-img').src;
+
+            // 2. 建構商品物件
+            const newItem = {
+                id: Date.now(), // 唯一 ID
+                title: title,
+                img: img,
+                price: finalSinglePrice, // 單價
+                qty: currentQty,
+                options: selectedOptions,
+                note: note
+            };
+
+            // 3. 存入 LocalStorage
+            const cart = getCart();
+            cart.push(newItem);
+            saveCart(cart);
+
+            // 4. 動畫與關閉
+            const cartBtn = document.getElementById('cart-btn');
+            cartBtn.classList.add('scale-110', 'bg-orange-600');
+            setTimeout(() => cartBtn.classList.remove('scale-110', 'bg-orange-600'), 200);
+
+            closeModal();
+        }
+
+        document.getElementById('customization-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'customization-modal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

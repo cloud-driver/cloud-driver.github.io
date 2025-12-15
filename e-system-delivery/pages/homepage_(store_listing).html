@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Bon Appétit - Food Delivery</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Pacifico&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D97757",
+                        secondary: "#C48B77",
+                        accent: "#FADCA5",
+                        "background-light": "#FDF6ED",
+                        "background-dark": "#1F1A17",
+                        "card-bg": "#C86B52",
+                    },
+                    fontFamily: {
+                        display: ['"Pacifico"', "cursive"],
+                        sans: ['"Noto Sans TC"', "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "3xl": "3rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* 麥克風錄音時的動畫 */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 82, 82, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0); }
+        }
+        .recording-animation {
+            animation: pulse-red 1.5s infinite;
+            background-color: #ff5252 !important;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300">
+
+<header class="fixed w-full top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm transition-colors duration-300 py-4 px-6 md:px-12 flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+        <div class="w-12 h-12 bg-accent/50 rounded-full flex items-center justify-center border-2 border-[#8B5E3C]">
+            <span class="material-icons-round text-[#8B5E3C] text-2xl">restaurant_menu</span>
+        </div>
+        <span class="font-display text-2xl text-[#8B5E3C] dark:text-accent hidden sm:block">Bon Appétit</span>
+    </div>
+    
+    <div class="flex items-center gap-4">
+        <div id="auth-buttons" class="hidden sm:flex bg-primary rounded-full overflow-hidden text-white shadow-md">
+            <button onclick="openLoginModal()" class="px-6 py-2 hover:bg-opacity-80 transition text-sm font-medium border-r border-white/20">登入</button>
+            <button onclick="openRegisterModal()" class="px-6 py-2 hover:bg-opacity-80 transition text-sm font-medium">註冊</button>
+        </div>
+
+        <div id="user-menu" class="hidden items-center gap-3">
+            <span id="welcome-msg" class="text-sm font-bold text-[#8B5E3C] dark:text-accent hidden md:block">Hi, User</span>
+            <button onclick="logout()" class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-200 px-4 py-2 rounded-full text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                登出
+            </button>
+        </div>
+
+        <div class="relative hidden md:block">
+            <div class="bg-primary text-white rounded-full px-4 py-2 flex items-center shadow-md w-32 sm:w-48 lg:w-64">
+                <span class="material-icons-round text-white text-lg mr-2">search</span>
+                <input id="nav-search-input" class="bg-transparent border-none outline-none text-white placeholder-white/70 text-sm w-full focus:ring-0 p-0" placeholder="搜尋..." type="text"/>
+            </div>
+        </div>
+
+        <button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" onclick="document.documentElement.classList.toggle('dark')">
+            <span class="material-icons-round dark:hidden text-gray-600">dark_mode</span>
+            <span class="material-icons-round hidden dark:block text-yellow-300">light_mode</span>
+        </button>
+    </div>
+</header>
+
+<main class="pt-24 pb-12">
+    <section class="container mx-auto px-4 md:px-8 mb-8">
+        <div class="bg-secondary/70 dark:bg-secondary/20 rounded-[3rem] h-[400px] md:h-[500px] w-full relative flex flex-col items-center justify-center overflow-hidden shadow-inner">
+            <div class="text-center mb-12 animate-fade-in-up">
+                <div class="inline-block relative">
+                    <div class="w-32 h-24 bg-[#8B5E3C] rounded-t-full relative mx-auto mb-2 shadow-lg">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-[#8B5E3C] rounded-t-lg"></div>
+                    </div>
+                    <div class="w-40 h-4 bg-[#6D4528] rounded-full mx-auto shadow-md"></div>
+                </div>
+                <h1 class="font-display text-4xl md:text-6xl text-[#6D4528] dark:text-[#EACCA4] mt-4 drop-shadow-md">Bon Appétit</h1>
+            </div>
+            
+            <div class="absolute bottom-12 md:bottom-24 w-11/12 max-w-2xl bg-[#FDEBC9] rounded-full p-2 pl-4 pr-6 flex items-center shadow-lg transform transition hover:scale-[1.01] focus-within:scale-[1.01]">
+                <button id="mic-btn" class="w-10 h-10 bg-[#5D4037] rounded-full flex items-center justify-center mr-4 text-white shadow-md cursor-pointer hover:bg-[#4E342E] transition-colors focus:outline-none">
+                    <span class="material-icons-round text-xl">mic</span>
+                </button>
+                
+                <input id="main-search-input" class="bg-transparent border-none outline-none text-[#5D4037] placeholder-[#5D4037]/60 text-lg w-full focus:ring-0 h-10" placeholder="今天想吃點什麼？(支援語音)" type="text"/>
+                
+                <button id="search-submit-btn" class="hidden text-[#5D4037] hover:text-primary transition">
+                    <span class="material-icons-round">send</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="text-center mt-8">
+            <div class="inline-flex flex-col items-center animate-bounce text-primary dark:text-accent">
+                <span class="material-icons-round text-3xl">keyboard_double_arrow_down</span>
+                <span class="text-sm font-medium mt-1">立即探索你可能喜歡的店家</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gradient-to-b from-transparent via-[#FFEDD5] to-[#FADCA5] dark:from-transparent dark:via-[#2A231F] dark:to-[#382E28] rounded-t-[3rem] pt-12 pb-24 -mt-20 z-0 relative">
+        <div class="container mx-auto px-4 md:px-8">
+            
+            <div class="mb-16" id="recommendation-section">
+                <div class="flex items-center justify-between mb-8 pl-4 border-l-4 border-primary">
+                    <h2 class="font-display text-2xl md:text-4xl text-[#5D4037] dark:text-[#EACCA4]">為您推薦</h2>
+                    <a class="text-primary font-medium hover:underline text-sm md:text-base mr-4 cursor-pointer" onclick="resetRecommendations()">重置</a>
+                </div>
+                
+                <div id="loading-indicator" class="hidden text-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p class="text-[#5D4037] dark:text-[#EACCA4]">AI 正在為您尋找美食...</p>
+                </div>
+
+                <div id="restaurant-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white dark:bg-[#3D342F] rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer group overflow-hidden">
+                        <div class="relative h-48 overflow-hidden">
+                            <img alt="Healthy salad bowl" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop&q=60"/>
+                            <div class="absolute top-3 right-3 bg-white/90 dark:bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                                <span class="material-icons-round text-yellow-500 text-sm">star</span>
+                                <span class="text-xs font-bold">4.9</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-[#5D4037] dark:text-[#EACCA4] mb-1">綠意輕食館</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">健康料理 • 沙拉 • $$</p>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="mb-16">
+                <div class="flex items-center justify-between mb-8 pl-4 border-l-4 border-primary">
+                    <h2 class="font-display text-2xl md:text-4xl text-[#5D4037] dark:text-[#EACCA4]">想吃什麼？</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" id="category-container">
+                    <div onclick="searchByCategory('美式速食')" class="category-card aspect-square rounded-2xl bg-white dark:bg-[#3D342F] shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center gap-2 group border border-transparent hover:border-primary/30">
+                        <div class="w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-icons-round text-2xl">lunch_dining</span>
+                        </div>
+                        <span class="font-bold text-[#5D4037] dark:text-[#EACCA4]">美式速食</span>
+                    </div>
+                    <div onclick="searchByCategory('日式料理')" class="category-card aspect-square rounded-2xl bg-white dark:bg-[#3D342F] shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-pointer flex flex-col items-center justify-center gap-2 group border border-transparent hover:border-primary/30">
+                        <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+                            <span class="material-icons-round text-2xl">ramen_dining</span>
+                        </div>
+                        <span class="font-bold text-[#5D4037] dark:text-[#EACCA4]">日式料理</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<div class="fixed bottom-8 right-8 z-40">
+    <button onclick="window.location.href='shopping_cart_page.html'" id="home-cart-btn" class="bg-[#C86B52] hover:bg-[#B55A41] text-white rounded-full px-6 py-3 shadow-lg flex items-center gap-2 transform transition hover:scale-105">
+        <span class="material-icons-round text-2xl">shopping_cart</span>
+        <span class="font-bold text-lg">購物車</span>
+        <span id="home-cart-count" class="bg-white text-[#C86B52] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold ml-1 hidden">0</span>
+    </button>
+</div>
+
+<div id="login-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center backdrop-blur-sm">
+    <div class="relative bg-white dark:bg-[#2A231F] rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 transform transition-all">
+        <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <span class="material-icons-round">close</span>
+        </button>
+        <h3 class="text-2xl font-bold text-[#5D4037] dark:text-[#EACCA4] mb-6 text-center">歡迎回來</h3>
+        
+        <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">帳號</label>
+                <input type="text" name="username" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">密碼</label>
+                <input type="password" name="password" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+            
+            <div class="flex gap-2">
+                <input type="text" id="captcha-input" placeholder="驗證碼" class="w-1/2 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                <div id="captcha-img-container" class="w-1/2 bg-gray-200 rounded flex items-center justify-center cursor-pointer" onclick="refreshCaptcha()">
+                    <span class="text-xs text-gray-500">點擊載入驗證碼</span>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-[#B55A41] text-white font-bold py-3 rounded-xl transition shadow-md">
+                登入
+            </button>
+        </form>
+        
+        <div class="mt-6 flex flex-col gap-3">
+             <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                <span class="flex-shrink-0 mx-4 text-gray-400 text-sm">或使用第三方登入</span>
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
+            <button onclick="socialLogin('google')" class="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 py-2 rounded-xl flex items-center justify-center gap-2 transition">
+                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"> Google 登入
+            </button>
+            <button onclick="socialLogin('line')" class="w-full bg-[#00C300] text-white hover:bg-[#00B300] py-2 rounded-xl flex items-center justify-center gap-2 transition">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" class="w-5 h-5 filter brightness-0 invert"> LINE 登入
+            </button>
+        </div>
+
+        <p class="mt-4 text-center text-sm text-gray-500">
+            還沒有帳號？ <a href="#" onclick="switchModal('register')" class="text-primary hover:underline">立即註冊</a>
+        </p>
+    </div>
+</div>
+
+<div id="register-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center backdrop-blur-sm">
+    <div class="relative bg-white dark:bg-[#2A231F] rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 transform transition-all">
+        <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <span class="material-icons-round">close</span>
+        </button>
+        <h3 class="text-2xl font-bold text-[#5D4037] dark:text-[#EACCA4] mb-6 text-center">註冊新帳號</h3>
+        
+        <form id="register-form" class="space-y-4" onsubmit="handleRegister(event)">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">帳號名稱</label>
+                <input type="text" name="username" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email (限 Gmail)</label>
+                <input type="email" name="email" required placeholder="example@gmail.com" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">密碼</label>
+                <input type="password" name="password" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">確認密碼</label>
+                <input type="password" name="confirm_password" required class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary focus:border-primary">
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-[#B55A41] text-white font-bold py-3 rounded-xl transition shadow-md">
+                註冊
+            </button>
+        </form>
+
+        <p class="mt-4 text-center text-sm text-gray-500">
+            已有帳號？ <a href="#" onclick="switchModal('login')" class="text-primary hover:underline">登入</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    // Configuration
+    // 假設後端跑在本地 10000 port，如果上線請改成真實網址
+    const API_BASE = "https://render.hasaki.idv.tw"; 
+    
+    // Global State
+    let currentCaptchaToken = "";
+    let isRecording = false;
+    let mediaRecorder;
+    let audioChunks = [];
+
+    // --- Initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+        checkLoginStatus();
+        
+        // Setup Search Input Enter Key
+        const mainInput = document.getElementById('main-search-input');
+        mainInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+        
+        // Setup Mic Button
+        document.getElementById('mic-btn').addEventListener('click', toggleRecording);
+
+        updateHomeCartBadge();
+    });
+
+    function updateHomeCartBadge() {
+        const STORAGE_KEY = 'bot_appetit_cart';
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const cart = stored ? JSON.parse(stored) : [];
+        
+        let count = 0;
+        cart.forEach(item => count += item.qty);
+        
+        const badge = document.getElementById('home-cart-count');
+        if (count > 0) {
+            badge.textContent = count;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    // --- Authentication Functions ---
+    
+    function checkLoginStatus() {
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        const authButtons = document.getElementById('auth-buttons');
+        const userMenu = document.getElementById('user-menu');
+        const welcomeMsg = document.getElementById('welcome-msg');
+
+        if (token && user) {
+            authButtons.classList.add('hidden');
+            userMenu.classList.remove('hidden');
+            userMenu.classList.add('flex');
+            welcomeMsg.textContent = `Hi, ${user}`;
+        } else {
+            authButtons.classList.remove('hidden');
+            userMenu.classList.add('hidden');
+            userMenu.classList.remove('flex');
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        Swal.fire({
+            icon: 'success',
+            title: '已登出',
+            timer: 1500,
+            showConfirmButton: false
+        });
+        checkLoginStatus();
+    }
+
+    // Modal Controls
+    function openLoginModal() {
+        document.getElementById('login-modal').classList.remove('hidden');
+        refreshCaptcha();
+    }
+    
+    function openRegisterModal() {
+        document.getElementById('register-modal').classList.remove('hidden');
+    }
+
+    function closeModals() {
+        document.getElementById('login-modal').classList.add('hidden');
+        document.getElementById('register-modal').classList.add('hidden');
+    }
+
+    function switchModal(target) {
+        closeModals();
+        if (target === 'login') openLoginModal();
+        if (target === 'register') openRegisterModal();
+    }
+
+    // Captcha
+    async function refreshCaptcha() {
+        try {
+            const res = await fetch(`${API_BASE}/api/captcha`);
+            const data = await res.json();
+            currentCaptchaToken = data.captcha_token;
+            
+            const imgContainer = document.getElementById('captcha-img-container');
+            imgContainer.innerHTML = `<img src="${data.image}" class="h-10 w-full object-contain" alt="Captcha">`;
+        } catch (e) {
+            console.error("Captcha Error:", e);
+        }
+    }
+
+    // Login Handler
+    async function handleLogin(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonData = Object.fromEntries(formData.entries());
+        jsonData.captcha_token = currentCaptchaToken;
+        jsonData.captcha_answer = document.getElementById('captcha-input').value;
+
+        try {
+            const res = await fetch(`${API_BASE}/api/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData)
+            });
+            const result = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('user', result.user);
+                closeModals();
+                checkLoginStatus();
+                Swal.fire('登入成功', '歡迎回來！', 'success');
+            } else {
+                Swal.fire('登入失敗', result.message, 'error');
+                refreshCaptcha(); // Refresh on error
+            }
+        } catch (error) {
+            Swal.fire('錯誤', '無法連線至伺服器', 'error');
+        }
+    }
+
+    // Register Handler
+    async function handleRegister(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const jsonData = Object.fromEntries(formData.entries());
+
+        if (jsonData.password !== jsonData.confirm_password) {
+            Swal.fire('錯誤', '兩次密碼輸入不一致', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/api/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData)
+            });
+            const result = await res.json();
+
+            if (res.status === 202) {
+                closeModals();
+                Swal.fire('註冊成功', result.message, 'success');
+            } else {
+                Swal.fire('註冊失敗', result.message, 'error');
+            }
+        } catch (error) {
+            Swal.fire('錯誤', '無法連線至伺服器', 'error');
+        }
+    }
+    
+    function socialLogin(provider) {
+        // 呼叫後端取得授權 URL 並導轉
+        fetch(`${API_BASE}/api/login/${provider}/init`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.auth_url) window.location.href = data.auth_url;
+            })
+            .catch(err => Swal.fire('Error', '無法啟動第三方登入', 'error'));
+    }
+
+    // --- Feature: STT (Speech to Text) ---
+    async function toggleRecording() {
+        const micBtn = document.getElementById('mic-btn');
+        const input = document.getElementById('main-search-input');
+
+        if (!isRecording) {
+            // Start Recording
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.onstop = processAudio;
+
+                mediaRecorder.start();
+                isRecording = true;
+                
+                micBtn.classList.add('recording-animation');
+                input.placeholder = "正在聆聽...";
+                
+            } catch (err) {
+                console.error("Mic Error:", err);
+                Swal.fire('錯誤', '無法存取麥克風', 'error');
+            }
+        } else {
+            // Stop Recording
+            mediaRecorder.stop();
+            isRecording = false;
+            mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            
+            micBtn.classList.remove('recording-animation');
+            input.placeholder = "處理中...";
+        }
+    }
+
+    async function processAudio() {
+        const input = document.getElementById('main-search-input');
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = async () => {
+            const base64String = reader.result;
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/ai/stt`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ audio_base64: base64String })
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    input.value = data.text;
+                    performSearch(); // Auto search after speech
+                } else {
+                    Swal.fire('辨識失敗', data.error, 'error');
+                    input.placeholder = "今天想吃點什麼？";
+                }
+            } catch (e) {
+                input.placeholder = "今天想吃點什麼？";
+            }
+        };
+    }
+
+    // --- Feature: Recommendation / Search ---
+    
+    function searchByCategory(category) {
+        document.getElementById('main-search-input').value = category;
+        performSearch([category]);
+    }
+
+    function resetRecommendations() {
+         // 重置回預設（這裡簡單用 reload 模擬，實際可從 JS 保存初始狀態）
+         window.location.reload();
+    }
+
+    async function performSearch(tags = []) {
+        const inputVal = document.getElementById('main-search-input').value;
+        const container = document.getElementById('restaurant-container');
+        const loading = document.getElementById('loading-indicator');
+        
+        container.innerHTML = ''; // Clear current
+        loading.classList.remove('hidden'); // Show loading
+
+        try {
+            const res = await fetch(`${API_BASE}/api/ai/recommend`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_input: inputVal,
+                    user_tags: tags
+                })
+            });
+            const result = await res.json();
+            
+            loading.classList.add('hidden');
+            
+            if (result.status === 'success' && result.data.recommendations) {
+                // Render Cards
+                result.data.recommendations.forEach(resto => {
+                    const card = createRestaurantCard(resto);
+                    container.innerHTML += card;
+                });
+                
+                // Scroll to recommendation section
+                document.getElementById('recommendation-section').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                container.innerHTML = `<div class="col-span-4 text-center text-gray-500">找不到符合的推薦結果</div>`;
+            }
+
+        } catch (e) {
+            loading.classList.add('hidden');
+            container.innerHTML = `<div class="col-span-4 text-center text-red-500">發生錯誤，請稍後再試</div>`;
+        }
+    }
+
+    function createRestaurantCard(data) {
+        // 處理 Tags 顯示
+        const tagsHtml = (data.tags || []).map(t => 
+            `<span class="bg-gray-100 dark:bg-white/10 px-2 py-1 rounded">${t}</span>`
+        ).join('');
+
+        // 預設圖片 (防呆)
+        const imgSrc = data.image_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500';
+
+        // 注意：這裡加上了 onclick 事件，點擊後會跳轉並帶入參數
+        return `
+        <div onclick="window.location.href='restaurant_menu_page.html?id=${data.id}&name=${encodeURIComponent(data.name)}&img=${encodeURIComponent(imgSrc)}'" 
+            class="bg-white dark:bg-[#3D342F] rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer group overflow-hidden animate-fade-in-up">
+            <div class="relative h-48 overflow-hidden">
+                <img alt="${data.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" src="${imgSrc}"/>
+                <div class="absolute top-3 right-3 bg-white/90 dark:bg-black/70 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                    <span class="material-icons-round text-yellow-500 text-sm">star</span>
+                    <span class="text-xs font-bold">${data.rating || 4.5}</span>
+                </div>
+                <div class="absolute bottom-3 left-3 bg-primary/90 text-white text-xs px-2 py-1 rounded-md shadow-sm">
+                    ${data.delivery_time || '30 min'}
+                </div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-lg text-[#5D4037] dark:text-[#EACCA4] mb-1">${data.name}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">${data.description || '美味的餐點等待您的品嚐'}</p>
+                <div class="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                    ${tagsHtml}
+                </div>
+            </div>
+        </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
