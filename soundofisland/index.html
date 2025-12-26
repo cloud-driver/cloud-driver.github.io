@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聲之島 Island of Sound - 從願景到迴響的誕生之旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0a0a0c;
+            color: #e0e0e0;
+            scroll-behavior: smooth;
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(10,10,12,0) 0%, rgba(10,10,12,1) 100%), 
+                        url('https://images.unsplash.com/photo-1514525253361-bee8718a74a7?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+        .accent-glow {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        .card-bg {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link:hover {
+            color: #00ffff;
+            transition: 0.3s;
+        }
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-tighter accent-glow text-cyan-400">聲之島</div>
+            
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest">
+                <a href="#vision" class="nav-link">願景</a>
+                <a href="#experience" class="nav-link">體驗</a>
+                <a href="#infrastructure" class="nav-link">硬體</a>
+                <a href="#finance" class="nav-link">財務</a>
+                <a href="#contact" class="nav-link">聯繫</a>
+            </div>
+
+            <button id="menu-btn" class="md:hidden text-white focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-black/95 border-b border-white/10 px-6 py-8">
+            <div class="flex flex-col space-y-6 text-center text-lg tracking-widest">
+                <a href="#vision" class="nav-link mobile-nav-item">願景</a>
+                <a href="#experience" class="nav-link mobile-nav-item">體驗</a>
+                <a href="#infrastructure" class="nav-link mobile-nav-item">硬體</a>
+                <a href="#finance" class="nav-link mobile-nav-item">財務</a>
+                <a href="#contact" class="nav-link mobile-nav-item">聯繫</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="h-screen flex items-center justify-center text-center hero-gradient px-4">
+        <div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tight">聲之島</h1>
+            <p class="text-xl md:text-2xl font-light tracking-widest text-cyan-300">從願景到迴響的誕生之旅</p>
+            <div class="mt-12 flex flex-col md:flex-row gap-4 justify-center">
+                <div class="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 transition rounded-full cursor-pointer font-bold">立即探索</div>
+                <div class="px-8 py-3 border border-white/30 hover:bg-white/10 transition rounded-full cursor-pointer">了解企劃</div>
+            </div>
+        </div>
+    </header>
+
+    <section id="vision" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl font-bold mb-8 border-l-4 border-cyan-500 pl-6">核心願景</h2>
+                <p class="text-lg leading-relaxed text-gray-400 mb-6">
+                    這是台灣少數在全自然場域中，結合 360 度環繞視覺藝術與獨立電音的音樂節。我們強調「聲音」與「島嶼生態」的結合 ，為對數位藝術與戶外體驗有高興趣的族群打造極致體驗。
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 card-bg rounded-lg text-center">
+                        <div class="text-cyan-400 font-bold text-2xl">5,000+</div>
+                        <div class="text-xs uppercase text-gray-500">預計每日人次</div>
+                    </div>
+                    <div class="p-4 card-bg rounded-lg text-center">
+                        <div class="text-cyan-400 font-bold text-2xl">360°</div>
+                        <div class="text-xs uppercase text-gray-500">環繞視覺藝術</div>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-2xl shadow-cyan-900/20">
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=800" alt="Music Festival">
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-24 bg-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 text-center">島嶼的靈魂：體驗設計</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 card-bg rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">演出與音樂</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">精心策劃的多元藝人陣容，並滿足藝人的技術需求 (Technical Rider)，確保呈現完美演出。</p>
+                </div>
+                <div class="p-8 card-bg rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">視覺藝術</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">VJ 與燈光團隊將與音樂同步，並為贊助商創造高品質的廣告曝光價值。</p>
+                </div>
+                <div class="p-8 card-bg rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 text-cyan-400">裝置設計</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">邀請知名藝術家打造大型裝置藝術，提升社群擴散力，創造絕佳打卡點。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="infrastructure" class="py-24 px-6 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold mb-16">島嶼的骨幹：硬體基礎設施</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="space-y-8">
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-full bg-cyan-900/50 flex items-center justify-center shrink-0 text-cyan-400 font-bold">01</div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-2">聲學模擬 (Sound Modeling)</h4>
+                        <p class="text-gray-400 text-sm">精準場地評估並避開敏感受體區，確保最佳音場表現。</p>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-full bg-cyan-900/50 flex items-center justify-center shrink-0 text-cyan-400 font-bold">02</div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-2">電力冗餘系統</h4>
+                        <p class="text-gray-400 text-sm">使用 3 台 250kVA 同步發電機建立 N+1 系統，確保表演不中斷。</p>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-full bg-cyan-900/50 flex items-center justify-center shrink-0 text-cyan-400 font-bold">03</div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-2">模組化舞台結構</h4>
+                        <p class="text-gray-400 text-sm">具備良好的防風抗震係數，配置 500 吋高對比 LED 牆與側邊實況轉播螢幕。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-black p-8 rounded-2xl border border-white/10">
+                <h4 class="text-lg font-bold mb-6 text-cyan-400 italic">技術清單 (Technical Specs)</h4>
+                <ul class="space-y-4 text-sm text-gray-300">
+                    <li class="flex justify-between border-b border-white/5 pb-2"><span>無線訊號掃描</span><span>Day-1 壓力測試</span></li>
+                    <li class="flex justify-between border-b border-white/5 pb-2"><span>文創攤位區</span><span>20 個 (含電力箱)</span></li>
+                    <li class="flex justify-between border-b border-white/5 pb-2"><span>收銀/Wi-Fi</span><span>配置 UPS 不斷電系統</span></li>
+                    <li class="flex justify-between border-b border-white/5 pb-2"><span>進場動線</span><span>重型機具專用專道</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="finance" class="py-24 bg-cyan-950/20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-6">永續的財務生態系統</h2>
+            <p class="text-gray-400 mb-16 max-w-2xl mx-auto">透過 RFID 無現金系統預期可增長 22% 營收，目標現場消費佔總收入 40% 以上。</p>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="p-6 card-bg rounded-xl">
+                    <div class="text-3xl font-bold mb-2">55%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-tighter">票務銷售</div>
+                </div>
+                <div class="p-6 card-bg rounded-xl">
+                    <div class="text-3xl font-bold mb-2">20%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-tighter">餐飲銷售</div>
+                </div>
+                <div class="p-6 card-bg rounded-xl">
+                    <div class="text-3xl font-bold mb-2">10%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-tighter">商品銷售</div>
+                </div>
+                <div class="p-6 card-bg rounded-xl">
+                    <div class="text-3xl font-bold mb-2">10%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-tighter">贊助合作</div>
+                </div>
+                <div class="p-6 card-bg rounded-xl">
+                    <div class="text-3xl font-bold mb-2">5%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-tighter">VIP 升級</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-12">專業合規與安全</h2>
+        <div class="inline-flex flex-wrap justify-center gap-4 text-xs">
+            <span class="px-4 py-2 border border-green-500/50 text-green-400 rounded-full">大型集會許可</span>
+            <span class="px-4 py-2 border border-green-500/50 text-green-400 rounded-full">戶外音樂節許可</span>
+            <span class="px-4 py-2 border border-green-500/50 text-green-400 rounded-full">酒精飲料販售許可</span>
+            <span class="px-4 py-2 border border-green-500/50 text-green-400 rounded-full">結構安全與音響分貝</span>
+        </div>
+        <p class="mt-12 text-gray-500 text-sm">我們承諾在活動結束後 7 天內完成所有供應商結算，建立良好名聲。</p>
+    </section>
+
+    <footer id="contact" class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="text-3xl font-bold mb-6 text-cyan-400">聲之島企劃團隊</div>
+                <p class="text-gray-400 mb-8">讓我們共同啟航，打造一個長久且富有影響力的文化品牌。</p>
+                <div class="space-y-2 text-sm">
+                    <p>📧 contact@hasaki.idv.tw</p>
+                    <p>🌐 esys.hasaki.idv.tw</p>
+                </div>
+            </div>
+            <div class="flex justify-center md:justify-end">
+                <div class="w-48 h-48 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center text-5xl font-black shadow-lg shadow-cyan-500/50">聲之島</div>
+            </div>
+        </div>
+        <div class="text-center mt-20 text-gray-600 text-xs tracking-widest uppercase">
+            &copy; 2025 Sound Island Festival Project Team. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileNavItems.forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
