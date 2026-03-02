@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bon Appétit</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Pacifico&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D97757", 
+                        secondary: "#C48B77", 
+                        accent: "#FADCA5", 
+                        "background-light": "#FDF6ED", 
+                        "background-dark": "#1F1A17", 
+                    },
+                    fontFamily: {
+                        display: ['"Pacifico"', "cursive"], 
+                        sans: ['"Noto Sans TC"', "sans-serif"],
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        [v-cloak] { display: none; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #C48B77; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300">
+    <div id="app" v-cloak class="min-h-screen flex flex-col">
+        <header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-b border-primary/10 px-6 py-4 transition-all">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button v-if="currentView !== 'home' && currentView !== 'merchant'" @click="currentView = 'home'" class="text-primary hover:bg-primary/10 p-2 rounded-full transition">
+                        <span class="material-icons-round">arrow_back</span>
+                    </button>
+                    <div class="w-10 h-10 bg-accent/50 rounded-full flex items-center justify-center border-2 border-[#8B5E3C]">
+                        <span class="material-icons-round text-[#8B5E3C]">restaurant_menu</span>
+                    </div>
+                    <span class="font-display text-2xl text-[#8B5E3C] dark:text-accent">Bon Appétit</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button v-if="isLoggedIn && currentUser.role === 'merchant' && currentView !== 'merchant'" @click="loadMerchantDashboard" class="hidden sm:flex items-center gap-1 bg-[#8B5E3C] text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
+                        <span class="material-icons-round text-sm">storefront</span> 商家後台
+                    </button>
+                    <button v-if="isLoggedIn && currentUser.role === 'driver' && currentView !== 'driver'" @click="loadDriverDashboard" class="hidden sm:flex items-center gap-1 bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
+                        <span class="material-icons-round text-sm">moped</span> 外送工作台
+                    </button>
+                    <button v-if="isLoggedIn && currentUser.role === 'driver' && currentView === 'driver'" @click="currentView = 'home'" class="hidden sm:flex items-center gap-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
+                        <span class="material-icons-round text-sm">home</span> 返回首頁
+                    </button>
+
+                    <div v-if="!isLoggedIn" class="hidden sm:flex bg-primary rounded-full overflow-hidden text-white shadow-md">
+                        <button @click="openAuthModal('login')" class="px-6 py-2 hover:bg-opacity-80 transition text-sm font-medium border-r border-white/20">登入</button>
+                        <button @click="openAuthModal('register')" class="px-6 py-2 hover:bg-opacity-80 transition text-sm font-medium">註冊</button>
+                    </div>
+                    <div v-else class="hidden sm:flex items-center gap-3 bg-white/50 dark:bg-black/30 px-4 py-1.5 rounded-full border border-primary/20">
+                        <span class="text-sm font-bold">Hi, {{ currentUser.username }}</span>
+                        <button @click="logout" class="text-xs text-gray-500 hover:text-primary transition">登出</button>
+                    </div>
+                    <button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" @click="toggleDarkMode">
+                        <span class="material-icons-round dark:hidden text-gray-600">dark_mode</span>
+                        <span class="material-icons-round hidden dark:block text-yellow-300">light_mode</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow w-full">
+            <div v-if="currentView === 'home'" class="pt-8 pb-12">
+                <section class="container mx-auto px-4 md:px-8 mb-8">
+                    <div class="bg-secondary/70 dark:bg-secondary/20 rounded-[3rem] h-[400px] md:h-[500px] flex flex-col items-center justify-center relative overflow-hidden shadow-inner">
+                        <div class="text-center mb-12">
+                            <h1 class="font-display text-4xl md:text-6xl text-[#6D4528] dark:text-[#EACCA4] drop-shadow-md">Bon Appétit</h1>
+                        </div>
+                        <div class="w-11/12 max-w-2xl bg-[#FDEBC9] rounded-full p-2 pl-4 pr-6 flex items-center shadow-lg relative z-10">
+                            <div class="w-10 h-10 bg-[#5D4037] rounded-full flex items-center justify-center mr-4 text-white shadow-md cursor-pointer hover:bg-[#4E342E]" @click="askAI">
+                                <span class="material-icons-round text-xl" :class="{'animate-spin': isAiLoading}">{{ isAiLoading ? 'sync' : 'mic' }}</span>
+                            </div>
+                            <input v-model="aiPrompt" @keyup.enter="askAI" :disabled="isAiLoading" class="bg-transparent border-none outline-none text-[#5D4037] placeholder-[#5D4037]/60 text-lg w-full focus:ring-0 h-10" placeholder="你的 AI 飲食管家：今天想吃點什麼？" type="text" />
+                        </div>
+                        <div v-if="aiResponse" class="w-11/12 max-w-2xl mt-4 bg-white/95 dark:bg-[#3D342F]/95 backdrop-blur-md p-6 rounded-2xl shadow-xl text-left border border-primary/30 z-10">
+                            <div class="prose prose-sm sm:prose-base dark:prose-invert prose-orange max-w-none" v-html="parsedAiResponse"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="bg-gradient-to-b from-transparent via-[#FFEDD5] to-[#FADCA5] dark:from-transparent dark:via-[#2A231F] dark:to-[#382E28] rounded-t-[3rem] pt-12 pb-24 -mt-20 z-0 relative">
+                    <div class="container mx-auto px-4 md:px-8">
+                        <div class="flex items-center justify-between mb-8 pl-4 border-l-4 border-primary">
+                            <h2 class="font-display text-2xl md:text-4xl text-[#5D4037] dark:text-[#EACCA4]">熱門餐廳</h2>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div @click="loadRestaurant(1)" class="bg-white dark:bg-[#3D342F] rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer group overflow-hidden">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                    <div class="absolute bottom-3 left-3 bg-primary/90 text-white text-xs px-2 py-1 rounded-md shadow-sm">15-25 分鐘</div>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-bold text-lg mb-1">Pasta Paradise</h3>
+                                    <p class="text-sm text-gray-500 mb-3">義大利麵 • 披薩 • $$</p>
+                                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                                        <span class="bg-gray-100 dark:bg-white/10 px-2 py-1 rounded">人氣推薦</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="currentView === 'restaurant'" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+                <header class="relative rounded-3xl overflow-hidden shadow-2xl mb-10 group h-64 md:h-80">
+                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-6 md:p-10 text-white">
+                        <h1 class="text-4xl md:text-5xl font-display font-bold mb-2">Pasta Paradise</h1>
+                        <p class="opacity-90">正宗義式料理，使用頂級食材為您呈現</p>
+                    </div>
+                </header>
+
+                <h2 class="text-2xl font-display font-bold mb-6 flex items-center gap-2">
+                    <span class="material-icons-round text-primary">restaurant</span> 菜單
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div v-for="item in menuItems" :key="item.id" class="bg-white dark:bg-[#2C2A28] border border-primary/10 rounded-2xl p-5 flex justify-between items-center hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">{{ item.name }}</h3>
+                            <p class="text-sm text-gray-500 mb-2">庫存剩餘：{{ item.stock }}</p>
+                            <span class="font-bold text-xl text-primary">${{ item.price }}</span>
+                        </div>
+                        <button @click="addToCart(item)" :disabled="item.stock <= 0" class="w-10 h-10 rounded-full bg-secondary/30 hover:bg-primary text-primary hover:text-white transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span class="material-icons-round">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="currentView === 'cart'" class="max-w-4xl mx-auto px-4 py-8">
+                <h1 class="font-display text-4xl mb-8 text-primary">Your Cart</h1>
+                <div v-if="cart.length === 0" class="text-center py-12">
+                    <p class="text-xl text-gray-500">購物車是空的</p>
+                    <button @click="currentView = 'home'" class="mt-4 text-primary font-bold hover:underline">去逛逛</button>
+                </div>
+                <div v-else class="flex flex-col lg:flex-row gap-8">
+                    <div class="flex-1 space-y-4">
+                        <div v-for="(item, index) in cart" :key="index" class="bg-white dark:bg-[#2C2A28] rounded-2xl p-5 shadow-sm border border-primary/10 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-lg">{{ item.name }}</h3>
+                                <span class="font-bold text-primary">${{ item.price }}</span>
+                            </div>
+                            <div class="flex items-center bg-gray-100 dark:bg-black/30 rounded-full px-2 py-1">
+                                <button @click="updateCart(item, -1)" class="w-8 h-8 flex items-center justify-center hover:text-primary"><span class="material-icons-round">remove</span></button>
+                                <span class="w-8 text-center font-bold">{{ item.quantity }}</span>
+                                <button @click="updateCart(item, 1)" class="w-8 h-8 flex items-center justify-center hover:text-primary"><span class="material-icons-round">add</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/3">
+                        <div class="bg-white dark:bg-[#2C2A28] rounded-2xl p-6 shadow-xl border border-primary/10">
+                            <h2 class="text-2xl font-display font-bold mb-6">訂單摘要</h2>
+                            <div class="flex justify-between mb-4">
+                                <span class="text-gray-500">小計</span>
+                                <span class="font-bold">${{ cartTotal }}</span>
+                            </div>
+                            <div class="flex justify-between mb-6">
+                                <span class="text-gray-500">外送費</span>
+                                <span class="font-bold">$0</span>
+                            </div>
+                            <div class="border-t-2 border-dashed border-gray-200 dark:border-gray-700 my-4"></div>
+                            <div class="flex justify-between items-end mb-8">
+                                <span class="text-xl font-bold">總計</span>
+                                <span class="text-3xl font-extrabold text-primary">${{ cartTotal }}</span>
+                            </div>
+                            <button @click="goToCheckout" class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                                <span>前往結帳</span>
+                                <span class="material-icons-round">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="currentView === 'checkout'" class="max-w-4xl mx-auto px-4 py-8">
+                <h1 class="font-display text-4xl mb-8">Checkout</h1>
+                <div class="bg-white dark:bg-[#2C2A28] rounded-2xl p-8 shadow-xl border border-primary/10">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span class="material-icons-round text-green-500">lock</span> 安全付款
+                    </h2>
+                    <div class="space-y-4 mb-8">
+                        <label class="flex items-center justify-between p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" checked class="w-5 h-5 text-primary focus:ring-primary border-gray-300">
+                                <span class="font-bold">信用卡 (Visa 結尾 4242)</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-gray-700 cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <input type="radio" name="pay" class="w-5 h-5 text-primary focus:ring-primary border-gray-300">
+                                <span class="font-bold">Apple Pay</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex justify-between items-center mb-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <span class="text-xl font-bold">總付款金額</span>
+                        <span class="text-3xl font-extrabold text-primary">${{ cartTotal }}</span>
+                    </div>
+                    <button @click="submitOrder" :disabled="isAuthLoading" class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <span v-if="isAuthLoading" class="material-icons-round animate-spin">refresh</span>
+                        <span>確認付款並送出訂單</span>
+                    </button>
+                </div>
+            </div>
+
+            <div v-if="currentView === 'success'" class="max-w-2xl mx-auto px-4 py-16 text-center">
+                <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <span class="material-icons-round text-5xl">check_circle</span>
+                </div>
+                <h1 class="font-display text-4xl mb-4 text-[#5D4037] dark:text-white">訂單已成功送出！</h1>
+                <p class="text-gray-500 mb-8">餐廳已經收到您的訂單，正在為您準備美味的餐點。</p>
+                <button @click="currentView = 'home'" class="bg-primary hover:bg-opacity-90 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all">
+                    回首頁繼續逛逛
+                </button>
+            </div>
+
+            <div v-if="currentView === 'merchant'" class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-64 flex-shrink-0">
+                    <div class="bg-white dark:bg-[#2C2A28] rounded-2xl p-4 shadow-md border border-primary/10">
+                        <h2 class="text-lg font-bold mb-4 px-2 text-[#8B5E3C] dark:text-[#EACCA4]">後台管理</h2>
+                        <div class="space-y-2">
+                            <button @click="merchantTab = 'orders'" :class="{'bg-primary text-white': merchantTab === 'orders', 'hover:bg-gray-100 dark:hover:bg-white/5': merchantTab !== 'orders'}" class="w-full text-left px-4 py-3 rounded-xl transition-colors flex items-center gap-3">
+                                <span class="material-icons-round">receipt_long</span> 訂單管理
+                            </button>
+                            <button @click="merchantTab = 'dashboard'; loadDashboardCharts()" :class="{'bg-primary text-white': merchantTab === 'dashboard', 'hover:bg-gray-100 dark:hover:bg-white/5': merchantTab !== 'dashboard'}" class="w-full text-left px-4 py-3 rounded-xl transition-colors flex items-center gap-3">
+                                <span class="material-icons-round">analytics</span> 營運數據
+                            </button>
+                            <button @click="merchantTab = 'menu'" :class="{'bg-primary text-white': merchantTab === 'menu', 'hover:bg-gray-100 dark:hover:bg-white/5': merchantTab !== 'menu'}" class="w-full text-left px-4 py-3 rounded-xl transition-colors flex items-center gap-3">
+                                <span class="material-icons-round">menu_book</span> 菜單與庫存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-white dark:bg-[#2C2A28] rounded-2xl p-6 shadow-md border border-primary/10">
+                    <div v-if="merchantTab === 'orders'">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">即時訂單列表</h2>
+                            <button @click="fetchMerchantOrders" class="text-primary hover:bg-primary/10 p-2 rounded-full transition flex items-center"><span class="material-icons-round">refresh</span></button>
+                        </div>
+                        <div v-if="merchantOrders.length === 0" class="text-center text-gray-500 py-8">目前沒有任何訂單</div>
+                        <div class="space-y-4">
+                            <div v-for="order in merchantOrders" :key="order.id" class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <div>
+                                    <div class="font-bold text-lg">訂單編號 #{{ order.id }}</div>
+                                    <div class="text-sm text-gray-500">總金額: ${{ order.total_amount }}</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span :class="{
+                                        'bg-yellow-100 text-yellow-800': order.status === 'pending',
+                                        'bg-blue-100 text-blue-800': order.status === 'preparing',
+                                        'bg-purple-100 text-purple-800': order.status === 'delivering',
+                                        'bg-green-100 text-green-800': order.status === 'completed',
+                                        'bg-red-100 text-red-800': order.status === 'cancelled'
+                                    }" class="px-3 py-1 rounded-full text-sm font-bold">
+                                        {{ getStatusText(order.status) }}
+                                    </span>
+                                    <select @change="updateOrderStatus(order.id, $event.target.value)" :value="order.status" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-sm focus:ring-primary focus:border-primary">
+                                        <option value="pending">待處理</option>
+                                        <option value="preparing">準備中</option>
+                                        <option value="delivering">外送中</option>
+                                        <option value="completed">已完成</option>
+                                        <option value="cancelled">取消訂單</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="merchantTab === 'menu'">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">菜單與庫存設定</h2>
+                            <button @click="showAddMenuForm = !showAddMenuForm" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 text-sm font-bold flex items-center gap-1">
+                                <span class="material-icons-round text-sm">add</span> 新增菜色
+                            </button>
+                        </div>
+
+                        <div v-if="showAddMenuForm" class="bg-gray-50 dark:bg-black/20 p-4 rounded-xl mb-6 border border-gray-200 dark:border-gray-700">
+                            <h3 class="font-bold mb-3">新增餐點</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                <input v-model="newMenuItem.name" type="text" placeholder="餐點名稱" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 w-full">
+                                <input v-model.number="newMenuItem.price" type="number" placeholder="價格" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 w-full">
+                                <input v-model.number="newMenuItem.stock" type="number" placeholder="初始庫存" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 w-full">
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button @click="showAddMenuForm = false" class="px-4 py-2 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">取消</button>
+                                <button @click="addMenuItem" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90">儲存</button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="py-3 px-4">餐點名稱</th>
+                                        <th class="py-3 px-4">價格</th>
+                                        <th class="py-3 px-4">庫存</th>
+                                        <th class="py-3 px-4">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in merchantMenu" :key="item.id" class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="py-3 px-4">{{ item.name }}</td>
+                                        <td class="py-3 px-4">${{ item.price }}</td>
+                                        <td class="py-3 px-4">
+                                            <input type="number" v-model.number="item.stock" @change="updateMenuStock(item.id, item.stock)" class="w-20 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-sm py-1">
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <button @click="toggleItemActive(item)" class="text-xs px-2 py-1 rounded" :class="item.is_active ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-green-100 text-green-600 hover:bg-green-200'">
+                                                {{ item.is_active ? '下架' : '上架' }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div v-show="merchantTab === 'dashboard'">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">營運數據中心</h2>
+                            <button @click="askAiInsight" :disabled="isInsightLoading" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2 transition-all transform hover:scale-105 disabled:opacity-70">
+                                <span v-if="isInsightLoading" class="material-icons-round animate-spin">sync</span>
+                                <span v-else class="material-icons-round">auto_awesome</span>
+                                {{ isInsightLoading ? 'AI 顧問分析中...' : '一鍵 AI 營運診斷' }}
+                            </button>
+                        </div>
+
+                        <div v-if="merchantInsight" class="mb-8 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-100 dark:border-indigo-800 rounded-2xl p-6 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10">
+                                <span class="material-icons-round text-9xl text-indigo-500">analytics</span>
+                            </div>
+                            <div class="relative z-10">
+                                <h3 class="text-xl font-bold text-indigo-800 dark:text-indigo-300 mb-4 flex items-center gap-2">
+                                    <span class="material-icons-round">psychology</span> 
+                                    AI 營運顧問報告
+                                </h3>
+                                <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none text-gray-700 dark:text-gray-300" v-html="parsedMerchantInsight"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="bg-gray-50 dark:bg-black/20 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+                                <h3 class="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">近七日營收趨勢</h3>
+                                <div class="relative h-64 w-full">
+                                    <canvas id="revenueChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-50 dark:bg-black/20 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+                                <h3 class="font-bold text-lg mb-4 text-gray-700 dark:text-gray-300">熱銷商品 Top 5</h3>
+                                <div class="relative h-64 w-full">
+                                    <canvas id="topItemsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="currentView === 'driver'" class="max-w-4xl mx-auto px-4 py-8">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h1 class="font-display text-3xl text-gray-800 dark:text-white mb-2">外送員工作台</h1>
+                        <p class="text-gray-500">歡迎回來，{{ currentUser.username }}！準備好開始接單了嗎？</p>
+                    </div>
+                    <div class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-xl font-bold flex items-center gap-2">
+                        <span class="material-icons-round">payments</span>
+                        今日預估收入: ${{ todayEarnings }}
+                    </div>
+                </div>
+
+                <div v-if="activeDeliveries.length > 0" class="mb-10">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                        <span class="material-icons-round">local_shipping</span> 配送中訂單
+                    </h2>
+                    <div class="space-y-4">
+                        <div v-for="order in activeDeliveries" :key="order.id" class="bg-white dark:bg-[#2C2A28] border-l-4 border-blue-500 rounded-r-xl shadow-md p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold">訂單 #{{ order.id }}</span>
+                                    <span class="font-bold text-lg">{{ order.merchant_name }}</span>
+                                </div>
+                                <p class="text-gray-500 text-sm">請盡速將餐點送達指定地址</p>
+                            </div>
+                            <button @click="completeDelivery(order.id)" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                                <span class="material-icons-round">check_circle</span> 確認送達
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                    <span class="material-icons-round">notifications_active</span> 待接訂單 ({{ availableOrders.length }})
+                </h2>
+
+                <div v-if="availableOrders.length === 0" class="bg-gray-50 dark:bg-white/5 rounded-2xl p-12 text-center text-gray-500">
+                    <span class="material-icons-round text-4xl mb-2 opacity-50">snooze</span>
+                    <p>目前周邊沒有待接訂單，請稍候...</p>
+                    <button @click="loadDriverDashboard" class="mt-4 text-primary hover:underline">重新整理</button>
+                </div>
+
+                <div class="grid gap-4">
+                    <div v-for="order in availableOrders" :key="order.id" class="bg-white dark:bg-[#2C2A28] rounded-2xl p-5 shadow-sm hover:shadow-md transition-all border border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg">{{ order.merchant_name }}</h3>
+                                <span class="text-green-600 dark:text-green-400 font-bold bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded text-sm">+ ${{ order.earnings }}</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                                <span class="flex items-center gap-1"><span class="material-icons-round text-base">place</span> {{ order.merchant_address }}</span>
+                                <span class="flex items-center gap-1"><span class="material-icons-round text-base">near_me</span> {{ order.distance }} km</span>
+                            </div>
+                        </div>
+                        <button @click="acceptDelivery(order.id)" class="w-full sm:w-auto bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg shadow-primary/30">
+                            搶單
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div v-if="cartItemCount > 0 && currentView !== 'cart' && currentView !== 'checkout' && currentView !== 'success' && currentView !== 'merchant'" class="fixed bottom-8 right-8 z-30">
+            <button @click="currentView = 'cart'" class="bg-[#C86B52] hover:bg-[#B55A41] text-white rounded-full px-6 py-4 shadow-xl flex items-center gap-3 transform transition hover:scale-105">
+                <span class="relative">
+                    <span class="material-icons-round text-2xl">shopping_cart</span>
+                    <span class="absolute -top-2 -right-3 bg-white text-primary rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">{{ cartItemCount }}</span>
+                </span>
+                <span class="font-bold text-lg border-l border-white/30 pl-3">${{ cartTotal }}</span>
+            </button>
+        </div>
+
+        <div v-if="showAuthModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div class="bg-white dark:bg-[#3D342F] p-8 rounded-3xl shadow-2xl w-96 relative">
+                <button @click="showAuthModal = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 bg-gray-100 dark:bg-black/20 rounded-full p-1">
+                    <span class="material-icons-round text-lg block">close</span>
+                </button>
+                <h2 class="font-display text-3xl font-bold mb-6 text-center text-primary">{{ isLoginMode ? 'Welcome Back' : 'Join Bon Appétit' }}</h2>
+                <div v-if="authError" class="mb-4 text-red-500 text-sm font-medium text-center bg-red-50 py-2 rounded-lg">{{ authError }}</div>
+                <div v-if="!isLoginMode" class="mb-4">
+                    <input v-model="authForm.username" type="text" placeholder="你的名字" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-primary outline-none dark:bg-black/20 dark:border-gray-600">
+                </div>
+                <div class="mb-4">
+                    <input v-model="authForm.email" type="email" placeholder="電子信箱" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-primary outline-none dark:bg-black/20 dark:border-gray-600">
+                </div>
+                <div class="mb-6">
+                    <input v-model="authForm.password" type="password" placeholder="密碼" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-primary outline-none dark:bg-black/20 dark:border-gray-600" @keyup.enter="submitAuth">
+                </div>
+                <button @click="submitAuth" :disabled="isAuthLoading" class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-3.5 rounded-xl transition-all flex justify-center">
+                    {{ isLoginMode ? '登入' : '註冊' }}
+                </button>
+                <div class="mt-6 text-center border-t border-gray-200 pt-4">
+                    <p class="text-sm text-gray-500">{{ isLoginMode ? '還沒有帳號？' : '已經有帳號了？' }}
+                        <button @click="toggleAuthMode" class="text-primary font-bold hover:underline ml-1">{{ isLoginMode ? '點此註冊' : '點此登入' }}</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue;
+
+        createApp({
+            setup() {
+                const currentView = ref('home');
+                const currentMerchantId = ref(1);
+                const menuItems = ref([]);
+                const cart = ref([]);
+
+                // AI 管家
+                const aiPrompt = ref('');
+                const aiResponse = ref('');
+                const isAiLoading = ref(false);
+                
+                // 驗證
+                const showAuthModal = ref(false);
+                const isLoginMode = ref(true);
+                const isLoggedIn = ref(false);
+                const isAuthLoading = ref(false);
+                const authError = ref('');
+                const currentUser = ref({});
+                const authForm = ref({ username: '', email: '', password: '' });
+
+                // 商家後台
+                const merchantTab = ref('orders');
+                const merchantOrders = ref([]);
+                const merchantMenu = ref([]);
+                const showAddMenuForm = ref(false);
+                const newMenuItem = ref({ name: '', price: 0, stock: 0 });
+
+                const API_BASE_URL = 'https://api.delivery.hasaki.idv.tw/api';
+
+                onMounted(() => {
+                    const token = localStorage.getItem('token');
+                    const savedUser = localStorage.getItem('user');
+                    if (token && savedUser) {
+                        isLoggedIn.value = true;
+                        currentUser.value = JSON.parse(savedUser);
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    }
+                });
+
+                const cartTotal = computed(() => {
+                    return cart.value.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                });
+
+                const cartItemCount = computed(() => {
+                    return cart.value.reduce((sum, item) => sum + item.quantity, 0);
+                });
+
+                const toggleDarkMode = () => {
+                    document.documentElement.classList.toggle('dark');
+                };
+
+                // B2C 功能
+                const loadRestaurant = async (id) => {
+                    currentMerchantId.value = id;
+                    try {
+                        const res = await axios.get(`${API_BASE_URL}/menu/${id}`);
+                        menuItems.value = res.data;
+                        currentView.value = 'restaurant';
+                    } catch (e) {
+                        console.error(e);
+                        alert('無法載入菜單');
+                    }
+                };
+
+                const addToCart = (item) => {
+                    const existing = cart.value.find(i => i.menu_item_id === item.id);
+                    if (existing) {
+                        existing.quantity++;
+                    } else {
+                        cart.value.push({
+                            menu_item_id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            quantity: 1
+                        });
+                    }
+                };
+
+                const updateCart = (item, change) => {
+                    item.quantity += change;
+                    if (item.quantity <= 0) {
+                        cart.value = cart.value.filter(i => i.menu_item_id !== item.menu_item_id);
+                    }
+                };
+
+                const goToCheckout = () => {
+                    if (!isLoggedIn.value) {
+                        openAuthModal('login');
+                        return;
+                    }
+                    currentView.value = 'checkout';
+                };
+
+                const submitOrder = async () => {
+                    isAuthLoading.value = true;
+                    try {
+                        await axios.post(`${API_BASE_URL}/orders`, {
+                            merchant_id: currentMerchantId.value,
+                            items: cart.value.map(i => ({ menu_item_id: i.menu_item_id, quantity: i.quantity }))
+                        });
+                        cart.value = [];
+                        currentView.value = 'success';
+                    } catch (error) {
+                        console.error(error);
+                        alert(error.response?.data?.error || '送出訂單失敗，請稍後再試。');
+                    } finally {
+                        isAuthLoading.value = false;
+                    }
+                };
+
+                // 認證功能
+                const openAuthModal = (mode) => {
+                    isLoginMode.value = (mode === 'login');
+                    authError.value = '';
+                    authForm.value = { username: '', email: '', password: '' };
+                    showAuthModal.value = true;
+                };
+
+                const toggleAuthMode = () => {
+                    isLoginMode.value = !isLoginMode.value;
+                    authError.value = '';
+                };
+
+                const submitAuth = async () => {
+                    if (!authForm.value.email || !authForm.value.password) {
+                        authError.value = "請填寫完整資訊！";
+                        return;
+                    }
+                    isAuthLoading.value = true;
+                    authError.value = '';
+
+                    try {
+                        const endpoint = isLoginMode.value ? '/auth/login' : '/auth/register';
+                        const response = await axios.post(`${API_BASE_URL}${endpoint}`, authForm.value);
+
+                        if (!isLoginMode.value) {
+                            isLoginMode.value = true;
+                            await submitAuth();
+                        } else {
+                            const token = response.data.access_token;
+                            const userInfo = response.data.user_info;
+                            localStorage.setItem('token', token);
+                            localStorage.setItem('user', JSON.stringify(userInfo));
+                            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                            currentUser.value = userInfo;
+                            isLoggedIn.value = true;
+                            showAuthModal.value = false;
+                        }
+                    } catch (error) {
+                        authError.value = error.response?.data?.error || "發生錯誤";
+                    } finally {
+                        isAuthLoading.value = false;
+                    }
+                };
+
+                const logout = () => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    delete axios.defaults.headers.common['Authorization'];
+                    isLoggedIn.value = false;
+                    currentUser.value = {};
+                    currentView.value = 'home';
+                };
+
+                const askAI = async () => {
+                    if (!aiPrompt.value.trim()) return;
+                    isAiLoading.value = true;
+                    aiResponse.value = '';
+                    try {
+                        const response = await axios.post(`${API_BASE_URL}/ai/recommend`, { prompt: aiPrompt.value });
+                        aiResponse.value = response.data.recommendation;
+                        aiPrompt.value = ''; 
+                    } catch (error) {
+                        aiResponse.value = "**抱歉**，AI 管家目前似乎在廚房忙碌中，請稍後再試！";
+                    } finally {
+                        isAiLoading.value = false;
+                    }
+                };
+
+                const parsedAiResponse = computed(() => {
+                    return aiResponse.value ? marked.parse(aiResponse.value) : '';
+                });
+
+                // --- 商家後台功能 (SaaS) ---
+                const loadMerchantDashboard = async () => {
+                    currentView.value = 'merchant';
+                    merchantTab.value = 'orders';
+                    await fetchMerchantOrders();
+                    await fetchMerchantMenu();
+                };
+
+                const fetchMerchantOrders = async () => {
+                    try {
+                        const res = await axios.get(`${API_BASE_URL}/merchant/orders`);
+                        merchantOrders.value = res.data;
+                    } catch (e) {
+                        console.error("無法獲取訂單", e);
+                    }
+                };
+
+                const updateOrderStatus = async (orderId, newStatus) => {
+                    try {
+                        await axios.put(`${API_BASE_URL}/merchant/orders/${orderId}/status`, { status: newStatus });
+                        // 重新抓取訂單以確保狀態同步
+                        await fetchMerchantOrders();
+                    } catch (e) {
+                        alert('更新狀態失敗');
+                    }
+                };
+
+                const getStatusText = (status) => {
+                    const statusMap = {
+                        'pending': '待處理',
+                        'preparing': '準備中',
+                        'delivering': '外送中',
+                        'completed': '已完成',
+                        'cancelled': '已取消'
+                    };
+                    return statusMap[status] || status;
+                };
+
+                const fetchMerchantMenu = async () => {
+                    // 因為商家只能管理自己的店，我們可以直接呼叫原本的 get_menu (因為測試資料中 merchant_id 為 1)
+                    // 實務上這支 API 應該由後端透過 JWT 解析出該商家自己的菜單
+                    try {
+                        const res = await axios.get(`${API_BASE_URL}/menu/1`);
+                        // 把隱藏下架的也抓出來（這裡為了展示先假定用同樣的 API，你在實際環境中可以再補一支專門給商家看的 API）
+                        merchantMenu.value = res.data; 
+                    } catch (e) {
+                        console.error("無法獲取菜單", e);
+                    }
+                };
+
+                const addMenuItem = async () => {
+                    if(!newMenuItem.value.name || newMenuItem.value.price <= 0) return alert('名稱與價格不合法');
+                    try {
+                        await axios.post(`${API_BASE_URL}/merchant/menu`, newMenuItem.value);
+                        showAddMenuForm.value = false;
+                        newMenuItem.value = { name: '', price: 0, stock: 0 };
+                        await fetchMerchantMenu();
+                    } catch (e) {
+                        alert('新增失敗');
+                    }
+                };
+
+                const updateMenuStock = async (itemId, newStock) => {
+                    try {
+                        await axios.put(`${API_BASE_URL}/merchant/menu/${itemId}`, { stock: newStock });
+                    } catch (e) {
+                        alert('更新庫存失敗');
+                    }
+                };
+
+                const toggleItemActive = async (item) => {
+                    // 這邊實作上架與下架的邏輯切換，目前先更新本地端狀態，如果後端有寫好 is_active 也一併更新過去
+                    item.is_active = !item.is_active;
+                    try {
+                        await axios.put(`${API_BASE_URL}/merchant/menu/${item.id}`, { is_active: item.is_active });
+                    } catch(e) {
+                        console.error(e);
+                    }
+                };
+
+                let revenueChartInstance = null;
+                let topItemsChartInstance = null;
+
+                // 定義 loadDashboardCharts 函式
+                const loadDashboardCharts = async () => {
+                    // 先確保 DOM 已經渲染出來
+                    await Vue.nextTick();
+
+                    try {
+                        const res = await axios.get(`${API_BASE_URL}/merchant/stats`);
+                        const stats = res.data;
+
+                        // 1. 繪製營收圖
+                        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+                        if (revenueChartInstance) revenueChartInstance.destroy(); // 如果圖表已存在則銷毀重建
+
+                        revenueChartInstance = new Chart(ctxRevenue, {
+                            type: 'line',
+                            data: {
+                                labels: stats.revenue_labels,
+                                datasets: [{
+                                    label: '每日營收 (TWD)',
+                                    data: stats.revenue_data,
+                                    borderColor: '#D97757',
+                                    backgroundColor: 'rgba(217, 119, 87, 0.2)',
+                                    tension: 0.4,
+                                    fill: true
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false }
+                        });
+
+                        // 2. 繪製熱銷商品圖
+                        const ctxItems = document.getElementById('topItemsChart').getContext('2d');
+                        if (topItemsChartInstance) topItemsChartInstance.destroy();
+
+                        topItemsChartInstance = new Chart(ctxItems, {
+                            type: 'bar',
+                            data: {
+                                labels: stats.top_items_labels,
+                                datasets: [{
+                                    label: '銷售數量',
+                                    data: stats.top_items_data,
+                                    backgroundColor: ['#D97757', '#FADCA5', '#C48B77', '#8B5E3C', '#EACCA4'],
+                                    borderRadius: 5
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false }
+                        });
+
+                    } catch (e) {
+                        console.error("無法載入圖表數據", e);
+                    }
+                };
+
+                // 新增狀態變數
+                const merchantInsight = ref('');
+                const isInsightLoading = ref(false);
+
+                // 新增 Computed 屬性 (解析 Markdown)
+                const parsedMerchantInsight = computed(() => {
+                    return merchantInsight.value ? marked.parse(merchantInsight.value) : '';
+                });
+
+                // 新增 AI 診斷函式
+                const askAiInsight = async () => {
+                    isInsightLoading.value = true;
+                    merchantInsight.value = ''; // 清空舊的分析
+                    try {
+                        const response = await axios.post(`${API_BASE_URL}/merchant/ai-insight`, {});
+                        merchantInsight.value = response.data.insight;
+                    } catch (error) {
+                        console.error(error);
+                        alert('AI 顧問目前忙線中，請稍後再試！');
+                    } finally {
+                        isInsightLoading.value = false;
+                    }
+                };
+
+                const availableOrders = ref([]);
+                const activeDeliveries = ref([]);
+                const todayEarnings = ref(0);
+
+                const loadDriverDashboard = async () => {
+                    currentView.value = 'driver';
+                    try {
+                        const [resAvailable, resActive] = await Promise.all([
+                            axios.get(`${API_BASE_URL}/driver/orders/available`),
+                            axios.get(`${API_BASE_URL}/driver/orders/active`)
+                        ]);
+                        availableOrders.value = resAvailable.data;
+                        activeDeliveries.value = resActive.data;
+
+                        // 簡單計算今日收入 (這裡先用本地端累加模擬)
+                        // 實務上應該由後端 API 回傳
+                    } catch (e) {
+                        console.error("無法載入外送員數據", e);
+                    }
+                };
+
+                const acceptDelivery = async (orderId) => {
+                    try {
+                        await axios.post(`${API_BASE_URL}/driver/orders/${orderId}/accept`);
+                        // 成功後重新整理列表
+                        await loadDriverDashboard();
+                    } catch (e) {
+                        alert('接單失敗，可能已被搶走');
+                    }
+                };
+
+                const completeDelivery = async (orderId) => {
+                    try {
+                        await axios.post(`${API_BASE_URL}/driver/orders/${orderId}/complete`);
+                        // 模擬收入增加 (實際應重整後端數據)
+                        todayEarnings.value += 50; 
+                        alert('訂單完成！收入已入帳。');
+                        await loadDriverDashboard();
+                    } catch (e) {
+                        alert('操作失敗');
+                    }
+                };
+
+                return {
+                    currentView, menuItems, cart, cartTotal, cartItemCount,
+                    loadRestaurant, addToCart, updateCart, goToCheckout, submitOrder,
+                    aiPrompt, aiResponse, isAiLoading, askAI, parsedAiResponse,
+                    showAuthModal, isLoginMode, isLoggedIn, isAuthLoading, authError, currentUser, authForm,
+                    toggleDarkMode, openAuthModal, toggleAuthMode, submitAuth, logout,
+                    merchantTab, merchantOrders, merchantMenu, showAddMenuForm, newMenuItem,
+                    loadMerchantDashboard, fetchMerchantOrders, updateOrderStatus, getStatusText, addMenuItem, updateMenuStock, toggleItemActive, 
+                    loadDashboardCharts, merchantInsight, isInsightLoading, parsedMerchantInsight, askAiInsight,
+                    availableOrders, activeDeliveries, todayEarnings,
+                    loadDriverDashboard, acceptDelivery, completeDelivery
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
