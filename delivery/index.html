@@ -40,16 +40,19 @@
         ::-webkit-scrollbar-thumb { background: #C48B77; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden" style="overscroll-behavior-x: none;">
-    <div id="app" v-cloak class="min-h-screen flex flex-col" 
-        @touchstart="handleTouchStart" @touchend="handleTouchEnd"
-        @mousedown="handleMouseDown" @mouseup="handleMouseUp">
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden">
+    <div id="app" v-cloak class="min-h-screen flex flex-col relative">
         
-        <div v-if="isDemoMode && !showDemoGuide" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[40] bg-black/70 backdrop-blur-md text-white px-5 py-2 rounded-full flex items-center gap-2 shadow-xl pointer-events-none transition-opacity animate-pulse">
-            <span class="material-icons-round text-sm">swipe</span>
-            <span class="text-sm font-bold tracking-wide">
-                {{ currentView === 'merchant' ? '👈左滑:消費者 | 右滑:外送員👉' : (currentView === 'home' ? '👉右滑:回商家分析' : '👈左滑:回商家分析') }}
-            </span>
+        <div v-if="isDemoMode && !showDemoGuide" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[100] bg-white/90 dark:bg-black/90 backdrop-blur-lg px-2 py-2 rounded-full shadow-2xl border border-primary/20 flex items-center gap-2 transition-all">
+            <button @click="currentView = 'home'" :class="{'bg-primary text-white shadow-md': currentView === 'home' || currentView === 'restaurant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'home' && currentView !== 'restaurant'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
+                <span class="material-icons-round text-lg">smartphone</span> 消費者端
+            </button>
+            <button @click="loadMerchantDashboard" :class="{'bg-[#8B5E3C] text-white shadow-md': currentView === 'merchant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'merchant'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
+                <span class="material-icons-round text-lg">storefront</span> 商家大腦
+            </button>
+            <button @click="loadDriverDashboard" :class="{'bg-blue-600 text-white shadow-md': currentView === 'driver', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'driver'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
+                <span class="material-icons-round text-lg">moped</span> 外送員端
+            </button>
         </div>
 
         <header class="sticky top-0 z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-b border-primary/10 px-6 py-4 transition-all">
@@ -71,10 +74,10 @@
                         <button @click="joinGroupOrder(joinCodeInput)" class="text-xs bg-primary text-white px-2 py-1 rounded-full hover:bg-opacity-90">加入</button>
                     </div>
 
-                    <button v-if="isLoggedIn && currentView !== 'driver'" @click="loadDriverDashboard" class="hidden sm:flex items-center gap-1 bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
+                    <button v-if="isLoggedIn && currentView !== 'driver' && !isDemoMode" @click="loadDriverDashboard" class="hidden sm:flex items-center gap-1 bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
                         <span class="material-icons-round text-sm">moped</span> 外送端
                     </button>
-                    <button v-if="isLoggedIn && currentView !== 'merchant'" @click="loadMerchantDashboard" class="hidden sm:flex items-center gap-1 bg-[#8B5E3C] text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
+                    <button v-if="isLoggedIn && currentView !== 'merchant' && !isDemoMode" @click="loadMerchantDashboard" class="hidden sm:flex items-center gap-1 bg-[#8B5E3C] text-white px-4 py-1.5 rounded-full hover:bg-opacity-90 transition text-sm font-medium shadow-sm">
                         <span class="material-icons-round text-sm">storefront</span> 商家分析
                     </button>
 
@@ -426,16 +429,12 @@
                 <p class="text-gray-600 dark:text-gray-300 mb-6 font-medium">您已進入<span class="text-primary font-bold">快速瀏覽模式</span>，系統已為您準備好測試數據。</p>
                 <div class="bg-gray-50 dark:bg-black/20 rounded-2xl p-5 text-left mb-8 space-y-4">
                     <div class="flex items-center gap-4 border-b border-gray-200 dark:border-gray-700 pb-3">
-                        <span class="material-icons-round text-blue-500 text-2xl">swipe_right</span>
-                        <div><div class="font-bold text-gray-800 dark:text-gray-200">向右滑動</div><div class="text-xs text-gray-500">切換至外送員接單大廳</div></div>
-                    </div>
-                    <div class="flex items-center gap-4 border-b border-gray-200 dark:border-gray-700 pb-3">
-                        <span class="material-icons-round text-primary text-2xl">storefront</span>
-                        <div><div class="font-bold text-gray-800 dark:text-gray-200">置中畫面</div><div class="text-xs text-gray-500">商家 BI 分析儀表板 (AI 管家)</div></div>
+                        <span class="material-icons-round text-primary text-2xl">touch_app</span>
+                        <div><div class="font-bold text-gray-800 dark:text-gray-200">一鍵快速切換</div><div class="text-xs text-gray-500">畫面下方有專屬的浮動控制面板</div></div>
                     </div>
                     <div class="flex items-center gap-4">
-                        <span class="material-icons-round text-green-500 text-2xl">swipe_left</span>
-                        <div><div class="font-bold text-gray-800 dark:text-gray-200">向左滑動</div><div class="text-xs text-gray-500">切換至消費者點餐介面</div></div>
+                        <span class="material-icons-round text-blue-500 text-2xl">dashboard_customize</span>
+                        <div><div class="font-bold text-gray-800 dark:text-gray-200">三大核心系統</div><div class="text-xs text-gray-500">輕鬆檢視：消費者端、商家大腦、外送員工作台</div></div>
                     </div>
                 </div>
                 <button @click="showDemoGuide = false" class="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-lg tracking-wide">
@@ -463,18 +462,15 @@
 
         createApp({
             setup() {
-                // 基本路由與購物車
                 const currentView = ref('home');
                 const currentMerchantId = ref(1);
                 const menuItems = ref([]);
                 const cart = ref([]);
 
-                // AI 管家
                 const aiPrompt = ref('');
                 const aiResponse = ref('');
                 const isAiLoading = ref(false);
                 
-                // 驗證
                 const showAuthModal = ref(false);
                 const isLoginMode = ref(true);
                 const isLoggedIn = ref(false);
@@ -483,39 +479,28 @@
                 const currentUser = ref({});
                 const authForm = ref({ username: '', email: '', password: '' });
 
-                // 商家後台
                 const merchantTab = ref('dashboard');
                 const merchantOrders = ref([]);
                 const merchantMenu = ref([]);
                 const merchantInsight = ref('');
                 const isInsightLoading = ref(false);
 
-                // 外送員
                 const availableOrders = ref([]);
                 const activeDeliveries = ref([]);
                 const todayEarnings = ref(0);
 
-                // 團購
                 const joinCodeInput = ref('');
                 const groupInfo = ref({ code: '', items: [], total: 0, status: 'open' });
                 let groupPollingInterval = null;
 
-                // 💡 評審專用手勢模式變數
                 const isDemoMode = ref(false);
                 const showDemoGuide = ref(false);
-                const touchStartX = ref(0);
-                const touchStartY = ref(0);
 
-                // API 位置請確認
                 const API_BASE_URL = 'https://food-api.hasaki.idv.tw/api';
 
-                // ==========================
-                // 1. 評審模式與手勢邏輯
-                // ==========================
                 const initDemoMode = async () => {
                     isDemoMode.value = true;
                     showDemoGuide.value = true;
-                    // 自動登入作為商家 (擁有最高資料查看權限)
                     try {
                         const response = await axios.post(`${API_BASE_URL}/auth/login`, {
                             email: 'merchant@test.com', password: '123456'
@@ -526,49 +511,10 @@
                         currentUser.value = response.data.user_info;
                         isLoggedIn.value = true;
                         
-                        // 預設進入商家大腦
                         await loadMerchantDashboard();
                     } catch (e) { console.error("評審模式登入失敗", e); }
                 };
 
-                // 共用：紀錄開始座標
-                const recordStart = (x, y) => {
-                    touchStartX.value = x;
-                    touchStartY.value = y;
-                };
-
-                // 共用：結算結束座標並判斷方向
-                const recordEnd = (x, y) => {
-                    // 如果不在評審模式，或者還在看導覽，就不啟用滑動
-                    if (!isDemoMode.value || showDemoGuide.value) return;
-                    
-                    const diffX = touchStartX.value - x;
-                    const diffY = touchStartY.value - y;
-
-                    // 如果垂直滑動(上下)大於水平滑動(左右)，代表用戶只是在滑動看網頁，不觸發切換
-                    if (Math.abs(diffY) > Math.abs(diffX)) return;
-                    // 忽略小於 60px 的微小誤觸
-                    if (Math.abs(diffX) < 60) return; 
-
-                    // 邏輯: 👈左滑(diffX > 0)進消費者 | 👉右滑(diffX < 0)進外送員
-                    if (diffX > 0) { // 向左滑動
-                        if (currentView.value === 'driver') loadMerchantDashboard();
-                        else if (currentView.value === 'merchant') currentView.value = 'home';
-                    } else { // 向右滑動
-                        if (currentView.value === 'home') loadMerchantDashboard();
-                        else if (currentView.value === 'merchant') loadDriverDashboard();
-                    }
-                };
-
-                // 分別綁定給 手機觸控 與 電腦滑鼠
-                const handleTouchStart = (e) => recordStart(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
-                const handleTouchEnd = (e) => recordEnd(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
-                const handleMouseDown = (e) => recordStart(e.clientX, e.clientY);
-                const handleMouseUp = (e) => recordEnd(e.clientX, e.clientY);
-
-                // ==========================
-                // 初始化
-                // ==========================
                 onMounted(() => {
                     const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams.get('demo') === 'judge') {
@@ -578,14 +524,10 @@
                         if (token) {
                             isLoggedIn.value = true;
                             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                            // 這裡簡易處理，實務上應從後端獲取 user info
                         }
                     }
                 });
 
-                // ==========================
-                // 其他所有既有功能
-                // ==========================
                 const cartTotal = computed(() => cart.value.reduce((s, i) => s + (i.price * i.quantity), 0));
                 const cartItemCount = computed(() => cart.value.reduce((s, i) => s + i.quantity, 0));
                 const parsedAiResponse = computed(() => aiResponse.value ? marked.parse(aiResponse.value) : '');
@@ -593,7 +535,6 @@
 
                 const toggleDarkMode = () => document.documentElement.classList.toggle('dark');
 
-                // B2C 點餐
                 const loadRestaurant = async (id) => {
                     currentMerchantId.value = id;
                     try {
@@ -602,12 +543,11 @@
                         currentView.value = 'restaurant';
                     } catch (e) { console.error(e); }
                 };
-                const addToCart = (item) => { /*...簡易防呆...*/ cart.value.push({ menu_item_id: item.id, name: item.name, price: item.price, quantity: 1 }); };
+                const addToCart = (item) => { cart.value.push({ menu_item_id: item.id, name: item.name, price: item.price, quantity: 1 }); };
                 const updateCart = (item, change) => { item.quantity += change; if(item.quantity<=0) cart.value = cart.value.filter(i=>i.menu_item_id!==item.menu_item_id); };
                 const goToCheckout = () => { if (!isLoggedIn.value) return openAuthModal('login'); currentView.value = 'checkout'; };
-                const submitOrder = async () => { /* 送出邏輯... */ currentView.value = 'success'; cart.value = []; };
+                const submitOrder = async () => { currentView.value = 'success'; cart.value = []; };
 
-                // B2B 商家後台
                 let revenueChartInstance = null;
                 let topItemsChartInstance = null;
                 const loadMerchantDashboard = async () => {
@@ -640,14 +580,12 @@
                 const updateMenuStock = async (id, stock) => { await axios.put(`${API_BASE_URL}/merchant/menu/${id}`, {stock}); };
                 const getStatusText = (s) => ({'pending':'待處理','preparing':'準備中','delivering':'外送中','completed':'已完成','cancelled':'已取消'})[s] || s;
 
-                // B2B AI 大腦
                 const askAiInsight = async () => {
                     isInsightLoading.value = true;
                     try { merchantInsight.value = (await axios.post(`${API_BASE_URL}/merchant/ai-insight`)).data.insight; } 
                     catch(e){ alert('AI 分析失敗'); } finally { isInsightLoading.value = false; }
                 };
 
-                // 外送員
                 const loadDriverDashboard = async () => {
                     currentView.value = 'driver';
                     try {
@@ -658,7 +596,6 @@
                 const acceptDelivery = async (id) => { await axios.post(`${API_BASE_URL}/driver/orders/${id}/accept`); loadDriverDashboard(); };
                 const completeDelivery = async (id) => { await axios.post(`${API_BASE_URL}/driver/orders/${id}/complete`); todayEarnings.value += 50; loadDriverDashboard(); };
 
-                // 企業團購
                 const startGroupOrder = async () => { if (!isLoggedIn.value) return openAuthModal('login'); const res = await axios.post(`${API_BASE_URL}/group/create`, { merchant_id: currentMerchantId.value }); joinGroupOrder(res.data.code); };
                 const joinGroupOrder = async (code) => { if (!code) return; try { groupInfo.value = (await axios.get(`${API_BASE_URL}/group/join/${code}`)).data; await loadRestaurant(groupInfo.value.merchant_id); currentView.value = 'group_lobby'; joinCodeInput.value = ''; if (groupPollingInterval) clearInterval(groupPollingInterval); groupPollingInterval = setInterval(refreshGroupData, 3000); } catch(e){ alert('找不到代碼'); } };
                 const refreshGroupData = async () => { if (currentView.value !== 'group_lobby') return; const res = await axios.get(`${API_BASE_URL}/group/join/${groupInfo.value.code}`); groupInfo.value = res.data; if (groupInfo.value.status !== 'open') clearInterval(groupPollingInterval); };
@@ -666,10 +603,8 @@
                 const submitGroup = async () => { if(!confirm('確定送出？')) return; await axios.post(`${API_BASE_URL}/group/submit`, { code: groupInfo.value.code }); alert('已送出！'); clearInterval(groupPollingInterval); currentView.value = 'home'; };
                 const copyCode = () => { navigator.clipboard.writeText(groupInfo.value.code); alert('已複製代碼！'); };
 
-                // AI 消費者管家
                 const askAI = async () => { if (!aiPrompt.value) return; isAiLoading.value = true; try { aiResponse.value = (await axios.post(`${API_BASE_URL}/ai/recommend`, { prompt: aiPrompt.value })).data.recommendation; aiPrompt.value = ''; } catch(e){} finally { isAiLoading.value = false; } };
 
-                // 認證
                 const openAuthModal = (mode) => { isLoginMode.value = (mode==='login'); authError.value = ''; showAuthModal.value = true; };
                 const toggleAuthMode = () => { isLoginMode.value = !isLoginMode.value; authError.value = ''; };
                 const submitAuth = async () => {
@@ -695,7 +630,7 @@
                     merchantInsight, isInsightLoading, parsedMerchantInsight, askAiInsight,
                     availableOrders, activeDeliveries, todayEarnings, loadDriverDashboard, acceptDelivery, completeDelivery,
                     joinCodeInput, groupInfo, startGroupOrder, joinGroupOrder, refreshGroupData, addItemToGroup, submitGroup, copyCode,
-                    isDemoMode, showDemoGuide, handleTouchStart, handleTouchEnd, handleMouseDown, handleMouseUp
+                    isDemoMode, showDemoGuide 
                 };
             }
         }).mount('#app');
