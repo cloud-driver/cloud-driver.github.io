@@ -43,15 +43,15 @@
 <body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden">
     <div id="app" v-cloak class="min-h-screen flex flex-col relative">
         
-        <div v-if="isDemoMode && !showDemoGuide" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[100] bg-white/90 dark:bg-black/90 backdrop-blur-lg px-2 py-2 rounded-full shadow-2xl border border-primary/20 flex items-center gap-2 transition-all">
-            <button @click="currentView = 'home'" :class="{'bg-primary text-white shadow-md': currentView === 'home' || currentView === 'restaurant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'home' && currentView !== 'restaurant'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
-                <span class="material-icons-round text-lg">smartphone</span> 消費者端
+        <div v-if="isDemoMode && !showDemoGuide" class="fixed bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 z-[100] bg-white/95 dark:bg-black/95 backdrop-blur-lg px-2 py-2 rounded-full shadow-2xl border border-primary/20 flex items-center justify-center gap-1 md:gap-2 w-[92%] md:w-auto max-w-sm md:max-w-none transition-all">
+            <button @click="currentView = 'home'" :class="{'bg-primary text-white shadow-md': currentView === 'home' || currentView === 'restaurant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'home' && currentView !== 'restaurant'}" class="flex-1 md:flex-none px-2 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-[11px] md:text-sm flex flex-col md:flex-row items-center gap-1 transition-colors whitespace-nowrap">
+                <span class="material-icons-round text-xl md:text-lg">smartphone</span> 消費者端
             </button>
-            <button @click="loadMerchantDashboard" :class="{'bg-[#8B5E3C] text-white shadow-md': currentView === 'merchant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'merchant'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
-                <span class="material-icons-round text-lg">storefront</span> 商家大腦
+            <button @click="loadMerchantDashboard" :class="{'bg-[#8B5E3C] text-white shadow-md': currentView === 'merchant', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'merchant'}" class="flex-1 md:flex-none px-2 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-[11px] md:text-sm flex flex-col md:flex-row items-center gap-1 transition-colors whitespace-nowrap">
+                <span class="material-icons-round text-xl md:text-lg">storefront</span> 商家大腦
             </button>
-            <button @click="loadDriverDashboard" :class="{'bg-blue-600 text-white shadow-md': currentView === 'driver', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'driver'}" class="px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 transition-colors">
-                <span class="material-icons-round text-lg">moped</span> 外送員端
+            <button @click="loadDriverDashboard" :class="{'bg-blue-600 text-white shadow-md': currentView === 'driver', 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800': currentView !== 'driver'}" class="flex-1 md:flex-none px-2 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-[11px] md:text-sm flex flex-col md:flex-row items-center gap-1 transition-colors whitespace-nowrap">
+                <span class="material-icons-round text-xl md:text-lg">moped</span> 外送員端
             </button>
         </div>
 
