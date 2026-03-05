@@ -40,8 +40,10 @@
         ::-webkit-scrollbar-thumb { background: #C48B77; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden">
-    <div id="app" v-cloak class="min-h-screen flex flex-col" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden" style="overscroll-behavior-x: none;">
+    <div id="app" v-cloak class="min-h-screen flex flex-col" 
+        @touchstart="handleTouchStart" @touchend="handleTouchEnd"
+        @mousedown="handleMouseDown" @mouseup="handleMouseUp">
         
         <div v-if="isDemoMode && !showDemoGuide" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[40] bg-black/70 backdrop-blur-md text-white px-5 py-2 rounded-full flex items-center gap-2 shadow-xl pointer-events-none transition-opacity animate-pulse">
             <span class="material-icons-round text-sm">swipe</span>
@@ -529,31 +531,40 @@
                     } catch (e) { console.error("評審模式登入失敗", e); }
                 };
 
-                const handleTouchStart = (e) => {
-                    touchStartX.value = e.changedTouches[0].screenX;
-                    touchStartY.value = e.changedTouches[0].screenY;
+                // 共用：紀錄開始座標
+                const recordStart = (x, y) => {
+                    touchStartX.value = x;
+                    touchStartY.value = y;
                 };
 
-                const handleTouchEnd = (e) => {
+                // 共用：結算結束座標並判斷方向
+                const recordEnd = (x, y) => {
+                    // 如果不在評審模式，或者還在看導覽，就不啟用滑動
                     if (!isDemoMode.value || showDemoGuide.value) return;
-                    const touchEndX = e.changedTouches[0].screenX;
-                    const touchEndY = e.changedTouches[0].screenY;
-                    const diffX = touchStartX.value - touchEndX;
-                    const diffY = touchStartY.value - touchEndY;
+                    
+                    const diffX = touchStartX.value - x;
+                    const diffY = touchStartY.value - y;
 
-                    // 如果垂直滑動大於水平滑動，代表用戶在滾動網頁，不觸發切換
+                    // 如果垂直滑動(上下)大於水平滑動(左右)，代表用戶只是在滑動看網頁，不觸發切換
                     if (Math.abs(diffY) > Math.abs(diffX)) return;
-                    if (Math.abs(diffX) < 60) return; // 忽略小於 60px 的滑動
+                    // 忽略小於 60px 的微小誤觸
+                    if (Math.abs(diffX) < 60) return; 
 
                     // 邏輯: 👈左滑(diffX > 0)進消費者 | 👉右滑(diffX < 0)進外送員
-                    if (diffX > 0) { // 左滑
+                    if (diffX > 0) { // 向左滑動
                         if (currentView.value === 'driver') loadMerchantDashboard();
                         else if (currentView.value === 'merchant') currentView.value = 'home';
-                    } else { // 右滑
+                    } else { // 向右滑動
                         if (currentView.value === 'home') loadMerchantDashboard();
                         else if (currentView.value === 'merchant') loadDriverDashboard();
                     }
                 };
+
+                // 分別綁定給 手機觸控 與 電腦滑鼠
+                const handleTouchStart = (e) => recordStart(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
+                const handleTouchEnd = (e) => recordEnd(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
+                const handleMouseDown = (e) => recordStart(e.clientX, e.clientY);
+                const handleMouseUp = (e) => recordEnd(e.clientX, e.clientY);
 
                 // ==========================
                 // 初始化
@@ -684,7 +695,7 @@
                     merchantInsight, isInsightLoading, parsedMerchantInsight, askAiInsight,
                     availableOrders, activeDeliveries, todayEarnings, loadDriverDashboard, acceptDelivery, completeDelivery,
                     joinCodeInput, groupInfo, startGroupOrder, joinGroupOrder, refreshGroupData, addItemToGroup, submitGroup, copyCode,
-                    isDemoMode, showDemoGuide, handleTouchStart, handleTouchEnd // 匯出給 Template
+                    isDemoMode, showDemoGuide, handleTouchStart, handleTouchEnd, handleMouseDown, handleMouseUp
                 };
             }
         }).mount('#app');
