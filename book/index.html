@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 繪本生成測試</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #statusText {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #e67e22;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .page {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: #fafafa;
+        }
+        .page img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .page p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AI 繪本生成測試</h1>
+    
+    <div class="form-group">
+        <label for="summary">故事大綱 (Summary)</label>
+        <textarea id="summary" rows="4">一隻小蒼鷹在陽明山學習飛翔的故事</textarea>
+    </div>
+    
+    <div class="form-group">
+        <label for="style">風格 (Style)</label>
+        <input type="text" id="style" value="watercolor style, studio ghibli">
+    </div>
+    
+    <div class="form-group">
+        <label for="negative_prompt">負面提示詞 (Negative Prompt)</label>
+        <input type="text" id="negative_prompt" value="ugly, bad anatomy, bad quality">
+    </div>
+    
+    <button id="generateBtn" onclick="startGeneration()">開始生成</button>
+    
+    <div id="statusText"></div>
+</div>
+
+<div id="resultArea" class="container hidden" style="margin-top: 20px;">
+    <h2>生成結果</h2>
+    <audio id="audioPlayer" controls></audio>
+    <div id="pagesContainer"></div>
+</div>
+
+<script>
+    const SERVER_URL = "https://generator-pic.hasaki.idv.tw";
+    let pollInterval;
+
+    async function startGeneration() {
+        const summary = document.getElementById("summary").value;
+        const style = document.getElementById("style").value;
+        const negPrompt = document.getElementById("negative_prompt").value;
+        const btn = document.getElementById("generateBtn");
+        const statusText = document.getElementById("statusText");
+        const resultArea = document.getElementById("resultArea");
+        
+        btn.disabled = true;
+        resultArea.classList.add("hidden");
+        statusText.innerText = "正在發送請求至伺服器...";
+        statusText.style.color = "#e67e22";
+
+        try {
+            const res = await fetch(`${SERVER_URL}/api/generate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    summary: summary,
+                    style: style,
+                    negative_prompt: negPrompt
+                })
+            });
+            
+            if (!res.ok) {
+                throw new Error(`伺服器錯誤狀態碼: ${res.status}`);
+            }
+            
+            const data = await res.json();
+            const taskId = data.task_id;
+            
+            pollInterval = setInterval(() => checkStatus(taskId), 3000);
+            
+        } catch (err) {
+            statusText.innerText = "連線失敗: " + err.message;
+            statusText.style.color = "#c0392b";
+            btn.disabled = false;
+        }
+    }
+
+    async function checkStatus(taskId) {
+        const statusText = document.getElementById("statusText");
+        const btn = document.getElementById("generateBtn");
+        
+        try {
+            const res = await fetch(`${SERVER_URL}/api/status/${taskId}`);
+            
+            if (!res.ok) {
+                throw new Error(`伺服器錯誤狀態碼: ${res.status}`);
+            }
+            
+            const data = await res.json();
+            
+            if (data.status === "pending") {
+                statusText.innerText = "排隊中，請稍候...";
+            } else if (data.status === "processing") {
+                statusText.innerText = "Worker 正在繪製中 (約需 60 秒)...";
+            } else if (data.status === "completed") {
+                clearInterval(pollInterval);
+                statusText.innerText = "生成完成！";
+                statusText.style.color = "#27ae60";
+                btn.disabled = false;
+                renderResult(data.result);
+            }
+        } catch (err) {
+            clearInterval(pollInterval);
+            statusText.innerText = "查詢狀態失敗: " + err.message;
+            statusText.style.color = "#c0392b";
+            btn.disabled = false;
+        }
+    }
+
+    function renderResult(result) {
+        const resultArea = document.getElementById("resultArea");
+        const audioPlayer = document.getElementById("audioPlayer");
+        const container = document.getElementById("pagesContainer");
+        
+        resultArea.classList.remove("hidden");
+        container.innerHTML = "";
+        
+        if (result.audio_base64) {
+            audioPlayer.src = "data:audio/wav;base64," + result.audio_base64;
+            audioPlayer.style.display = "block";
+        } else {
+            audioPlayer.style.display = "none";
+        }
+
+        const pages = result.manifest.pages;
+        if (pages && pages.length > 0) {
+            pages.forEach(page => {
+                const pageDiv = document.createElement("div");
+                pageDiv.className = "page";
+                
+                const img = document.createElement("img");
+                if (page.image_base64) {
+                    img.src = "data:image/png;base64," + page.image_base64;
+                }
+                
+                const p = document.createElement("p");
+                p.innerText = `第 ${page.page} 頁：${page.content}`;
+                
+                pageDiv.appendChild(img);
+                pageDiv.appendChild(p);
+                container.appendChild(pageDiv);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
