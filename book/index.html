@@ -444,12 +444,24 @@ function setMood(mood) {
 // ──────────────────────────────────────────
 //  Books
 // ──────────────────────────────────────────
-async function loadBooks() {
-  try {
-    const res = await fetch(`${API_BASE}/api/books`);
-    allBooks  = await res.json();
-    renderBookshelf();
-  } catch(e) { console.error('書單載入失敗', e); }
+async function onBookClick(book) {
+  // ✅ 立刻跳頁，不等 API
+  openDetail(book);
+
+  // 背景執行，不 await，不擋畫面
+  fetch(`${API_BASE}/api/book_comment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: book.title, mood: currentMood })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.dialogue) {
+      appendBotMsg(data.dialogue);
+      live2dSpeak(data.audio_base64);
+    }
+  })
+  .catch(() => { /* silent */ });
 }
 
 function renderBookshelf() {
