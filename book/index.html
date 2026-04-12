@@ -449,7 +449,7 @@ async function onBookClick(book) {
   openDetail(book);
 
   // 背景執行，不 await，不擋畫面
-  fetch(`${API_BASE}/api/book_comment`, {
+  fetch(`${API_BASE}/api/books`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title: book.title, mood: currentMood })
@@ -463,6 +463,7 @@ async function onBookClick(book) {
   })
   .catch(() => { /* silent */ });
 }
+
 
 function renderBookshelf() {
   const grid = document.getElementById('books-grid');
