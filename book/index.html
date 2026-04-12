@@ -143,7 +143,7 @@
           <div class="flex items-end justify-between">
             <div>
               <h2 class="text-xl font-bold text-[#1c1c19]">📚 書架</h2>
-              <p class="text-xs text-[#524436] mt-0.5">點擊書本，讓 AI 為你生成專屬繪本摘要</p>
+              <p class="text-xs text-[#524436] mt-0.5">點擊書本，查看詳細介紹並生成專屬繪本摘要</p>
             </div>
             <span id="recommended-hint" class="hidden text-xs font-bold text-[#855400] bg-[#ffddb7] px-3 py-1 rounded-full">✨ AI 已為你推薦</span>
           </div>
@@ -315,6 +315,9 @@ let recommendedId  = "";
 let currentBook    = null;
 let currentPageIdx = 0;
 let pollInterval   = null;
+let pollCount      = 0;
+const MAX_POLL     = 100; // 最多輪詢 100 次（約 5 分鐘）
+const MAX_HISTORY  = 10;  // 保留最近 10 輪對話
 
 // ──────────────────────────────────────────
 //  Live2D
@@ -350,6 +353,15 @@ function live2dSpeak(b64) {
 }
 
 // ──────────────────────────────────────────
+//  XSS 防護
+// ──────────────────────────────────────────
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ──────────────────────────────────────────
 //  Chat UI
 // ──────────────────────────────────────────
 function appendBotMsg(text) {
@@ -357,7 +369,7 @@ function appendBotMsg(text) {
   const d = document.createElement('div');
   d.className = 'flex flex-col items-start gap-1';
   d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold ml-1">選書助手</span>
-                 <div class="bubble-bot text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${text}</div>`;
+                 <div class="bubble-bot text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${escapeHtml(text)}</div>`;
   box.appendChild(d); box.scrollTop = box.scrollHeight;
 }
 function appendUserMsg(text) {
@@ -365,7 +377,7 @@ function appendUserMsg(text) {
   const d = document.createElement('div');
   d.className = 'flex flex-col items-end gap-1';
   d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold mr-1">你</span>
-                 <div class="bubble-user text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${text}</div>`;
+                 <div class="bubble-user text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${escapeHtml(text)}</div>`;
   box.appendChild(d); box.scrollTop = box.scrollHeight;
 }
 function showTyping() {
@@ -387,10 +399,14 @@ async function sendMessage() {
   inp.value = ''; inp.disabled = true; btn.disabled = true;
   showTyping();
   chatHistory.push({ sender:'user', text:msg });
+
+  // 只保留最近 MAX_HISTORY 輪
+  const trimmedHistory = chatHistory.slice(-(MAX_HISTORY * 2));
+
   try {
     const res  = await fetch(`${API_BASE}/api/chat`, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ message:msg, history:chatHistory })
+      body: JSON.stringify({ message:msg, history:trimmedHistory })
     });
     const data = await res.json();
     removeTyping();
@@ -408,8 +424,13 @@ async function sendMessage() {
         const box = document.getElementById('chat-box');
         const d = document.createElement('div');
         d.className = 'flex flex-col items-start gap-1';
-        d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold ml-1">選書助手</span>
-                       <img src="${data.cover_url}" class="w-20 rounded-xl shadow mt-1 ml-1"/>`;
+        const img = document.createElement('img');
+        img.src = data.cover_url;
+        img.className = 'w-20 rounded-xl shadow mt-1 ml-1';
+        const label = document.createElement('span');
+        label.className = 'text-[10px] text-[#847463] font-semibold ml-1';
+        label.textContent = '選書助手';
+        d.appendChild(label); d.appendChild(img);
         box.appendChild(d); box.scrollTop = box.scrollHeight;
       }
     }
@@ -444,12 +465,47 @@ function setMood(mood) {
 // ──────────────────────────────────────────
 //  Books
 // ──────────────────────────────────────────
-async function onBookClick(book) {
-  // ✅ 立刻跳頁，不等 API
+async function loadBooks() {
+  try {
+    const res = await fetch(`${API_BASE}/api/books`);
+    allBooks  = await res.json();
+    console.log('[Books] 載入完成，共', allBooks.length, '本');
+    renderBookshelf();
+  } catch(e) { console.error('[Books] 載入失敗', e); }
+}
+
+function renderBookshelf() {
+  const grid = document.getElementById('books-grid');
+  grid.innerHTML = '';
+  allBooks.forEach(book => {
+    const isRec = book.book_id === recommendedId;
+    const card  = document.createElement('div');
+    card.className = `book-card bg-surface-container-lowest rounded-2xl overflow-hidden cursor-pointer border border-outline-variant/20 ${isRec?'recommended':''}`;
+    card.innerHTML = `
+      <div class="relative">
+        <img src="${escapeHtml(book.cover_url)}" alt="${escapeHtml(book.title)}" class="w-full aspect-[2/3] object-cover" loading="lazy"/>
+        ${isRec?`<div class="absolute top-2 left-2 bg-[#e29930] text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
+          <span class="material-symbols-outlined fill-icon text-[10px]">auto_awesome</span>AI推薦</div>`:''}
+      </div>
+      <div class="p-3 space-y-1">
+        <p class="text-xs font-bold text-[#1c1c19] leading-tight line-clamp-2">${escapeHtml(book.title)}</p>
+        <p class="text-[10px] text-[#847463]">${escapeHtml(book.author)}</p>
+        <div class="flex flex-wrap gap-1 mt-1">
+          ${book.emotion_tags.slice(0,2).map(t=>`<span class="text-[9px] bg-[#f1ede8] text-[#524436] px-1.5 py-0.5 rounded-full">${escapeHtml(t)}</span>`).join('')}
+        </div>
+      </div>`;
+    card.addEventListener('click', () => onBookClick(book));
+    grid.appendChild(card);
+  });
+}
+
+// ✅ 修改重點：點擊後立刻跳頁，API 在背景執行
+function onBookClick(book) {
+  // 立刻跳頁，不等 API
   openDetail(book);
 
-  // 背景執行，不 await，不擋畫面
-  fetch(`${API_BASE}/api/books`, {
+  // 背景呼叫 book_comment，不阻擋畫面
+  fetch(`${API_BASE}/api/book_comment`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title: book.title, mood: currentMood })
@@ -464,44 +520,6 @@ async function onBookClick(book) {
   .catch(() => { /* silent */ });
 }
 
-
-function renderBookshelf() {
-  const grid = document.getElementById('books-grid');
-  grid.innerHTML = '';
-  allBooks.forEach(book => {
-    const isRec = book.book_id === recommendedId;
-    const card  = document.createElement('div');
-    card.className = `book-card bg-surface-container-lowest rounded-2xl overflow-hidden cursor-pointer border border-outline-variant/20 ${isRec?'recommended':''}`;
-    card.innerHTML = `
-      <div class="relative">
-        <img src="${book.cover_url}" alt="${book.title}" class="w-full aspect-[2/3] object-cover" loading="lazy"/>
-        ${isRec?`<div class="absolute top-2 left-2 bg-[#e29930] text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
-          <span class="material-symbols-outlined fill-icon text-[10px]">auto_awesome</span>AI推薦</div>`:''}
-      </div>
-      <div class="p-3 space-y-1">
-        <p class="text-xs font-bold text-[#1c1c19] leading-tight line-clamp-2">${book.title}</p>
-        <p class="text-[10px] text-[#847463]">${book.author}</p>
-        <div class="flex flex-wrap gap-1 mt-1">
-          ${book.emotion_tags.slice(0,2).map(t=>`<span class="text-[9px] bg-[#f1ede8] text-[#524436] px-1.5 py-0.5 rounded-full">${t}</span>`).join('')}
-        </div>
-      </div>`;
-    card.addEventListener('click', () => onBookClick(book));
-    grid.appendChild(card);
-  });
-}
-
-async function onBookClick(book) {
-  try {
-    const res  = await fetch(`${API_BASE}/api/book_comment`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ title:book.title, mood:currentMood })
-    });
-    const data = await res.json();
-    if (data.dialogue) { appendBotMsg(data.dialogue); live2dSpeak(data.audio_base64); }
-  } catch(e) { /* silent */ }
-  setTimeout(() => openDetail(book), 500);
-}
-
 // ──────────────────────────────────────────
 //  Page Navigation
 // ──────────────────────────────────────────
@@ -512,7 +530,7 @@ function openDetail(book) {
   document.getElementById('detail-author').textContent = `作者：${book.author}`;
   document.getElementById('detail-summary').textContent = book.summary;
   document.getElementById('detail-tags').innerHTML =
-    book.emotion_tags.map(t=>`<span class="text-xs bg-[#fff7ed] text-[#855400] border border-[#ffddb7] px-3 py-1 rounded-full font-medium">${t}</span>`).join('');
+    book.emotion_tags.map(t=>`<span class="text-xs bg-[#fff7ed] text-[#855400] border border-[#ffddb7] px-3 py-1 rounded-full font-medium">${escapeHtml(t)}</span>`).join('');
   const bar = document.getElementById('mood-hint-bar');
   if (currentMood) {
     document.getElementById('mood-hint-text').textContent = `根據你的心情「${currentMood}」，已自動融入繪本風格提示中`;
@@ -545,6 +563,7 @@ async function startGeneration() {
   const genBtn   = document.getElementById('gen-btn');
   const finalStyle = currentMood ? `${style}, mood: ${currentMood}` : style;
   genBtn.disabled = true;
+  pollCount = 0;
   statusEl.style.color = '#e67e22';
   statusEl.textContent = '正在發送請求至伺服器…';
   try {
@@ -568,6 +587,17 @@ async function startGeneration() {
 async function checkStatus(taskId) {
   const statusEl = document.getElementById('gen-status');
   const genBtn   = document.getElementById('gen-btn');
+
+  // 超時保護
+  pollCount++;
+  if (pollCount > MAX_POLL) {
+    clearInterval(pollInterval); pollInterval = null;
+    statusEl.style.color = '#ba1a1a';
+    statusEl.textContent = '⚠️ 生成逾時（超過 5 分鐘），請重新嘗試';
+    genBtn.disabled = false;
+    return;
+  }
+
   try {
     const res  = await fetch(`${API_BASE}/api/status/${taskId}`);
     if (!res.ok) throw new Error(`狀態查詢失敗: ${res.status}`);
