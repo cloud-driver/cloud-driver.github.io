@@ -370,6 +370,9 @@
     let currentMood = "";
     let currentModel = null;
     let pixiApp = null;
+    let live2dNaturalSize = { width: 1, height: 1 };
+    let live2dRendererSize = { width: 0, height: 0 };
+    let live2dResizeObserver = null;
     let allBooks = [];
     let recommendedId = "";
     let currentBook = null;
@@ -443,18 +446,46 @@
     async function initLive2D() {
       try {
         const canvas = $("live2d-canvas");
-        if (!canvas || !window.PIXI || !PIXI.live2d?.Live2DModel) throw new Error("Live2D SDK 尚未載入");
+        const panel = canvas?.parentElement;
+        if (!canvas || !panel || !window.PIXI || !PIXI.live2d?.Live2DModel) throw new Error("Live2D SDK 尚未載入");
+
+        // 不使用 PIXI 的 resizeTo。iOS Safari 上下滑動時網址列收合會觸發 resize，
+        // resizeTo 會跟著重算 canvas，若再用已縮放後的模型尺寸計算比例，就會突然放大。
         pixiApp = new PIXI.Application({
           view: canvas,
           transparent: true,
           autoStart: true,
-          resizeTo: canvas.parentElement
+          autoDensity: true,
+          resolution: Math.min(window.devicePixelRatio || 1, 2),
+          width: Math.max(1, Math.round(panel.clientWidth)),
+          height: Math.max(1, Math.round(panel.clientHeight))
         });
+
         const url = "https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/shizuku/shizuku.model.json";
         currentModel = await PIXI.live2d.Live2DModel.from(url);
+        currentModel.anchor.set(0.5, 0.5);
+        currentModel.scale.set(1);
+
+        const bounds = currentModel.getLocalBounds?.();
+        live2dNaturalSize = {
+          width: Math.max(1, bounds?.width || currentModel.width || 1),
+          height: Math.max(1, bounds?.height || currentModel.height || 1)
+        };
+
         pixiApp.stage.addChild(currentModel);
-        resizeLive2DModel();
-        window.addEventListener("resize", resizeLive2DModel, { passive: true });
+        fitLive2DToPanel(true);
+
+        if ("ResizeObserver" in window) {
+          live2dResizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(() => fitLive2DToPanel(false));
+          });
+          live2dResizeObserver.observe(panel);
+        }
+
+        window.addEventListener("orientationchange", () => {
+          window.setTimeout(() => fitLive2DToPanel(true), 250);
+        }, { passive: true });
+
         if (currentModel.internalModel?.motionManager?.expressionManager) {
           currentModel.expression(0);
           currentModel.internalModel.motionManager.startRandomMotion("Idle");
@@ -466,14 +497,27 @@
       chatHistory.push({ sender: "assistant", text: "哈囉！今天過得好嗎？心情怎麼樣呢？" });
     }
 
-    function resizeLive2DModel() {
+    function fitLive2DToPanel(force = false) {
       if (!pixiApp || !currentModel) return;
-      const sx = pixiApp.renderer.width / currentModel.width;
-      const sy = pixiApp.renderer.height / currentModel.height;
-      currentModel.scale.set(Math.min(sx, sy) * 0.9);
-      currentModel.anchor.set(0.5, 0.5);
-      currentModel.x = pixiApp.renderer.width / 2;
-      currentModel.y = pixiApp.renderer.height / 2;
+      const panel = $("live2d-canvas")?.parentElement;
+      if (!panel) return;
+
+      const width = Math.max(1, Math.round(panel.clientWidth));
+      const height = Math.max(1, Math.round(panel.clientHeight));
+      const sameSize = Math.abs(width - live2dRendererSize.width) < 2 && Math.abs(height - live2dRendererSize.height) < 2;
+      if (!force && sameSize) return;
+
+      live2dRendererSize = { width, height };
+      pixiApp.renderer.resize(width, height);
+
+      const scale = Math.min(
+        width / live2dNaturalSize.width,
+        height / live2dNaturalSize.height
+      ) * 0.9;
+
+      currentModel.scale.set(scale);
+      currentModel.x = width / 2;
+      currentModel.y = height / 2;
     }
 
     function live2dSpeak(b64) {
