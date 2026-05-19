@@ -1,97 +1,126 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="閱境 AI：用 AI 選書、理解心情，並生成專屬繪本摘要。" />
+  <meta name="theme-color" content="#855400" />
+  <meta name="color-scheme" content="light" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="閱境 AI" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>閱境 AI - 你的數位閱讀庇護所</title>
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png" />
+
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
-  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display-lipsyncpatch/dist/index.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
+  <script defer src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/pixi-live2d-display-lipsyncpatch/dist/index.min.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            "primary":                  "#855400",
-            "on-primary":               "#ffffff",
-            "primary-container":        "#e29930",
-            "on-primary-container":     "#583600",
-            "primary-fixed":            "#ffddb7",
-            "secondary":                "#3b6934",
-            "on-secondary":             "#ffffff",
-            "secondary-container":      "#b9eeab",
-            "tertiary":                 "#00658d",
-            "tertiary-container":       "#4ab2ea",
-            "error":                    "#ba1a1a",
-            "error-container":          "#ffdad6",
-            "background":               "#fdf9f4",
-            "on-background":            "#1c1c19",
-            "surface":                  "#fdf9f4",
-            "on-surface":               "#1c1c19",
-            "on-surface-variant":       "#524436",
+            "primary": "#855400",
+            "on-primary": "#ffffff",
+            "primary-container": "#e29930",
+            "on-primary-container": "#583600",
+            "primary-fixed": "#ffddb7",
+            "secondary": "#3b6934",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#b9eeab",
+            "tertiary": "#00658d",
+            "tertiary-container": "#4ab2ea",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "background": "#fdf9f4",
+            "on-background": "#1c1c19",
+            "surface": "#fdf9f4",
+            "on-surface": "#1c1c19",
+            "on-surface-variant": "#524436",
             "surface-container-lowest": "#ffffff",
-            "surface-container-low":    "#f7f3ee",
-            "surface-container":        "#f1ede8",
-            "surface-container-high":   "#ebe8e3",
+            "surface-container-low": "#f7f3ee",
+            "surface-container": "#f1ede8",
+            "surface-container-high": "#ebe8e3",
             "surface-container-highest":"#e6e2dd",
-            "outline":                  "#847463",
-            "outline-variant":          "#d7c3b0",
-            "inverse-primary":          "#ffb95d",
+            "outline": "#847463",
+            "outline-variant": "#d7c3b0",
+            "inverse-primary": "#ffb95d"
           },
           fontFamily: {
-            headline: ["Plus Jakarta Sans","Noto Sans TC","sans-serif"],
-            body:     ["Manrope","Noto Sans TC","sans-serif"],
+            headline: ["Plus Jakarta Sans", "Noto Sans TC", "sans-serif"],
+            body: ["Manrope", "Noto Sans TC", "sans-serif"]
           },
           borderRadius: {
-            DEFAULT:"0.25rem", lg:"0.5rem", xl:"0.75rem",
-            "2xl":"1rem", "3xl":"1.5rem", "4xl":"2rem", full:"9999px",
+            DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem",
+            "2xl": "1rem", "3xl": "1.5rem", "4xl": "2rem", full: "9999px"
           }
         }
       }
-    }
+    };
   </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    body { font-family:'Manrope','Noto Sans TC',sans-serif; background:#fdf9f4; color:#1c1c19; }
-    h1,h2,h3,h4 { font-family:'Plus Jakarta Sans','Noto Sans TC',sans-serif; }
-    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
-    .fill-icon { font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
-    .no-scrollbar::-webkit-scrollbar { display:none; }
-    .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
-    .spa-page { display:none; }
-    .spa-page.active { display:block; }
-    .typing-dots { display:inline-flex; gap:4px; align-items:center; }
-    .typing-dots span { width:7px;height:7px;background:#e29930;border-radius:50%;animation:tdBounce 1.4s infinite ease-in-out both; }
-    .typing-dots span:nth-child(1){animation-delay:-.32s}
-    .typing-dots span:nth-child(2){animation-delay:-.16s}
-    @keyframes tdBounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
-    .bubble-bot  { background:#fff7ed; border-radius:0 1rem 1rem 1rem; }
-    .bubble-user { background:#e8f4ff; border-radius:1rem 0 1rem 1rem; }
-    .book-card { transition:transform .25s,box-shadow .25s; }
-    .book-card:hover { transform:translateY(-6px); box-shadow:0 12px 32px rgba(133,84,0,.15); }
-    .story-page { display:none; }
-    .story-page.active { display:flex; }
-    .book-card.recommended { outline:3px solid #e29930; outline-offset:2px; }
-    /* Book card loading overlay */
-    .book-card-loading {
-      pointer-events: none;
+    html { min-height: 100%; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      min-height: 100dvh;
+      margin: 0;
+      font-family: 'Manrope', 'Noto Sans TC', sans-serif;
+      background: #fdf9f4;
+      color: #1c1c19;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
+    h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; }
+    input, select, textarea { font-size: 16px; }
+    button, a, input, select { -webkit-tap-highlight-color: transparent; }
+    button { touch-action: manipulation; }
+    img { max-width: 100%; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .spa-page { display: none; }
+    .spa-page.active { display: block; }
+    .app-header { padding-top: env(safe-area-inset-top); }
+    .app-main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+    .touch-target { min-width: 44px; min-height: 44px; }
+    .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
+    .typing-dots span { width: 7px; height: 7px; background: #e29930; border-radius: 50%; animation: tdBounce 1.4s infinite ease-in-out both; }
+    .typing-dots span:nth-child(1) { animation-delay: -.32s; }
+    .typing-dots span:nth-child(2) { animation-delay: -.16s; }
+    @keyframes tdBounce { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+    .bubble-bot { background: #fff7ed; border-radius: 0 1rem 1rem 1rem; overflow-wrap: anywhere; }
+    .bubble-user { background: #e8f4ff; border-radius: 1rem 0 1rem 1rem; overflow-wrap: anywhere; }
+    .book-card { position: relative; transition: transform .25s, box-shadow .25s; }
+    @media (hover:hover) and (pointer:fine) {
+      .book-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(133,84,0,.15); }
+    }
+    .book-card:active { transform: scale(.985); }
+    .book-card.recommended { outline: 3px solid #e29930; outline-offset: 2px; }
+    .story-page { display: none; }
+    .story-page.active { display: flex; }
+    .book-card-loading { pointer-events: none; }
     .book-card-loading::after {
       content: '';
       position: absolute;
       inset: 0;
       background: rgba(253,249,244,0.75);
       border-radius: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .book-card-loading .loading-spinner {
-      display: flex !important;
+      z-index: 9;
     }
     .loading-spinner {
       display: none;
@@ -101,6 +130,7 @@
       justify-content: center;
       z-index: 10;
     }
+    .book-card-loading .loading-spinner { display: flex !important; }
     .loading-spinner::after {
       content: '';
       width: 32px;
@@ -108,578 +138,774 @@
       border: 3px solid #ffddb7;
       border-top-color: #855400;
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      animation: spin .7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .mobile-bottom-nav {
+      padding-bottom: calc(.75rem + env(safe-area-inset-bottom));
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      box-shadow: 0 -8px 24px rgba(82,68,54,.08);
+    }
+    @media (max-width: 767px) {
+      .live2d-panel { height: min(62vw, 280px); }
+      .chat-box { max-height: 240px !important; }
+      .mobile-card-padding { padding: 1rem; }
+      .story-image { max-height: 62vh; object-fit: contain; background: #f7f3ee; }
+    }
+    @media (min-width: 768px) {
+      input, select, textarea { font-size: 14px; }
+      .app-main { padding-bottom: 2rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
-<body class="min-h-screen pb-24 md:pb-0">
-
-<!-- ═══ TOP NAV ═══ -->
-<header class="sticky top-0 z-50 bg-[#fdf9f4]/85 backdrop-blur-xl border-b border-[#d7c3b0]/30 shadow-[0_4px_24px_rgba(82,68,54,.06)]">
-  <div class="flex items-center justify-between h-16 px-5 md:px-10 max-w-screen-xl mx-auto">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
-      <span class="material-symbols-outlined fill-icon text-[#855400] text-3xl">menu_book</span>
-      <span class="text-xl font-bold tracking-tight text-[#855400]">閱境 AI</span>
-    </div>
-    <nav class="hidden md:flex gap-8 text-sm font-semibold">
-      <a href="#" class="text-[#855400] border-b-2 border-[#855400] pb-0.5">探索</a>
-      <a href="#" class="text-[#524436] hover:text-[#855400] transition-colors">書架</a>
-      <a href="#" class="text-[#524436] hover:text-[#855400] transition-colors">閱讀挑戰</a>
-    </nav>
-    <div class="w-9 h-9 rounded-full bg-[#ffddb7] flex items-center justify-center text-[#855400] font-bold text-sm border-2 border-[#e29930]">A</div>
-  </div>
-</header>
-
-<!-- ═══ HOME PAGE ═══ -->
-<div id="home-page" class="spa-page active">
-  <main class="max-w-screen-xl mx-auto px-5 md:px-10 py-8 space-y-12">
-    <section class="space-y-1">
-      <p class="text-sm font-semibold text-[#524436] tracking-wide">午後好，Alan</p>
-      <h1 class="text-3xl md:text-4xl font-extrabold text-[#1c1c19] leading-tight">今天想為心靈，<br class="md:hidden"/>留下一段什麼樣的空白？</h1>
-    </section>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-      <!-- LEFT -->
-      <div class="lg:col-span-8 space-y-12">
-
-        <!-- Live2D + Chat -->
-        <section class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/20">
-          <div class="flex flex-col md:flex-row">
-            <div class="w-full md:w-[300px] md:min-w-[300px] h-[300px] md:h-[440px] bg-gradient-to-br from-[#fff7ed] to-[#e8f4ff] relative overflow-hidden flex-shrink-0">
-              <canvas id="live2d-canvas" class="w-full h-full block"></canvas>
-              <div id="mood-badge" class="absolute bottom-3 left-3 hidden">
-                <span class="text-xs font-bold bg-[#ffddb7] text-[#583600] px-3 py-1 rounded-full shadow">
-                  心情：<span id="mood-text"></span>
-                </span>
-              </div>
-            </div>
-            <div class="flex flex-col flex-1 p-5 gap-4 min-h-[300px] md:min-h-[440px]">
-              <div class="flex items-center gap-2 border-b border-outline-variant/20 pb-3">
-                <span class="material-symbols-outlined fill-icon text-[#e29930]">smart_toy</span>
-                <span class="font-bold text-[#1c1c19] text-sm">選書助手</span>
-                <span class="ml-auto text-[10px] text-[#524436] bg-[#f1ede8] px-2 py-0.5 rounded-full">由 Qwen2.5 驅動</span>
-              </div>
-              <div id="chat-box" class="flex-1 overflow-y-auto space-y-3 pr-1 no-scrollbar" style="max-height:280px;"></div>
-              <div class="flex gap-2 mt-auto">
-                <input id="user-input" type="text" placeholder="和我說說你的心情吧…"
-                  class="flex-1 bg-[#f1ede8] border-none rounded-full px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50 disabled:opacity-50"/>
-                <button id="send-btn" onclick="sendMessage()"
-                  class="bg-[#855400] text-white rounded-full px-5 py-2.5 text-sm font-bold hover:bg-[#6b4300] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-                  送出
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Bookshelf -->
-        <section class="space-y-5">
-          <div class="flex items-end justify-between">
-            <div>
-              <h2 class="text-xl font-bold text-[#1c1c19]">📚 書架</h2>
-              <p class="text-xs text-[#524436] mt-0.5">點擊書本，讓 AI 為你生成專屬繪本摘要</p>
-            </div>
-            <span id="recommended-hint" class="hidden text-xs font-bold text-[#855400] bg-[#ffddb7] px-3 py-1 rounded-full">✨ AI 已為你推薦</span>
-          </div>
-          <div id="books-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-5"></div>
-        </section>
-      </div>
-
-      <!-- RIGHT SIDEBAR -->
-      <aside class="lg:col-span-4 space-y-6">
-        <div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/20 shadow-sm space-y-4">
-          <h3 class="font-bold text-[#1c1c19] flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#855400]">mood</span>現在的心情是...
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="quickMood('迷茫',this)"       class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">迷茫時</button>
-            <button onclick="quickMood('想逃離現實',this)" class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">想逃離現實</button>
-            <button onclick="quickMood('焦慮',this)"       class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">有點焦慮</button>
-            <button onclick="quickMood('尋找靈感',this)"   class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">尋找靈感</button>
-            <button onclick="quickMood('低落',this)"       class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">有點低落</button>
-            <button onclick="quickMood('充滿幹勁',this)"   class="mood-chip px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">充滿幹勁</button>
-          </div>
-        </div>
-        <div class="bg-surface-container-high rounded-3xl p-6 space-y-5 border border-outline-variant/20">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#855400] text-2xl">hourglass_empty</span>
-            <h3 class="font-bold text-[#1c1c19]">閱讀進度</h3>
-          </div>
-          <div class="bg-white rounded-2xl p-4 shadow-sm space-y-3">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="text-[10px] text-[#855400] font-bold tracking-widest block mb-0.5">正在閱讀</span>
-                <p class="font-bold text-[#1c1c19] text-sm">《原子習慣》</p>
-                <p class="text-[10px] text-[#524436]">James Clear</p>
-              </div>
-              <span class="text-2xl font-extrabold text-[#855400]">35%</span>
-            </div>
-            <div class="h-1.5 w-full bg-[#e6e2dd] rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-[#3b6934] to-[#b9eeab] rounded-full" style="width:35%"></div>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white/60 rounded-2xl p-4">
-              <p class="text-[10px] text-[#524436] font-bold uppercase tracking-tight mb-1">累積積分</p>
-              <p class="text-xl font-extrabold text-[#1c1c19]">2,480</p>
-            </div>
-            <div class="bg-white/60 rounded-2xl p-4">
-              <p class="text-[10px] text-[#524436] font-bold uppercase tracking-tight mb-1">連續閱讀</p>
-              <p class="text-xl font-extrabold text-[#1c1c19]">12 Days</p>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
-</div>
-
-<!-- ═══ DETAIL PAGE ═══ -->
-<div id="detail-page" class="spa-page">
-  <main class="max-w-screen-xl mx-auto px-5 md:px-10 py-8 space-y-8">
-    <button onclick="goHome()" class="flex items-center gap-1.5 text-sm text-[#524436] hover:text-[#855400] transition-colors font-semibold">
-      <span class="material-symbols-outlined text-lg">arrow_back</span> 返回書架
-    </button>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-      <div class="md:col-span-3">
-        <img id="detail-cover" src="" alt="封面" class="w-full max-w-[220px] mx-auto md:max-w-none rounded-2xl shadow-xl object-cover aspect-[2/3]"/>
-      </div>
-      <div class="md:col-span-9 space-y-4">
-        <div id="detail-tags" class="flex flex-wrap gap-2"></div>
-        <h2 id="detail-title" class="text-3xl font-extrabold text-[#1c1c19] leading-tight"></h2>
-        <p id="detail-author" class="text-[#524436] font-medium"></p>
-        <p id="detail-summary" class="text-sm text-[#524436] leading-relaxed bg-[#f7f3ee] rounded-2xl p-5 border border-[#d7c3b0]/30"></p>
-      </div>
-    </div>
-
-    <!-- Generate -->
-    <div class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 border border-outline-variant/20 shadow-sm space-y-6">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined fill-icon text-[#e29930] text-2xl">auto_awesome</span>
-        <h3 class="text-lg font-bold text-[#1c1c19]">生成 AI 繪本摘要</h3>
-      </div>
-      <div id="mood-hint-bar" class="hidden items-center gap-2 bg-[#fff7ed] border border-[#ffddb7] rounded-xl px-4 py-2.5 text-sm text-[#583600]">
-        <span class="material-symbols-outlined fill-icon text-[#e29930] text-base">lightbulb</span>
-        <span id="mood-hint-text"></span>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div class="space-y-2">
-          <label class="text-xs font-bold text-[#524436] uppercase tracking-wider">繪本風格</label>
-          <select id="style-select" class="w-full bg-[#f1ede8] border-none rounded-xl px-4 py-3 text-sm text-[#1c1c19] outline-none focus:ring-2 focus:ring-[#e29930]/50">
-            <option value="watercolor style, studio ghibli">🎨 水彩 × 吉卜力</option>
-            <option value="soft pastel illustration, children book">🌸 柔和粉彩插畫</option>
-            <option value="ink wash painting, Chinese traditional art">🖌️ 水墨風格</option>
-            <option value="flat design, minimalist, modern illustration">✏️ 簡約扁平插畫</option>
-            <option value="oil painting, warm tones, impressionist">🖼️ 油畫印象派</option>
-            <option value="pixel art, retro game style">👾 像素藝術</option>
-          </select>
-        </div>
-        <div class="space-y-2">
-          <label class="text-xs font-bold text-[#524436] uppercase tracking-wider">負面提示詞 <span class="font-normal normal-case text-[#847463]">（選填）</span></label>
-          <input id="neg-prompt-input" type="text" placeholder="例如：ugly, bad anatomy"
-            class="w-full bg-[#f1ede8] border-none rounded-xl px-4 py-3 text-sm text-[#1c1c19] outline-none focus:ring-2 focus:ring-[#e29930]/50"/>
-        </div>
-      </div>
-      <button id="gen-btn" onclick="startGeneration()"
-        class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#855400] to-[#e29930] text-white font-bold text-base shadow-lg shadow-[#855400]/20 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined fill-icon">palette</span>開始生成繪本
+<body class="min-h-screen">
+  <header class="app-header sticky top-0 z-50 bg-[#fdf9f4]/90 backdrop-blur-xl border-b border-[#d7c3b0]/30 shadow-[0_4px_24px_rgba(82,68,54,.06)]">
+    <div class="flex items-center justify-between h-16 px-4 sm:px-5 md:px-10 max-w-screen-xl mx-auto">
+      <button type="button" class="touch-target flex items-center gap-3 rounded-full pr-3 text-left" onclick="goHome()" aria-label="回到首頁">
+        <span class="material-symbols-outlined fill-icon text-[#855400] text-3xl">menu_book</span>
+        <span class="text-xl font-bold tracking-tight text-[#855400]">閱境 AI</span>
       </button>
-      <div id="gen-status" class="text-center text-sm font-bold text-[#e67e22] min-h-[20px]"></div>
+      <nav class="hidden md:flex gap-3 text-sm font-semibold" aria-label="主要導覽">
+        <button type="button" data-nav="home" onclick="goHome()" class="nav-btn touch-target px-4 rounded-full text-[#855400] bg-[#ffddb7]">探索</button>
+        <button type="button" data-nav="bookshelf" onclick="scrollToBookshelf()" class="nav-btn touch-target px-4 rounded-full text-[#524436] hover:text-[#855400] hover:bg-[#f1ede8] transition-colors">書架</button>
+      </nav>
+      <div class="w-9 h-9 rounded-full bg-[#ffddb7] flex items-center justify-center text-[#855400] font-bold text-sm border-2 border-[#e29930]" aria-label="目前使用者 Alan">A</div>
     </div>
+  </header>
 
-    <!-- Storybook Result -->
-    <div id="storybook-result" class="hidden space-y-5">
-      <h3 class="text-lg font-bold text-[#1c1c19] flex items-center gap-2">
-        <span class="material-symbols-outlined fill-icon text-[#855400]">auto_stories</span>繪本結果
-      </h3>
-      <audio id="story-audio" controls class="w-full rounded-xl"></audio>
-      <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/20 shadow-sm">
-        <div id="pages-container" class="min-h-[300px]"></div>
-        <div class="flex items-center justify-between px-6 py-4 border-t border-outline-variant/20 bg-[#f7f3ee]">
-          <button id="prev-btn" onclick="changePage(-1)" disabled
-            class="flex items-center gap-1 text-sm font-bold text-[#524436] hover:text-[#855400] transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-            <span class="material-symbols-outlined text-lg">chevron_left</span>上一頁
-          </button>
-          <span id="page-indicator" class="text-sm text-[#524436] font-medium">1 / 5</span>
-          <button id="next-btn" onclick="changePage(1)"
-            class="flex items-center gap-1 text-sm font-bold text-[#524436] hover:text-[#855400] transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-            下一頁<span class="material-symbols-outlined text-lg">chevron_right</span>
-          </button>
+  <div id="home-page" class="spa-page active">
+    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 py-6 md:py-8 space-y-8 md:space-y-12">
+      <section class="space-y-1">
+        <p class="text-sm font-semibold text-[#524436] tracking-wide">午後好，Alan</p>
+        <h1 class="text-[2rem] md:text-4xl font-extrabold text-[#1c1c19] leading-tight">今天想為心靈，<br class="md:hidden" />留下一段什麼樣的空白？</h1>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        <div class="lg:col-span-8 space-y-8 md:space-y-12">
+          <section class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-sm border border-outline-variant/20" aria-labelledby="assistant-title">
+            <div class="flex flex-col md:flex-row">
+              <div class="live2d-panel w-full md:w-[300px] md:min-w-[300px] md:h-[440px] bg-gradient-to-br from-[#fff7ed] to-[#e8f4ff] relative overflow-hidden flex-shrink-0">
+                <canvas id="live2d-canvas" class="w-full h-full block" aria-hidden="true"></canvas>
+                <div id="mood-badge" class="absolute bottom-3 left-3 hidden">
+                  <span class="text-xs font-bold bg-[#ffddb7] text-[#583600] px-3 py-1 rounded-full shadow">
+                    心情：<span id="mood-text"></span>
+                  </span>
+                </div>
+              </div>
+              <div class="mobile-card-padding flex flex-col flex-1 p-5 gap-4 min-h-[300px] md:min-h-[440px]">
+                <div class="flex items-center gap-2 border-b border-outline-variant/20 pb-3">
+                  <span class="material-symbols-outlined fill-icon text-[#e29930]">smart_toy</span>
+                  <span id="assistant-title" class="font-bold text-[#1c1c19] text-sm">選書助手</span>
+                  <span class="ml-auto text-[10px] text-[#524436] bg-[#f1ede8] px-2 py-0.5 rounded-full">由 Qwen2.5 驅動</span>
+                </div>
+                <div id="chat-box" class="chat-box flex-1 overflow-y-auto space-y-3 pr-1 no-scrollbar" style="max-height:280px;" aria-live="polite"></div>
+                <div class="flex gap-2 mt-auto">
+                  <label for="user-input" class="sr-only">輸入心情</label>
+                  <input id="user-input" type="text" placeholder="和我說說你的心情吧…" autocomplete="off" inputmode="text"
+                    class="flex-1 min-w-0 bg-[#f1ede8] border-none rounded-full px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50 disabled:opacity-50" />
+                  <button id="send-btn" type="button" onclick="sendMessage()"
+                    class="touch-target shrink-0 bg-[#855400] text-white rounded-full px-5 py-2.5 text-sm font-bold hover:bg-[#6b4300] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                    送出
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="bookshelf-section" class="space-y-5 scroll-mt-24" aria-labelledby="bookshelf-title">
+            <div class="flex items-end justify-between gap-3">
+              <div>
+                <h2 id="bookshelf-title" class="text-xl font-bold text-[#1c1c19]">📚 書架</h2>
+                <p class="text-xs text-[#524436] mt-0.5">點擊書本，讓 AI 為你生成專屬繪本摘要</p>
+              </div>
+              <span id="recommended-hint" class="hidden shrink-0 text-xs font-bold text-[#855400] bg-[#ffddb7] px-3 py-1 rounded-full">✨ AI 已為你推薦</span>
+            </div>
+            <div id="books-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5"></div>
+          </section>
+        </div>
+
+        <aside class="lg:col-span-4 space-y-6">
+          <div class="bg-surface-container-lowest rounded-3xl p-5 md:p-6 border border-outline-variant/20 shadow-sm space-y-4">
+            <h3 class="font-bold text-[#1c1c19] flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#855400]">mood</span>現在的心情是...
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" onclick="quickMood('迷茫', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">迷茫時</button>
+              <button type="button" onclick="quickMood('想逃離現實', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">想逃離現實</button>
+              <button type="button" onclick="quickMood('焦慮', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">有點焦慮</button>
+              <button type="button" onclick="quickMood('尋找靈感', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">尋找靈感</button>
+              <button type="button" onclick="quickMood('低落', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">有點低落</button>
+              <button type="button" onclick="quickMood('充滿幹勁', this)" class="mood-chip touch-target px-4 py-2 rounded-full bg-[#f1ede8] text-[#524436] text-sm font-medium hover:bg-[#e29930] hover:text-white transition-all">充滿幹勁</button>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-high rounded-3xl p-5 md:p-6 space-y-5 border border-outline-variant/20">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[#855400] text-2xl">hourglass_empty</span>
+              <h3 class="font-bold text-[#1c1c19]">閱讀進度</h3>
+            </div>
+            <div class="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <span class="text-[10px] text-[#855400] font-bold tracking-widest block mb-0.5">正在閱讀</span>
+                  <p class="font-bold text-[#1c1c19] text-sm">《原子習慣》</p>
+                  <p class="text-[10px] text-[#524436]">James Clear</p>
+                </div>
+                <span class="text-2xl font-extrabold text-[#855400]">35%</span>
+              </div>
+              <div class="h-1.5 w-full bg-[#e6e2dd] rounded-full overflow-hidden" aria-label="閱讀進度 35%">
+                <div class="h-full bg-gradient-to-r from-[#3b6934] to-[#b9eeab] rounded-full" style="width:35%"></div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white/60 rounded-2xl p-4">
+                <p class="text-[10px] text-[#524436] font-bold uppercase tracking-tight mb-1">累積積分</p>
+                <p class="text-xl font-extrabold text-[#1c1c19]">2,480</p>
+              </div>
+              <div class="bg-white/60 rounded-2xl p-4">
+                <p class="text-[10px] text-[#524436] font-bold uppercase tracking-tight mb-1">連續閱讀</p>
+                <p class="text-xl font-extrabold text-[#1c1c19]">12 Days</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div id="detail-page" class="spa-page">
+    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 py-6 md:py-8 space-y-8">
+      <button type="button" onclick="goHome()" class="touch-target flex items-center gap-1.5 text-sm text-[#524436] hover:text-[#855400] transition-colors font-semibold rounded-full pr-3">
+        <span class="material-symbols-outlined text-lg">arrow_back</span> 返回書架
+      </button>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+        <div class="md:col-span-3">
+          <img id="detail-cover" src="" alt="封面" class="w-full max-w-[220px] mx-auto md:max-w-none rounded-2xl shadow-xl object-cover aspect-[2/3]" />
+        </div>
+        <div class="md:col-span-9 space-y-4">
+          <div id="detail-tags" class="flex flex-wrap gap-2"></div>
+          <h2 id="detail-title" class="text-2xl md:text-3xl font-extrabold text-[#1c1c19] leading-tight"></h2>
+          <p id="detail-author" class="text-[#524436] font-medium"></p>
+          <p id="detail-summary" class="text-sm text-[#524436] leading-relaxed bg-[#f7f3ee] rounded-2xl p-5 border border-[#d7c3b0]/30"></p>
         </div>
       </div>
-    </div>
-  </main>
-</div>
 
-<!-- Mobile Bottom Nav -->
-<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-5 pt-3 bg-[#fdf9f4]/90 backdrop-blur-xl border-t border-[#d7c3b0]/30 md:hidden"
-     style="box-shadow:0 -8px 24px rgba(82,68,54,.08)">
-  <div class="flex flex-col items-center text-[#855400]">
-    <span class="material-symbols-outlined fill-icon">explore</span>
-    <span class="text-[10px] font-medium mt-0.5">探索</span>
+      <div class="bg-surface-container-lowest rounded-3xl p-5 md:p-8 border border-outline-variant/20 shadow-sm space-y-6">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined fill-icon text-[#e29930] text-2xl">auto_awesome</span>
+          <h3 class="text-lg font-bold text-[#1c1c19]">生成 AI 繪本摘要</h3>
+        </div>
+        <div id="mood-hint-bar" class="hidden items-start gap-2 bg-[#fff7ed] border border-[#ffddb7] rounded-xl px-4 py-2.5 text-sm text-[#583600]">
+          <span class="material-symbols-outlined fill-icon text-[#e29930] text-base">lightbulb</span>
+          <span id="mood-hint-text"></span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="space-y-2">
+            <label for="style-select" class="text-xs font-bold text-[#524436] uppercase tracking-wider">繪本風格</label>
+            <select id="style-select" class="w-full bg-[#f1ede8] border-none rounded-xl px-4 py-3 text-sm text-[#1c1c19] outline-none focus:ring-2 focus:ring-[#e29930]/50">
+              <option value="watercolor style, studio ghibli">🎨 水彩 × 吉卜力</option>
+              <option value="soft pastel illustration, children book">🌸 柔和粉彩插畫</option>
+              <option value="ink wash painting, Chinese traditional art">🖌️ 水墨風格</option>
+              <option value="flat design, minimalist, modern illustration">✏️ 簡約扁平插畫</option>
+              <option value="oil painting, warm tones, impressionist">🖼️ 油畫印象派</option>
+              <option value="pixel art, retro game style">👾 像素藝術</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label for="neg-prompt-input" class="text-xs font-bold text-[#524436] uppercase tracking-wider">負面提示詞 <span class="font-normal normal-case text-[#847463]">（選填）</span></label>
+            <input id="neg-prompt-input" type="text" placeholder="例如：ugly, bad anatomy" autocomplete="off"
+              class="w-full bg-[#f1ede8] border-none rounded-xl px-4 py-3 text-sm text-[#1c1c19] outline-none focus:ring-2 focus:ring-[#e29930]/50" />
+          </div>
+        </div>
+        <button id="gen-btn" type="button" onclick="startGeneration()"
+          class="touch-target w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#855400] to-[#e29930] text-white font-bold text-base shadow-lg shadow-[#855400]/20 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined fill-icon">palette</span>開始生成繪本
+        </button>
+        <div id="gen-status" class="text-center text-sm font-bold text-[#e67e22] min-h-[20px]" aria-live="polite"></div>
+      </div>
+
+      <div id="storybook-result" class="hidden space-y-5">
+        <h3 class="text-lg font-bold text-[#1c1c19] flex items-center gap-2">
+          <span class="material-symbols-outlined fill-icon text-[#855400]">auto_stories</span>繪本結果
+        </h3>
+        <audio id="story-audio" controls class="w-full rounded-xl"></audio>
+        <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/20 shadow-sm">
+          <div id="pages-container" class="min-h-[300px]"></div>
+          <div class="flex items-center justify-between gap-3 px-4 md:px-6 py-4 border-t border-outline-variant/20 bg-[#f7f3ee]">
+            <button id="prev-btn" type="button" onclick="changePage(-1)" disabled
+              class="touch-target flex items-center gap-1 text-sm font-bold text-[#524436] hover:text-[#855400] transition-colors disabled:opacity-30 disabled:cursor-not-allowed rounded-full pr-3">
+              <span class="material-symbols-outlined text-lg">chevron_left</span>上一頁
+            </button>
+            <span id="page-indicator" class="text-sm text-[#524436] font-medium shrink-0">0 / 0</span>
+            <button id="next-btn" type="button" onclick="changePage(1)" disabled
+              class="touch-target flex items-center gap-1 text-sm font-bold text-[#524436] hover:text-[#855400] transition-colors disabled:opacity-30 disabled:cursor-not-allowed rounded-full pl-3">
+              下一頁<span class="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
-  <div class="flex flex-col items-center text-[#524436]">
-    <span class="material-symbols-outlined">import_contacts</span>
-    <span class="text-[10px] font-medium mt-0.5">書架</span>
-  </div>
-  <div class="flex flex-col items-center text-[#524436]">
-    <span class="material-symbols-outlined">auto_awesome</span>
-    <span class="text-[10px] font-medium mt-0.5">任務</span>
-  </div>
-  <div class="flex flex-col items-center text-[#524436]">
-    <span class="material-symbols-outlined">person</span>
-    <span class="text-[10px] font-medium mt-0.5">我的</span>
-  </div>
-</nav>
 
-<script>
-// ══════════════════════════════════════════
-//  ★ 唯一需要修改的設定
-// ══════════════════════════════════════════
-const API_BASE = "https://generator-pic.hasaki.idv.tw";
+  <nav class="mobile-bottom-nav fixed bottom-0 w-full z-50 grid grid-cols-2 items-center gap-3 pt-3 bg-[#fdf9f4]/95 backdrop-blur-xl border-t border-[#d7c3b0]/30 md:hidden" aria-label="手機導覽">
+    <button type="button" data-nav="home" onclick="goHome()" class="mobile-nav-btn touch-target flex flex-col items-center justify-center rounded-2xl text-[#855400] bg-[#ffddb7]">
+      <span class="material-symbols-outlined fill-icon">explore</span>
+      <span class="text-[10px] font-medium mt-0.5">探索</span>
+    </button>
+    <button type="button" data-nav="bookshelf" onclick="scrollToBookshelf()" class="mobile-nav-btn touch-target flex flex-col items-center justify-center rounded-2xl text-[#524436]">
+      <span class="material-symbols-outlined">import_contacts</span>
+      <span class="text-[10px] font-medium mt-0.5">書架</span>
+    </button>
+  </nav>
 
-// ──────────────────────────────────────────
-//  Global State
-// ──────────────────────────────────────────
-let chatHistory    = [];
-let currentMood    = "";
-let currentModel   = null;
-let allBooks       = [];
-let recommendedId  = "";
-let currentBook    = null;
-let currentPageIdx = 0;
-let pollInterval   = null;
+  <script>
+    const API_BASE = "https://generator-pic.hasaki.idv.tw";
+    const FALLBACK_COVER = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480"><rect width="320" height="480" rx="28" fill="#ffddb7"/><path d="M70 110h180v250H70z" fill="#fff7ed"/><path d="M100 160h120M100 205h120M100 250h90" stroke="#855400" stroke-width="16" stroke-linecap="round"/></svg>`);
 
-// ──────────────────────────────────────────
-//  Live2D
-// ──────────────────────────────────────────
-const pixiApp = new PIXI.Application({
-  view: document.getElementById('live2d-canvas'),
-  transparent: true, autoStart: true,
-  resizeTo: document.getElementById('live2d-canvas').parentElement
-});
+    let chatHistory = [];
+    let currentMood = "";
+    let currentModel = null;
+    let pixiApp = null;
+    let allBooks = [];
+    let recommendedId = "";
+    let currentBook = null;
+    let currentPageIdx = 0;
+    let pollInterval = null;
 
-async function initLive2D() {
-  try {
-    const url = "https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/shizuku/shizuku.model.json";
-    currentModel = await PIXI.live2d.Live2DModel.from(url);
-    pixiApp.stage.addChild(currentModel);
-    const sx = pixiApp.renderer.width  / currentModel.width;
-    const sy = pixiApp.renderer.height / currentModel.height;
-    currentModel.scale.set(Math.min(sx, sy) * 0.9);
-    currentModel.anchor.set(0.5, 0.5);
-    currentModel.x = pixiApp.renderer.width  / 2;
-    currentModel.y = pixiApp.renderer.height / 2;
-    if (currentModel.internalModel?.motionManager?.expressionManager) {
-      currentModel.expression(0);
-      currentModel.internalModel.motionManager.startRandomMotion('Idle');
+    const $ = (id) => document.getElementById(id);
+
+    function safeUrl(url, fallback = "") {
+      if (typeof url !== "string") return fallback;
+      const trimmed = url.trim();
+      if (!trimmed) return fallback;
+      if (/^(https?:|data:image\/)/i.test(trimmed)) return trimmed;
+      return fallback;
     }
-  } catch(e) { console.warn('Live2D 載入失敗', e); }
-  appendBotMsg('哈囉！今天過得好嗎？心情怎麼樣呢？');
-  chatHistory.push({ sender:'assistant', text:'哈囉！今天過得好嗎？心情怎麼樣呢？' });
-}
 
-function live2dSpeak(b64) {
-  if (currentModel && b64) currentModel.speak('data:audio/wav;base64,' + b64);
-}
+    function appendMessage(sender, text) {
+      const box = $("chat-box");
+      if (!box) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = sender === "user" ? "flex flex-col items-end gap-1" : "flex flex-col items-start gap-1";
 
-// ──────────────────────────────────────────
-//  Chat UI
-// ──────────────────────────────────────────
-function appendBotMsg(text) {
-  const box = document.getElementById('chat-box');
-  const d = document.createElement('div');
-  d.className = 'flex flex-col items-start gap-1';
-  d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold ml-1">選書助手</span>
-                 <div class="bubble-bot text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${text}</div>`;
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-function appendUserMsg(text) {
-  const box = document.getElementById('chat-box');
-  const d = document.createElement('div');
-  d.className = 'flex flex-col items-end gap-1';
-  d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold mr-1">你</span>
-                 <div class="bubble-user text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]">${text}</div>`;
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-function showTyping() {
-  const box = document.getElementById('chat-box');
-  const d = document.createElement('div');
-  d.id = 'typing-ind'; d.className = 'flex flex-col items-start gap-1';
-  d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold ml-1">選書助手</span>
-                 <div class="bubble-bot px-4 py-3"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-function removeTyping() { document.getElementById('typing-ind')?.remove(); }
+      const label = document.createElement("span");
+      label.className = sender === "user" ? "text-[10px] text-[#847463] font-semibold mr-1" : "text-[10px] text-[#847463] font-semibold ml-1";
+      label.textContent = sender === "user" ? "你" : "選書助手";
 
-async function sendMessage() {
-  const inp = document.getElementById('user-input');
-  const btn = document.getElementById('send-btn');
-  const msg = inp.value.trim();
-  if (!msg) return;
-  appendUserMsg(msg);
-  inp.value = ''; inp.disabled = true; btn.disabled = true;
-  showTyping();
-  chatHistory.push({ sender:'user', text:msg });
-  try {
-    const res  = await fetch(`${API_BASE}/api/chat`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ message:msg, history:chatHistory })
-    });
-    const data = await res.json();
-    removeTyping();
-    if (data.dialogue) {
-      appendBotMsg(data.dialogue);
-      chatHistory.push({ sender:'assistant', text:data.dialogue });
-      live2dSpeak(data.audio_base64);
+      const bubble = document.createElement("div");
+      bubble.className = sender === "user"
+        ? "bubble-user text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]"
+        : "bubble-bot text-sm text-[#1c1c19] px-4 py-2.5 max-w-[85%]";
+      bubble.textContent = String(text ?? "");
+
+      wrapper.append(label, bubble);
+      box.appendChild(wrapper);
+      box.scrollTop = box.scrollHeight;
     }
-    if (data.mood) setMood(data.mood);
-    if (data.action === 'recommend' && data.book_id) {
-      recommendedId = data.book_id;
-      renderBookshelf();
-      document.getElementById('recommended-hint').classList.remove('hidden');
-      if (data.cover_url) {
-        const box = document.getElementById('chat-box');
-        const d = document.createElement('div');
-        d.className = 'flex flex-col items-start gap-1';
-        d.innerHTML = `<span class="text-[10px] text-[#847463] font-semibold ml-1">選書助手</span>
-                       <img src="${data.cover_url}" class="w-20 rounded-xl shadow mt-1 ml-1"/>`;
-        box.appendChild(d); box.scrollTop = box.scrollHeight;
+
+    function appendBotMsg(text) { appendMessage("bot", text); }
+    function appendUserMsg(text) { appendMessage("user", text); }
+
+    function showTyping() {
+      const box = $("chat-box");
+      if (!box || $("typing-ind")) return;
+      const wrapper = document.createElement("div");
+      wrapper.id = "typing-ind";
+      wrapper.className = "flex flex-col items-start gap-1";
+
+      const label = document.createElement("span");
+      label.className = "text-[10px] text-[#847463] font-semibold ml-1";
+      label.textContent = "選書助手";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble-bot px-4 py-3";
+      const dots = document.createElement("div");
+      dots.className = "typing-dots";
+      dots.append(document.createElement("span"), document.createElement("span"), document.createElement("span"));
+      bubble.appendChild(dots);
+      wrapper.append(label, bubble);
+      box.appendChild(wrapper);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function removeTyping() { $("typing-ind")?.remove(); }
+
+    async function fetchJSON(url, options = {}) {
+      const res = await fetch(url, options);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }
+
+    async function initLive2D() {
+      try {
+        const canvas = $("live2d-canvas");
+        if (!canvas || !window.PIXI || !PIXI.live2d?.Live2DModel) throw new Error("Live2D SDK 尚未載入");
+        pixiApp = new PIXI.Application({
+          view: canvas,
+          transparent: true,
+          autoStart: true,
+          resizeTo: canvas.parentElement
+        });
+        const url = "https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/shizuku/shizuku.model.json";
+        currentModel = await PIXI.live2d.Live2DModel.from(url);
+        pixiApp.stage.addChild(currentModel);
+        resizeLive2DModel();
+        window.addEventListener("resize", resizeLive2DModel, { passive: true });
+        if (currentModel.internalModel?.motionManager?.expressionManager) {
+          currentModel.expression(0);
+          currentModel.internalModel.motionManager.startRandomMotion("Idle");
+        }
+      } catch (e) {
+        console.warn("Live2D 載入失敗，已保留聊天功能。", e);
+      }
+      appendBotMsg("哈囉！今天過得好嗎？心情怎麼樣呢？");
+      chatHistory.push({ sender: "assistant", text: "哈囉！今天過得好嗎？心情怎麼樣呢？" });
+    }
+
+    function resizeLive2DModel() {
+      if (!pixiApp || !currentModel) return;
+      const sx = pixiApp.renderer.width / currentModel.width;
+      const sy = pixiApp.renderer.height / currentModel.height;
+      currentModel.scale.set(Math.min(sx, sy) * 0.9);
+      currentModel.anchor.set(0.5, 0.5);
+      currentModel.x = pixiApp.renderer.width / 2;
+      currentModel.y = pixiApp.renderer.height / 2;
+    }
+
+    function live2dSpeak(b64) {
+      try {
+        if (currentModel && b64 && typeof currentModel.speak === "function") {
+          currentModel.speak("data:audio/wav;base64," + b64);
+        }
+      } catch (e) {
+        console.warn("Live2D 語音播放失敗", e);
       }
     }
-  } catch(e) {
-    removeTyping();
-    appendBotMsg('抱歉，發生了一點問題，請稍後再試。');
-  } finally {
-    inp.disabled = false; btn.disabled = false; inp.focus();
-  }
-}
-document.getElementById('user-input').addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendMessage();
-});
 
-function quickMood(mood, el) {
-  document.getElementById('user-input').value = `我現在感覺有點${mood}`;
-  document.getElementById('user-input').focus();
-  document.querySelectorAll('.mood-chip').forEach(c => {
-    c.classList.remove('bg-[#e29930]','text-white');
-    c.classList.add('bg-[#f1ede8]','text-[#524436]');
-  });
-  el.classList.add('bg-[#e29930]','text-white');
-  el.classList.remove('bg-[#f1ede8]','text-[#524436]');
-}
+    async function sendMessage() {
+      const inp = $("user-input");
+      const btn = $("send-btn");
+      const msg = inp?.value.trim();
+      if (!inp || !btn || !msg) return;
 
-function setMood(mood) {
-  currentMood = mood;
-  document.getElementById('mood-text').textContent = mood;
-  document.getElementById('mood-badge').classList.remove('hidden');
-}
+      appendUserMsg(msg);
+      inp.value = "";
+      inp.disabled = true;
+      btn.disabled = true;
+      showTyping();
+      chatHistory.push({ sender: "user", text: msg });
 
-// ──────────────────────────────────────────
-//  Books
-// ──────────────────────────────────────────
-async function loadBooks() {
-  try {
-    const res = await fetch(`${API_BASE}/api/books`);
-    allBooks  = await res.json();
-    renderBookshelf();
-  } catch(e) { console.error('書單載入失敗', e); }
-}
-
-function renderBookshelf() {
-  const grid = document.getElementById('books-grid');
-  grid.innerHTML = '';
-  allBooks.forEach(book => {
-    const isRec = book.book_id === recommendedId;
-    const card  = document.createElement('div');
-    card.className = `book-card bg-surface-container-lowest rounded-2xl overflow-hidden cursor-pointer border border-outline-variant/20 ${isRec?'recommended':''}`;
-    card.innerHTML = `
-      <div class="relative">
-        <img src="${book.cover_url}" alt="${book.title}" class="w-full aspect-[2/3] object-cover" loading="lazy"/>
-        ${isRec?`<div class="absolute top-2 left-2 bg-[#e29930] text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
-          <span class="material-symbols-outlined fill-icon text-[10px]">auto_awesome</span>AI推薦</div>`:''}
-        <div class="loading-spinner"></div>
-      </div>
-      <div class="p-3 space-y-1">
-        <p class="text-xs font-bold text-[#1c1c19] leading-tight line-clamp-2">${book.title}</p>
-        <p class="text-[10px] text-[#847463]">${book.author}</p>
-        <div class="flex flex-wrap gap-1 mt-1">
-          ${book.emotion_tags.slice(0,2).map(t=>`<span class="text-[9px] bg-[#f1ede8] text-[#524436] px-1.5 py-0.5 rounded-full">${t}</span>`).join('')}
-        </div>
-      </div>`;
-    card.addEventListener('click', () => onBookClick(book));
-    grid.appendChild(card);
-  });
-}
-
-async function onBookClick(book) {
-  // 找到被點擊的卡片，加上 loading 狀態
-  const allCards = document.querySelectorAll('.book-card');
-  let clickedCard = null;
-  allCards.forEach(card => {
-    const titleEl = card.querySelector('p.text-xs.font-bold');
-    if (titleEl && titleEl.textContent === book.title) {
-      clickedCard = card;
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg, history: chatHistory })
+        });
+        removeTyping();
+        if (data.dialogue) {
+          appendBotMsg(data.dialogue);
+          chatHistory.push({ sender: "assistant", text: data.dialogue });
+          live2dSpeak(data.audio_base64);
+        }
+        if (data.mood) setMood(data.mood);
+        if (data.action === "recommend" && data.book_id) {
+          recommendedId = data.book_id;
+          renderBookshelf();
+          $("recommended-hint")?.classList.remove("hidden");
+          appendRecommendationCover(data.cover_url);
+        }
+      } catch (e) {
+        removeTyping();
+        appendBotMsg("抱歉，連線發生問題，請稍後再試。");
+        console.error("聊天請求失敗", e);
+      } finally {
+        inp.disabled = false;
+        btn.disabled = false;
+        inp.focus({ preventScroll: true });
+      }
     }
-  });
 
-  if (clickedCard) {
-    clickedCard.classList.add('book-card-loading');
-    const spinner = clickedCard.querySelector('.loading-spinner');
-    if (spinner) spinner.style.display = 'flex';
-  }
+    function appendRecommendationCover(url) {
+      const box = $("chat-box");
+      const cover = safeUrl(url);
+      if (!box || !cover) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "flex flex-col items-start gap-1";
+      const label = document.createElement("span");
+      label.className = "text-[10px] text-[#847463] font-semibold ml-1";
+      label.textContent = "選書助手";
+      const img = document.createElement("img");
+      img.src = cover;
+      img.alt = "AI 推薦書封";
+      img.loading = "lazy";
+      img.className = "w-20 rounded-xl shadow mt-1 ml-1";
+      wrapper.append(label, img);
+      box.appendChild(wrapper);
+      box.scrollTop = box.scrollHeight;
+    }
 
-  try {
-    const res  = await fetch(`${API_BASE}/api/book_comment`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ title:book.title, mood:currentMood })
+    $("user-input")?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.isComposing) sendMessage();
     });
-    const data = await res.json();
-    if (data.dialogue) { appendBotMsg(data.dialogue); live2dSpeak(data.audio_base64); }
-  } catch(e) { /* silent */ }
 
-  // loading 結束後跳頁
-  setTimeout(() => {
-    if (clickedCard) {
-      clickedCard.classList.remove('book-card-loading');
-      const spinner = clickedCard.querySelector('.loading-spinner');
-      if (spinner) spinner.style.display = 'none';
+    function quickMood(mood, el) {
+      const inp = $("user-input");
+      if (!inp) return;
+      inp.value = `我現在感覺有點${mood}`;
+      inp.focus({ preventScroll: true });
+      document.querySelectorAll(".mood-chip").forEach((chip) => {
+        chip.classList.remove("bg-[#e29930]", "text-white");
+        chip.classList.add("bg-[#f1ede8]", "text-[#524436]");
+      });
+      el?.classList.add("bg-[#e29930]", "text-white");
+      el?.classList.remove("bg-[#f1ede8]", "text-[#524436]");
     }
-    openDetail(book);
-  }, 300);
-}
 
-// ──────────────────────────────────────────
-//  Page Navigation
-// ──────────────────────────────────────────
-function openDetail(book) {
-  currentBook = book;
-  document.getElementById('detail-cover').src          = book.cover_url;
-  document.getElementById('detail-title').textContent  = book.title;
-  document.getElementById('detail-author').textContent = `作者：${book.author}`;
-  document.getElementById('detail-summary').textContent = book.summary;
-  document.getElementById('detail-tags').innerHTML =
-    book.emotion_tags.map(t=>`<span class="text-xs bg-[#fff7ed] text-[#855400] border border-[#ffddb7] px-3 py-1 rounded-full font-medium">${t}</span>`).join('');
-  const bar = document.getElementById('mood-hint-bar');
-  if (currentMood) {
-    document.getElementById('mood-hint-text').textContent = `根據你的心情「${currentMood}」，已自動融入繪本風格提示中`;
-    bar.classList.remove('hidden'); bar.classList.add('flex');
-  } else { bar.classList.add('hidden'); bar.classList.remove('flex'); }
-  document.getElementById('gen-status').textContent = '';
-  document.getElementById('gen-btn').disabled = false;
-  document.getElementById('storybook-result').classList.add('hidden');
-  document.getElementById('pages-container').innerHTML = '';
-  document.getElementById('home-page').classList.remove('active');
-  document.getElementById('detail-page').classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
+    function setMood(mood) {
+      currentMood = String(mood || "");
+      const moodText = $("mood-text");
+      if (moodText) moodText.textContent = currentMood;
+      $("mood-badge")?.classList.remove("hidden");
+    }
 
-function goHome() {
-  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
-  document.getElementById('detail-page').classList.remove('active');
-  document.getElementById('home-page').classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
+    async function loadBooks() {
+      const grid = $("books-grid");
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/books`);
+        allBooks = Array.isArray(data) ? data : [];
+        renderBookshelf();
+      } catch (e) {
+        console.error("書單載入失敗", e);
+        if (grid) {
+          grid.innerHTML = "";
+          const msg = document.createElement("p");
+          msg.className = "col-span-full text-sm text-[#ba1a1a] bg-[#ffdad6] rounded-2xl p-4";
+          msg.textContent = "書單載入失敗，請檢查 API 是否正常。";
+          grid.appendChild(msg);
+        }
+      }
+    }
 
-// ──────────────────────────────────────────
-//  Storybook Generation
-// ──────────────────────────────────────────
-async function startGeneration() {
-  if (!currentBook) return;
-  const style    = document.getElementById('style-select').value;
-  const neg      = document.getElementById('neg-prompt-input').value.trim();
-  const statusEl = document.getElementById('gen-status');
-  const genBtn   = document.getElementById('gen-btn');
-  const finalStyle = currentMood ? `${style}, mood: ${currentMood}` : style;
-  genBtn.disabled = true;
-  statusEl.style.color = '#e67e22';
-  statusEl.textContent = '正在發送請求至伺服器…';
-  try {
-    const res = await fetch(`${API_BASE}/api/generate`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        summary: currentBook.summary, style: finalStyle,
-        negative_prompt: neg || 'ugly, bad anatomy, bad quality, blurry'
-      })
+    function renderBookshelf() {
+      const grid = $("books-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      if (!allBooks.length) {
+        const empty = document.createElement("p");
+        empty.className = "col-span-full text-sm text-[#524436] bg-[#f7f3ee] rounded-2xl p-4";
+        empty.textContent = "目前沒有可顯示的書籍。";
+        grid.appendChild(empty);
+        return;
+      }
+
+      allBooks.forEach((book) => {
+        const tags = Array.isArray(book.emotion_tags) ? book.emotion_tags : [];
+        const isRec = book.book_id === recommendedId;
+        const card = document.createElement("article");
+        card.className = `book-card bg-surface-container-lowest rounded-2xl overflow-hidden cursor-pointer border border-outline-variant/20 ${isRec ? "recommended" : ""}`;
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `查看 ${book.title || "書籍"} 的詳細內容`);
+
+        const imageWrap = document.createElement("div");
+        imageWrap.className = "relative";
+        const img = document.createElement("img");
+        img.src = safeUrl(book.cover_url, FALLBACK_COVER);
+        img.alt = book.title ? `${book.title} 封面` : "書籍封面";
+        img.loading = "lazy";
+        img.className = "w-full aspect-[2/3] object-cover";
+        imageWrap.appendChild(img);
+
+        if (isRec) {
+          const badge = document.createElement("div");
+          badge.className = "absolute top-2 left-2 bg-[#e29930] text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5";
+          const icon = document.createElement("span");
+          icon.className = "material-symbols-outlined fill-icon text-[10px]";
+          icon.textContent = "auto_awesome";
+          badge.append(icon, document.createTextNode("AI推薦"));
+          imageWrap.appendChild(badge);
+        }
+
+        const spinner = document.createElement("div");
+        spinner.className = "loading-spinner";
+        imageWrap.appendChild(spinner);
+
+        const content = document.createElement("div");
+        content.className = "p-3 space-y-1";
+        const title = document.createElement("p");
+        title.className = "text-xs font-bold text-[#1c1c19] leading-tight line-clamp-2";
+        title.textContent = book.title || "未命名書籍";
+        const author = document.createElement("p");
+        author.className = "text-[10px] text-[#847463]";
+        author.textContent = book.author || "作者未知";
+        const tagWrap = document.createElement("div");
+        tagWrap.className = "flex flex-wrap gap-1 mt-1";
+        tags.slice(0, 2).forEach((tag) => {
+          const chip = document.createElement("span");
+          chip.className = "text-[9px] bg-[#f1ede8] text-[#524436] px-1.5 py-0.5 rounded-full";
+          chip.textContent = tag;
+          tagWrap.appendChild(chip);
+        });
+        content.append(title, author, tagWrap);
+        card.append(imageWrap, content);
+
+        card.addEventListener("click", () => onBookClick(book, card));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onBookClick(book, card);
+          }
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    async function onBookClick(book, clickedCard) {
+      if (clickedCard?.classList.contains("book-card-loading")) return;
+      clickedCard?.classList.add("book-card-loading");
+      const spinner = clickedCard?.querySelector(".loading-spinner");
+      if (spinner) spinner.style.display = "flex";
+
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/book_comment`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: book.title, mood: currentMood })
+        });
+        if (data.dialogue) {
+          appendBotMsg(data.dialogue);
+          live2dSpeak(data.audio_base64);
+        }
+      } catch (e) {
+        console.warn("書籍短評載入失敗，仍會開啟詳情頁。", e);
+      } finally {
+        clickedCard?.classList.remove("book-card-loading");
+        if (spinner) spinner.style.display = "none";
+        openDetail(book);
+      }
+    }
+
+    function openDetail(book) {
+      currentBook = book;
+      const tags = Array.isArray(book.emotion_tags) ? book.emotion_tags : [];
+      const cover = $("detail-cover");
+      if (cover) {
+        cover.src = safeUrl(book.cover_url, FALLBACK_COVER);
+        cover.alt = book.title ? `${book.title} 封面` : "書籍封面";
+      }
+      $("detail-title").textContent = book.title || "未命名書籍";
+      $("detail-author").textContent = `作者：${book.author || "作者未知"}`;
+      $("detail-summary").textContent = book.summary || "目前沒有摘要。";
+
+      const detailTags = $("detail-tags");
+      if (detailTags) {
+        detailTags.innerHTML = "";
+        tags.forEach((tag) => {
+          const chip = document.createElement("span");
+          chip.className = "text-xs bg-[#fff7ed] text-[#855400] border border-[#ffddb7] px-3 py-1 rounded-full font-medium";
+          chip.textContent = tag;
+          detailTags.appendChild(chip);
+        });
+      }
+
+      const bar = $("mood-hint-bar");
+      const hint = $("mood-hint-text");
+      if (bar && hint && currentMood) {
+        hint.textContent = `根據你的心情「${currentMood}」，已自動融入繪本風格提示中`;
+        bar.classList.remove("hidden");
+        bar.classList.add("flex");
+      } else if (bar) {
+        bar.classList.add("hidden");
+        bar.classList.remove("flex");
+      }
+
+      $("gen-status").textContent = "";
+      $("gen-btn").disabled = false;
+      $("storybook-result").classList.add("hidden");
+      $("pages-container").innerHTML = "";
+      updateNav(0);
+      $("home-page").classList.remove("active");
+      $("detail-page").classList.add("active");
+      setNavActive("home");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goHome() {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+      }
+      $("detail-page")?.classList.remove("active");
+      $("home-page")?.classList.add("active");
+      setNavActive("home");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function scrollToBookshelf() {
+      const afterHome = () => {
+        $("bookshelf-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setNavActive("bookshelf");
+      };
+      if (!$("home-page")?.classList.contains("active")) {
+        goHome();
+        window.setTimeout(afterHome, 80);
+      } else {
+        afterHome();
+      }
+    }
+
+    function setNavActive(active) {
+      document.querySelectorAll("[data-nav]").forEach((btn) => {
+        const on = btn.dataset.nav === active;
+        btn.classList.toggle("text-[#855400]", on);
+        btn.classList.toggle("bg-[#ffddb7]", on);
+        btn.classList.toggle("text-[#524436]", !on);
+      });
+    }
+
+    async function startGeneration() {
+      if (!currentBook) return;
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+      }
+      const style = $("style-select").value;
+      const neg = $("neg-prompt-input").value.trim();
+      const statusEl = $("gen-status");
+      const genBtn = $("gen-btn");
+      const finalStyle = currentMood ? `${style}, mood: ${currentMood}` : style;
+
+      genBtn.disabled = true;
+      statusEl.style.color = "#e67e22";
+      statusEl.textContent = "正在發送請求至伺服器…";
+
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            summary: currentBook.summary || "",
+            style: finalStyle,
+            negative_prompt: neg || "ugly, bad anatomy, bad quality, blurry"
+          })
+        });
+        if (!data.task_id) throw new Error("伺服器沒有回傳 task_id");
+        pollInterval = window.setInterval(() => checkStatus(data.task_id), 3000);
+        await checkStatus(data.task_id);
+      } catch (e) {
+        statusEl.style.color = "#ba1a1a";
+        statusEl.textContent = "連線失敗：" + e.message;
+        genBtn.disabled = false;
+      }
+    }
+
+    async function checkStatus(taskId) {
+      const statusEl = $("gen-status");
+      const genBtn = $("gen-btn");
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/status/${encodeURIComponent(taskId)}`);
+        if (data.status === "pending") {
+          statusEl.textContent = "⏳ 排隊中，請稍候…";
+        } else if (data.status === "processing") {
+          statusEl.textContent = "🎨 Worker 正在繪製中…";
+        } else if (data.status === "completed") {
+          if (pollInterval) clearInterval(pollInterval);
+          pollInterval = null;
+          statusEl.style.color = "#3b6934";
+          statusEl.textContent = "✅ 生成完成！";
+          genBtn.disabled = false;
+          renderStorybook(data.result);
+        } else if (["failed", "error"].includes(data.status)) {
+          throw new Error(data.message || "生成失敗");
+        }
+      } catch (e) {
+        if (pollInterval) clearInterval(pollInterval);
+        pollInterval = null;
+        statusEl.style.color = "#ba1a1a";
+        statusEl.textContent = "查詢失敗：" + e.message;
+        genBtn.disabled = false;
+      }
+    }
+
+    function renderStorybook(result = {}) {
+      const area = $("storybook-result");
+      const audio = $("story-audio");
+      const cont = $("pages-container");
+      if (!area || !audio || !cont) return;
+      area.classList.remove("hidden");
+      cont.innerHTML = "";
+      currentPageIdx = 0;
+
+      if (result.audio_base64) {
+        audio.src = "data:audio/wav;base64," + result.audio_base64;
+        audio.style.display = "block";
+      } else {
+        audio.removeAttribute("src");
+        audio.style.display = "none";
+      }
+
+      const pages = Array.isArray(result.manifest?.pages) ? result.manifest.pages : [];
+      if (!pages.length) {
+        const empty = document.createElement("p");
+        empty.className = "p-6 text-sm text-[#ba1a1a]";
+        empty.textContent = "生成完成，但沒有收到任何繪本頁面。請檢查後端 result.manifest.pages。";
+        cont.appendChild(empty);
+        updateNav(0);
+        area.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
+      pages.forEach((page, i) => {
+        const d = document.createElement("div");
+        d.className = `story-page flex-col md:flex-row gap-6 p-5 md:p-8 items-start ${i === 0 ? "active" : ""}`;
+        const img = document.createElement("img");
+        img.src = page.image_base64 ? "data:image/png;base64," + page.image_base64 : FALLBACK_COVER;
+        img.alt = `繪本第 ${i + 1} 頁插圖`;
+        img.className = "story-image w-full md:w-[45%] rounded-2xl shadow-lg object-cover";
+        const txt = document.createElement("div");
+        txt.className = "flex-1 text-base md:text-lg text-[#1c1c19] leading-relaxed flex items-center";
+        txt.textContent = page.content || "";
+        d.append(img, txt);
+        cont.appendChild(d);
+      });
+      updateNav(pages.length);
+      area.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function changePage(delta) {
+      const pages = document.querySelectorAll(".story-page");
+      if (!pages.length) return;
+      pages[currentPageIdx]?.classList.remove("active");
+      currentPageIdx = Math.max(0, Math.min(pages.length - 1, currentPageIdx + delta));
+      pages[currentPageIdx]?.classList.add("active");
+      updateNav(pages.length);
+    }
+
+    function updateNav(total) {
+      const indicator = $("page-indicator");
+      const prev = $("prev-btn");
+      const next = $("next-btn");
+      if (!indicator || !prev || !next) return;
+      if (!total) {
+        indicator.textContent = "0 / 0";
+        prev.disabled = true;
+        next.disabled = true;
+        return;
+      }
+      indicator.textContent = `${currentPageIdx + 1} / ${total}`;
+      prev.disabled = currentPageIdx === 0;
+      next.disabled = currentPageIdx === total - 1;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      setNavActive("home");
+      window.setTimeout(initLive2D, 0);
+      loadBooks();
     });
-    if (!res.ok) throw new Error(`伺服器錯誤: ${res.status}`);
-    const data = await res.json();
-    pollInterval = setInterval(() => checkStatus(data.task_id), 3000);
-  } catch(e) {
-    statusEl.style.color = '#ba1a1a';
-    statusEl.textContent = '連線失敗：' + e.message;
-    genBtn.disabled = false;
-  }
-}
-
-async function checkStatus(taskId) {
-  const statusEl = document.getElementById('gen-status');
-  const genBtn   = document.getElementById('gen-btn');
-  try {
-    const res  = await fetch(`${API_BASE}/api/status/${taskId}`);
-    if (!res.ok) throw new Error(`狀態查詢失敗: ${res.status}`);
-    const data = await res.json();
-    if      (data.status === 'pending')    statusEl.textContent = '⏳ 排隊中，請稍候…';
-    else if (data.status === 'processing') statusEl.textContent = '🎨 Worker 正在繪製中（約需 60 秒）…';
-    else if (data.status === 'completed')  {
-      clearInterval(pollInterval); pollInterval = null;
-      statusEl.style.color = '#3b6934';
-      statusEl.textContent = '✅ 生成完成！';
-      genBtn.disabled = false;
-      renderStorybook(data.result);
-    }
-  } catch(e) {
-    clearInterval(pollInterval); pollInterval = null;
-    statusEl.style.color = '#ba1a1a';
-    statusEl.textContent = '查詢失敗：' + e.message;
-    document.getElementById('gen-btn').disabled = false;
-  }
-}
-
-function renderStorybook(result) {
-  const area  = document.getElementById('storybook-result');
-  const audio = document.getElementById('story-audio');
-  const cont  = document.getElementById('pages-container');
-  area.classList.remove('hidden');
-  cont.innerHTML = ''; currentPageIdx = 0;
-  if (result.audio_base64) { audio.src = 'data:audio/wav;base64,' + result.audio_base64; audio.style.display='block'; }
-  else { audio.style.display = 'none'; }
-  const pages = result.manifest?.pages || [];
-  pages.forEach((page, i) => {
-    const d = document.createElement('div');
-    d.className = `story-page flex-col md:flex-row gap-6 p-6 md:p-8 items-start ${i===0?'active':''}`;
-    const img = document.createElement('img');
-    if (page.image_base64) img.src = 'data:image/png;base64,' + page.image_base64;
-    img.className = 'w-full md:w-[45%] rounded-2xl shadow-lg object-cover';
-    const txt = document.createElement('div');
-    txt.className = 'flex-1 text-base md:text-lg text-[#1c1c19] leading-relaxed flex items-center';
-    txt.textContent = page.content;
-    d.appendChild(img); d.appendChild(txt); cont.appendChild(d);
-  });
-  updateNav(pages.length);
-  area.scrollIntoView({ behavior:'smooth' });
-}
-
-function changePage(delta) {
-  const pages = document.querySelectorAll('.story-page');
-  if (!pages.length) return;
-  pages[currentPageIdx].classList.remove('active');
-  currentPageIdx = Math.max(0, Math.min(pages.length-1, currentPageIdx+delta));
-  pages[currentPageIdx].classList.add('active');
-  updateNav(pages.length);
-}
-function updateNav(total) {
-  document.getElementById('page-indicator').textContent = `${currentPageIdx+1} / ${total}`;
-  document.getElementById('prev-btn').disabled = currentPageIdx === 0;
-  document.getElementById('next-btn').disabled = currentPageIdx === total-1;
-}
-
-// ──────────────────────────────────────────
-//  Init
-// ──────────────────────────────────────────
-initLive2D();
-loadBooks();
-</script>
+  </script>
 </body>
 </html>
