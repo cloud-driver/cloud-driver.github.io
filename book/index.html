@@ -14,8 +14,8 @@
   <title>閱境 AI - 你的數位閱讀庇護所</title>
 
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png" />
+  <link rel="icon" type="image/png" href="icons/1024.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/180.png" />
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -180,6 +180,111 @@
       background: color-mix(in srgb, var(--app-bg) 95%, transparent);
       box-shadow: 0 -8px 24px rgba(82,68,54,.08);
     }
+    body.splash-lock { overflow: hidden; }
+    body.app-ready { overflow-x: hidden; }
+    .app-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      padding-top: calc(24px + var(--safe-top));
+      padding-bottom: calc(24px + var(--safe-bottom));
+      background:
+        radial-gradient(circle at 50% 32%, rgba(255,221,183,.72) 0, rgba(255,221,183,.18) 30%, transparent 58%),
+        linear-gradient(180deg, #fffaf3 0%, var(--app-bg) 58%, #fff7ed 100%);
+      transition: opacity .48s ease, visibility .48s ease;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .app-splash.splash-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-card {
+      width: min(82vw, 280px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .8rem;
+      transform: translateY(-3vh);
+      animation: splashFloat 1.6s ease-in-out infinite alternate;
+    }
+    .splash-logo-wrap {
+      width: 96px;
+      height: 96px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 30px;
+      background: #fff7ed;
+      box-shadow: 0 20px 48px rgba(133,84,0,.16), inset 0 0 0 1px rgba(226,153,48,.24);
+    }
+    .splash-logo-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -45%;
+      background: conic-gradient(from 0deg, transparent, rgba(226,153,48,.55), transparent 42%);
+      animation: splashSpin 1.5s linear infinite;
+    }
+    .splash-logo-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 25px;
+      background: #fff7ed;
+    }
+    .splash-logo, .splash-fallback-icon {
+      position: relative;
+      z-index: 1;
+    }
+    .splash-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+    }
+    .splash-fallback-icon {
+      color: #855400;
+      font-size: 52px;
+    }
+    .splash-title {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #855400;
+      letter-spacing: .02em;
+    }
+    .splash-subtitle {
+      min-height: 1.25rem;
+      color: #524436;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+    .splash-progress {
+      width: 176px;
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(215,195,176,.58);
+    }
+    .splash-progress span {
+      display: block;
+      width: 46%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #855400, #e29930);
+      animation: splashProgress 1.15s ease-in-out infinite;
+    }
+    @keyframes splashSpin { to { transform: rotate(360deg); } }
+    @keyframes splashFloat { from { transform: translateY(-3vh); } to { transform: translateY(calc(-3vh - 8px)); } }
+    @keyframes splashProgress {
+      0% { transform: translateX(-110%); }
+      55% { transform: translateX(70%); }
+      100% { transform: translateX(245%); }
+    }
     @media (max-width: 767px) {
       .live2d-panel { height: min(62vw, 280px); }
       .chat-box { max-height: 240px !important; }
@@ -195,7 +300,19 @@
     }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen splash-lock">
+  <div id="app-splash" class="app-splash" role="status" aria-live="polite" aria-label="閱境 AI 載入中">
+    <div class="splash-card">
+      <div class="splash-logo-wrap">
+        <img class="splash-logo" src="icons/icon.svg" alt="閱境 AI" onerror="this.remove(); document.querySelector('.splash-fallback-icon')?.classList.remove('hidden');" />
+        <span class="material-symbols-outlined fill-icon splash-fallback-icon hidden">menu_book</span>
+      </div>
+      <div class="splash-title">閱境 AI</div>
+      <div id="splash-subtitle" class="splash-subtitle">正在喚醒選書助手…</div>
+      <div class="splash-progress" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+
   <header class="app-header sticky top-0 z-50 bg-[#fdf9f4]/90 backdrop-blur-xl border-b border-[#d7c3b0]/30 shadow-[0_4px_24px_rgba(82,68,54,.06)]">
     <div class="flex items-center justify-between h-16 px-4 sm:px-5 md:px-10 max-w-screen-xl mx-auto">
       <button type="button" class="touch-target flex items-center gap-3 rounded-full pr-3 text-left" onclick="goHome()" aria-label="回到首頁">
@@ -414,6 +531,32 @@
 
     const $ = (id) => document.getElementById(id);
 
+    const splashStartedAt = performance.now();
+    let splashHidden = false;
+
+    function setSplashText(text) {
+      const el = $("splash-subtitle");
+      if (el) el.textContent = text;
+    }
+
+    function hideSplash(reason = "ready") {
+      const splash = $("app-splash");
+      if (!splash || splashHidden) return;
+
+      const minimumVisibleMs = 1350;
+      const elapsed = performance.now() - splashStartedAt;
+      const delay = Math.max(0, minimumVisibleMs - elapsed);
+
+      window.setTimeout(() => {
+        splashHidden = true;
+        document.body.classList.remove("splash-lock");
+        document.body.classList.add("app-ready");
+        splash.classList.add("splash-hidden");
+        window.setTimeout(() => splash.remove(), 520);
+        console.info("Splash hidden:", reason);
+      }, delay);
+    }
+
     function safeUrl(url, fallback = "") {
       if (typeof url !== "string") return fallback;
       const trimmed = url.trim();
@@ -477,6 +620,7 @@
     }
 
     async function initLive2D() {
+      setSplashText("正在載入 Live2D 助手…");
       try {
         const canvas = $("live2d-canvas");
         const panel = canvas?.parentElement;
@@ -496,6 +640,7 @@
 
         const url = "https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/shizuku/shizuku.model.json";
         currentModel = await PIXI.live2d.Live2DModel.from(url);
+        setSplashText("正在整理閱讀空間…");
         currentModel.anchor.set(0.5, 0.5);
         currentModel.scale.set(1);
 
@@ -528,6 +673,7 @@
       }
       appendBotMsg("哈囉！今天過得好嗎？心情怎麼樣呢？");
       chatHistory.push({ sender: "assistant", text: "哈囉！今天過得好嗎？心情怎麼樣呢？" });
+      hideSplash(currentModel ? "live2d-ready" : "live2d-fallback");
     }
 
     function fitLive2DToPanel(force = false) {
@@ -980,8 +1126,12 @@
 
     window.addEventListener("DOMContentLoaded", () => {
       setNavActive("home");
+      setSplashText("正在建立閱讀空間…");
       window.setTimeout(initLive2D, 0);
       loadBooks();
+
+      // 最後保險：如果 CDN 或 Live2D 載入卡住，最多等 6 秒就放使用者進入。
+      window.setTimeout(() => hideSplash("timeout-fallback"), 6000);
     });
   </script>
 </body>
