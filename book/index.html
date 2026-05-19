@@ -2,9 +2,9 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="description" content="閱境 AI：用 AI 選書、理解心情，並生成專屬繪本摘要。" />
-  <meta name="theme-color" content="#855400" />
+  <meta name="theme-color" content="#fdf9f4" />
   <meta name="color-scheme" content="light" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -73,17 +73,48 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html { min-height: 100%; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body {
-      min-height: 100dvh;
-      margin: 0;
-      font-family: 'Manrope', 'Noto Sans TC', sans-serif;
-      background: #fdf9f4;
-      color: #1c1c19;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+    :root {
+      --app-bg: #fdf9f4;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
     }
+    html {
+      width: 100%;
+      min-height: 100%;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      background: var(--app-bg);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--app-bg);
+    }
+
+    body {
+      font-family:'Manrope','Noto Sans TC',sans-serif;
+      color:#1c1c19;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+    }
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      left: 0;
+      right: 0;
+      background: var(--app-bg);
+      pointer-events: none;
+      z-index: 45;
+    }
+    body::before { top: 0; height: var(--safe-top); }
+    body::after { bottom: 0; height: var(--safe-bottom); }
     h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif; }
     input, select, textarea { font-size: 16px; }
     button, a, input, select { -webkit-tap-highlight-color: transparent; }
@@ -93,10 +124,10 @@
     .fill-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .spa-page { display: none; }
+    .spa-page { display: none; background: var(--app-bg); }
     .spa-page.active { display: block; }
-    .app-header { padding-top: env(safe-area-inset-top); }
-    .app-main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+    .app-header { padding-top: var(--safe-top); background: var(--app-bg); }
+    .app-main { padding-bottom: calc(6.25rem + var(--safe-bottom)); }
     .touch-target { min-width: 44px; min-height: 44px; }
     .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
     .typing-dots span { width: 7px; height: 7px; background: #e29930; border-radius: 50%; animation: tdBounce 1.4s infinite ease-in-out both; }
@@ -142,9 +173,11 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .mobile-bottom-nav {
-      padding-bottom: calc(.75rem + env(safe-area-inset-bottom));
-      padding-left: max(1rem, env(safe-area-inset-left));
-      padding-right: max(1rem, env(safe-area-inset-right));
+      padding-bottom: calc(.75rem + var(--safe-bottom));
+      padding-left: max(1rem, var(--safe-left));
+      padding-right: max(1rem, var(--safe-right));
+      min-height: calc(4.75rem + var(--safe-bottom));
+      background: color-mix(in srgb, var(--app-bg) 95%, transparent);
       box-shadow: 0 -8px 24px rgba(82,68,54,.08);
     }
     @media (max-width: 767px) {
