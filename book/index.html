@@ -14,7 +14,7 @@
   <title>閱境 AI - 你的數位閱讀庇護所</title>
 
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/png" href="icons/1024.png" />
+  <link rel="icon" type="image/png" href="icons/180.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="icons/180.png" />
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
@@ -125,9 +125,16 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .spa-page { display: none; background: var(--app-bg); }
-    .spa-page.active { display: block; }
+    .spa-page.active { display: block; min-height: 100dvh; }
     .app-header { padding-top: var(--safe-top); background: var(--app-bg); }
-    .app-main { padding-bottom: calc(6.25rem + var(--safe-bottom)); }
+    /*
+      The bottom navigation is fixed, so normal document flow does not reserve
+      space for it. In the iOS WKWebView/Tailwind CDN combo, utility classes
+      such as py-6 can also win the cascade after runtime injection. Use
+      !important here on purpose so the last content can always scroll above
+      the fixed nav and the home indicator area.
+    */
+    .app-main { padding-bottom: calc(10rem + var(--safe-bottom)) !important; }
     .touch-target { min-width: 44px; min-height: 44px; }
     .typing-dots { display: inline-flex; gap: 4px; align-items: center; }
     .typing-dots span { width: 7px; height: 7px; background: #e29930; border-radius: 50%; animation: tdBounce 1.4s infinite ease-in-out both; }
@@ -286,6 +293,7 @@
       100% { transform: translateX(245%); }
     }
     @media (max-width: 767px) {
+      .app-main { padding-bottom: calc(11rem + var(--safe-bottom)) !important; }
       .live2d-panel { height: min(62vw, 280px); }
       .chat-box { max-height: 240px !important; }
       .mobile-card-padding { padding: 1rem; }
@@ -293,18 +301,90 @@
     }
     @media (min-width: 768px) {
       input, select, textarea { font-size: 14px; }
-      .app-main { padding-bottom: 2rem; }
+      .app-main { padding-bottom: 2rem !important; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
+
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255,221,183,.75), transparent 36%),
+        #fdf9f4;
+      color: #855400;
+      transition: opacity .45s ease, visibility .45s ease;
+      padding: calc(2rem + env(safe-area-inset-top, 0px)) 2rem calc(2rem + env(safe-area-inset-bottom, 0px));
+    }
+    .splash-screen.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-logo {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      object-fit: cover;
+      box-shadow: 0 18px 40px rgba(133,84,0,.18);
+      animation: splashPop 1.2s ease-in-out infinite alternate;
+    }
+    .splash-title {
+      font-family: 'Plus Jakarta Sans','Noto Sans TC',sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .splash-progress {
+      width: min(220px, 56vw);
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #efe4d8;
+    }
+    .splash-progress::after {
+      content: "";
+      display: block;
+      width: 45%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #855400, #e29930);
+      animation: splashSlide 1.15s ease-in-out infinite;
+    }
+    @keyframes splashPop {
+      from { transform: translateY(0) scale(.98); }
+      to { transform: translateY(-6px) scale(1.02); }
+    }
+    @keyframes splashSlide {
+      from { transform: translateX(-110%); }
+      to { transform: translateX(245%); }
+    }
+
   </style>
 </head>
 <body class="min-h-screen splash-lock">
+  <div id="splash-screen" class="splash-screen" aria-label="正在載入閱境 AI">
+    <img
+      class="splash-logo"
+      src="icons/180.png"
+      alt="閱境 AI"
+      onerror="this.onerror=null; this.src='icons/180.png';"
+    />
+    <div class="splash-title">閱境 AI</div>
+    <div class="splash-progress" aria-hidden="true"></div>
+  </div>
+
   <div id="app-splash" class="app-splash" role="status" aria-live="polite" aria-label="閱境 AI 載入中">
     <div class="splash-card">
       <div class="splash-logo-wrap">
-        <img class="splash-logo" src="icons/icon.svg" alt="閱境 AI" onerror="this.remove(); document.querySelector('.splash-fallback-icon')?.classList.remove('hidden');" />
+        <img class="splash-logo" src="icons/180.png" alt="閱境 AI" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.splash-fallback-icon')?.classList.remove('hidden');" />
         <span class="material-symbols-outlined fill-icon splash-fallback-icon hidden">menu_book</span>
       </div>
       <div class="splash-title">閱境 AI</div>
@@ -316,7 +396,13 @@
   <header class="app-header sticky top-0 z-50 bg-[#fdf9f4]/90 backdrop-blur-xl border-b border-[#d7c3b0]/30 shadow-[0_4px_24px_rgba(82,68,54,.06)]">
     <div class="flex items-center justify-between h-16 px-4 sm:px-5 md:px-10 max-w-screen-xl mx-auto">
       <button type="button" class="touch-target flex items-center gap-3 rounded-full pr-3 text-left" onclick="goHome()" aria-label="回到首頁">
-        <span class="material-symbols-outlined fill-icon text-[#855400] text-3xl">menu_book</span>
+        <img
+          src="icons/180.png"
+          alt=""
+          class="w-8 h-8 rounded-lg object-cover"
+          aria-hidden="true"
+          onerror="this.onerror=null; this.src='icons/180.png';"
+        />
         <span class="text-xl font-bold tracking-tight text-[#855400]">閱境 AI</span>
       </button>
       <nav class="hidden md:flex gap-3 text-sm font-semibold" aria-label="主要導覽">
@@ -328,7 +414,7 @@
   </header>
 
   <div id="home-page" class="spa-page active">
-    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 py-6 md:py-8 space-y-8 md:space-y-12">
+    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 pt-6 md:pt-8 space-y-8 md:space-y-12">
       <section class="space-y-1">
         <p class="text-sm font-semibold text-[#524436] tracking-wide">午後好，Alan</p>
         <h1 class="text-[2rem] md:text-4xl font-extrabold text-[#1c1c19] leading-tight">今天想為心靈，<br class="md:hidden" />留下一段什麼樣的空白？</h1>
@@ -428,7 +514,7 @@
   </div>
 
   <div id="detail-page" class="spa-page">
-    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 py-6 md:py-8 space-y-8">
+    <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 pt-6 md:pt-8 space-y-8">
       <button type="button" onclick="goHome()" class="touch-target flex items-center gap-1.5 text-sm text-[#524436] hover:text-[#855400] transition-colors font-semibold rounded-full pr-3">
         <span class="material-symbols-outlined text-lg">arrow_back</span> 返回書架
       </button>
@@ -673,6 +759,7 @@
       }
       appendBotMsg("哈囉！今天過得好嗎？心情怎麼樣呢？");
       chatHistory.push({ sender: "assistant", text: "哈囉！今天過得好嗎？心情怎麼樣呢？" });
+      hideSplash();
       hideSplash(currentModel ? "live2d-ready" : "live2d-fallback");
     }
 
@@ -1128,6 +1215,7 @@
       setNavActive("home");
       setSplashText("正在建立閱讀空間…");
       window.setTimeout(initLive2D, 0);
+      window.setTimeout(hideSplash, 6000);
       loadBooks();
 
       // 最後保險：如果 CDN 或 Live2D 載入卡住，最多等 6 秒就放使用者進入。

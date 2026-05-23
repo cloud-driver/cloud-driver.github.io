@@ -1,15 +1,18 @@
 {
-  "name": "閱境 AI - 你的數位閱讀庇護所",
+  "name": "閱境 AI",
   "short_name": "閱境 AI",
-  "description": "AI 選書助手與繪本摘要生成工具",
-  "lang": "zh-Hant-TW",
+  "description": "閱境 AI：用 AI 選書、理解心情，並生成專屬繪本摘要。",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#fdf9f4",
   "theme_color": "#855400",
   "icons": [
+    {
+      "src": "icons/180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
     {
       "src": "icons/196.png",
       "sizes": "196x196",
@@ -20,6 +23,11 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "icons/1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
   ]
 }
