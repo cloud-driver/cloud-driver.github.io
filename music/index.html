@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>音效版</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f7f7f7;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 120px);
+      gap: 20px;
+    }
+
+    button {
+      width: 120px;
+      height: 120px;
+      font-size: 48px;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <button onclick="playSound('sound1')">1</button>
+    <button onclick="playSound('sound2')">2</button>
+    <button onclick="playSound('sound3')">3</button>
+    <button onclick="playSound('sound4')">4</button>
+  </div>
+
+  <audio id="sound1" src="開頭.mp3"></audio>
+  <audio id="sound2" src="音效1.mp3"></audio>
+  <audio id="sound3" src="音效2.mp3"></audio>
+  <audio id="sound4" src="end.mp3"></audio>
+
+  <script>
+    function playSound(id) {
+      const audio = document.getElementById(id);
+      audio.currentTime = 0;
+      audio.play();
+    }
+  </script>
+</body>
+</html>
