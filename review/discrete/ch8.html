@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>離散數學第八章複習：遞迴、排容、滿射</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --line:#d9e1ec;
+      --accent:#2563eb;
+      --accent2:#0f766e;
+      --warn:#b45309;
+      --bad:#b91c1c;
+      --good:#047857;
+      --code:#0f172a;
+      --soft:#eef5ff;
+      --soft2:#ecfdf5;
+      --soft3:#fff7ed;
+      --shadow:0 10px 28px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+      line-height:1.65;
+      background:var(--bg);
+      color:var(--ink);
+    }
+    header{
+      background:linear-gradient(135deg,#172554,#1d4ed8 56%,#0f766e);
+      color:white;
+      padding:48px 22px 38px;
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+    .hero{display:grid;grid-template-columns:1.4fr .8fr;gap:22px;align-items:end}
+    h1{font-size:clamp(30px,4vw,48px);line-height:1.15;margin:0 0 14px;font-weight:800}
+    .subtitle{font-size:18px;opacity:.95;margin:0;max-width:820px}
+    .meta{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:16px 18px}
+    .meta b{display:block;font-size:15px;margin-bottom:6px;color:#dbeafe}
+    .meta span{display:block;font-size:14px;opacity:.95}
+    nav.toc{
+      background:var(--card);
+      margin:-24px auto 28px;
+      max-width:1180px;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+      padding:18px;
+      position:relative;
+      z-index:2;
+    }
+    .toc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .toc a{
+      display:block;
+      text-decoration:none;
+      color:var(--ink);
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+    }
+    .toc a:hover{border-color:var(--accent);background:#eff6ff;color:#1d4ed8}
+    main{padding-bottom:90px}
+    section.card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      margin:24px auto;
+    }
+    h2{font-size:30px;margin:0 0 16px;padding-bottom:10px;border-bottom:3px solid #e5e7eb}
+    h3{font-size:23px;margin:28px 0 12px;color:#111827}
+    h4{font-size:18px;margin:22px 0 8px;color:#1f2937}
+    .lead{font-size:17px;color:#374151}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+    .pill{display:inline-flex;align-items:center;gap:6px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:700}
+    .pill.green{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+    .pill.orange{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+    .pill.gray{background:#f3f4f6;color:#374151;border-color:#e5e7eb}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin:14px 0 24px;font-size:15px;overflow:hidden;border:1px solid var(--line);border-radius:16px}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{background:#eef2ff;text-align:left;color:#1e3a8a;font-weight:800}
+    tr:last-child td{border-bottom:0}
+    tr:nth-child(even) td{background:#fafafa}
+    .formula{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:2px 7px;color:var(--code);white-space:nowrap}
+    .block-formula{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;background:#0f172a;color:#e5e7eb;border-radius:16px;padding:16px 18px;overflow:auto;margin:12px 0 18px;border:1px solid #334155}
+    .note{border-left:5px solid var(--accent);background:var(--soft);padding:14px 16px;border-radius:12px;margin:16px 0}
+    .warning{border-left:5px solid var(--warn);background:var(--soft3);padding:14px 16px;border-radius:12px;margin:16px 0}
+    .good{border-left:5px solid var(--good);background:var(--soft2);padding:14px 16px;border-radius:12px;margin:16px 0}
+    .danger{border-left:5px solid var(--bad);background:#fef2f2;padding:14px 16px;border-radius:12px;margin:16px 0}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .mini-card{background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:16px}
+    .mini-card h4{margin-top:0}
+    .backline{margin:24px 0 0;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-block;text-decoration:none;color:white;background:var(--accent);padding:9px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;font-size:14px}
+    .btn.secondary{background:#475569}
+    .btn.green{background:#0f766e}
+    .btn.light{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+    .topbtn{position:fixed;right:18px;bottom:18px;z-index:99;background:#111827;color:white;border:none;border-radius:999px;padding:12px 16px;box-shadow:var(--shadow);font-weight:800;cursor:pointer}
+    details{background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:12px 0}
+    summary{cursor:pointer;font-weight:800;color:#1e3a8a}
+    .kbd{font-family:"SFMono-Regular",Consolas,monospace;background:#e5e7eb;border:1px solid #cbd5e1;border-radius:6px;padding:1px 6px;font-size:13px}
+    .task-title{font-weight:900;color:#1f2937}
+    .small{font-size:13px;color:var(--muted)}
+    .no-repeat{background:linear-gradient(90deg,#ecfeff,#f0fdf4);border:1px solid #bae6fd;border-radius:18px;padding:16px;margin:16px 0}
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+    .step{background:#eef2ff;border:1px solid #c7d2fe;border-radius:14px;padding:11px;text-align:center;font-weight:800;color:#312e81}
+    .arrow{display:none}
+    .print-note{display:none}
+    @media (max-width:900px){.hero,.grid2,.grid3{grid-template-columns:1fr}.toc-grid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}.step{text-align:left}}
+    @media (max-width:560px){.toc-grid{grid-template-columns:1fr}section.card{padding:20px}.wrap{padding:0 12px}th,td{padding:10px 9px;font-size:14px}.formula{white-space:normal}}
+    @media print{
+      body{background:white}.topbtn,nav.toc,.backline .btn{display:none}.card{box-shadow:none;break-inside:avoid}.print-note{display:block}
+    }
+  </style>
+</head>
+<body id="top">
+<header>
+  <div class="wrap hero">
+    <div>
+      <h1>第八章考前複習網頁</h1>
+      <p class="subtitle">Advanced Counting Techniques：把所有需要寫的題目整理成「先備知識 → 核心觀念 → 題型模板 → 作業答案檢核」。看完不是背答案，而是能判斷題型、列式、算到最後。</p>
+    </div>
+    <div class="meta">
+      <b>涵蓋作業題目</b>
+      <span>8.1：7, 9, 13</span>
+      <span>8.2：1, 13, 15, 19, 21, 23, 27, 29</span>
+      <span>8.5：1, 5, 9</span>
+      <span>8.6：8</span>
+      <span class="small">依據：Chapter 8 homework、課本第八章與奇數題參考解答。</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目錄">
+  <div class="toc-grid">
+    <a href="#map">0. 學習路線與題目地圖</a>
+    <a href="#prereq">1. 先備知識總整理</a>
+    <a href="#recurrence-model">2. 8.1 遞迴建模</a>
+    <a href="#linear-recurrence">3. 8.2 解線性遞迴</a>
+    <a href="#ie">4. 8.5 排容原理</a>
+    <a href="#onto">5. 8.6 滿射函數</a>
+    <a href="#answers">6. 答案總表</a>
+    <a href="#exam">7. 考試檢核與練習</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="card" id="map">
+  <h2>0. 學習路線與題目地圖</h2>
+  <p class="lead">第八章看起來很散，其實只有三條主線：<b>遞迴建模</b>、<b>線性遞迴求解</b>、<b>排容原理與滿射</b>。不要每題各背一套，會爆掉。</p>
+
+  <div class="no-repeat">
+    <b>本頁設計原則：</b>同一個觀念只講一次。後面題目若用到前面知識，會直接用連結跳回去，例如 <a href="#pre-product">乘法原理</a>、<a href="#pre-function">函數數量</a>、<a href="#pre-set">集合運算</a>、<a href="#pre-binomial">組合數</a>。
+  </div>
+
+  <h3>作業題目對應觀念</h3>
+  <table>
+    <thead><tr><th>章節</th><th>題目</th><th>真正考點</th><th>先備連結</th><th>本頁位置</th></tr></thead>
+    <tbody>
+      <tr><td>8.1</td><td>7, 9, 13</td><td>用「最後幾位」或「反面」建立 recurrence relation</td><td><a href="#pre-product">乘法原理</a>、<a href="#pre-recursive">遞迴定義</a></td><td><a href="#recurrence-model">8.1</a></td></tr>
+      <tr><td>8.2</td><td>1</td><td>判斷 linear / homogeneous / constant coefficients / degree</td><td><a href="#pre-algebra">代數基本功</a></td><td><a href="#lr-classify">8.2-1</a></td></tr>
+      <tr><td>8.2</td><td>13, 15, 19, 21</td><td>特徵方程、特徵根、重根通解</td><td><a href="#pre-factor">因式分解</a>、<a href="#pre-system">聯立方程</a></td><td><a href="#lr-homogeneous">齊次遞迴</a></td></tr>
+      <tr><td>8.2</td><td>23, 27, 29</td><td>非齊次遞迴：總解 = 齊次解 + 特解</td><td><a href="#pre-exponent">指數規則</a>、<a href="#pre-factor">特徵根</a></td><td><a href="#lr-nonhomogeneous">非齊次遞迴</a></td></tr>
+      <tr><td>8.5</td><td>1, 5, 9</td><td>排容原理、交集被重複計數的修正</td><td><a href="#pre-set">集合運算</a>、<a href="#pre-cardinality">基數</a></td><td><a href="#ie">8.5</a></td></tr>
+      <tr><td>8.6</td><td>8</td><td>滿射函數 = 每個目標都至少被打到，用排容扣掉空目標</td><td><a href="#pre-function">函數數量</a>、<a href="#pre-binomial">組合數</a>、<a href="#ie-formula">排容公式</a></td><td><a href="#onto">8.6</a></td></tr>
+    </tbody>
+  </table>
+
+  <h3>最短學習順序</h3>
+  <div class="flow">
+    <div class="step">先備：集合/函數/計數</div>
+    <div class="step">8.1：會建 recurrence</div>
+    <div class="step">8.2：會解 recurrence</div>
+    <div class="step">8.5：會排容</div>
+    <div class="step">8.6：把排容套到 onto</div>
+  </div>
+
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a></div>
+</section>
+
+<section class="card" id="prereq">
+  <h2>1. 先備知識總整理</h2>
+  <p class="lead">這些不是第八章新東西，但你不會它們，第八章一定卡。每一格都要能秒懂。</p>
+
+  <h3 id="pre-product">1.1 乘法原理、加法原理、bit string</h3>
+  <table>
+    <thead><tr><th>概念</th><th>何時用</th><th>公式/說法</th><th>第八章用在哪</th></tr></thead>
+    <tbody>
+      <tr><td>乘法原理</td><td>一件事分成連續幾步，每步都有固定選擇數</td><td><span class="formula">n<sub>1</sub> × n<sub>2</sub> × ... × n<sub>k</sub></span></td><td>長度 n 的 bit string 有 <span class="formula">2<sup>n</sup></span> 個；函數總數；排容裡的剩餘選擇數</td></tr>
+      <tr><td>加法原理</td><td>把情況切成互不重疊的類別</td><td><span class="formula">case1 + case2 + ...</span></td><td>8.1 用結尾分類；8.5 聯集公式的直覺</td></tr>
+      <tr><td>bit string</td><td>每格只能是 0 或 1</td><td>長度 n：<span class="formula">2<sup>n</sup></span> 個</td><td>8.1 第 7、9 題</td></tr>
+      <tr><td>ternary string</td><td>每格只能是 0, 1, 2</td><td>長度 n：<span class="formula">3<sup>n</sup></span> 個</td><td>8.1 第 13 題</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="pre-recursive">1.2 序列、遞迴關係、初始條件</h3>
+  <table>
+    <thead><tr><th>詞</th><th>意思</th><th>你要會做什麼</th></tr></thead>
+    <tbody>
+      <tr><td>sequence</td><td>一串數：<span class="formula">a<sub>0</sub>, a<sub>1</sub>, a<sub>2</sub>, ...</span></td><td>知道 <span class="formula">a<sub>n</sub></span> 是第 n 項，不是變數亂飄</td></tr>
+      <tr><td>recurrence relation</td><td>用前面幾項算後面項</td><td>例如 <span class="formula">a<sub>n</sub> = a<sub>n-1</sub> + a<sub>n-2</sub></span></td></tr>
+      <tr><td>initial conditions</td><td>遞迴開始前必須知道的前幾項</td><td>二階遞迴通常要兩個初始值；三階通常要三個</td></tr>
+    </tbody>
+  </table>
+  <div class="warning"><b>常見錯誤：</b>只寫 recurrence 不寫初始條件，答案不完整。因為同一個遞迴式配不同初始值，會是不同序列。</div>
+
+  <h3 id="pre-set">1.3 集合、交集、聯集、子集合</h3>
+  <table>
+    <thead><tr><th>符號</th><th>念法</th><th>意思</th><th>第八章作用</th></tr></thead>
+    <tbody>
+      <tr><td><span class="formula">A ∪ B</span></td><td>A union B</td><td>在 A 或 B 裡，或兩者都在</td><td>8.5 問「至少屬於一個集合」</td></tr>
+      <tr><td><span class="formula">A ∩ B</span></td><td>A intersection B</td><td>同時在 A 和 B 裡</td><td>排容要扣掉重複計數</td></tr>
+      <tr><td><span class="formula">A ⊆ B</span></td><td>A subset of B</td><td>A 全部元素都在 B 裡</td><td>8.5 第 1 題(d)</td></tr>
+      <tr><td><span class="formula">A ∩ B = ∅</span></td><td>disjoint</td><td>沒有共同元素</td><td>8.5 第 1、5、9 題</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="pre-cardinality">1.4 基數 cardinality</h3>
+  <p><span class="formula">|A|</span> 表示集合 A 的元素個數。第八章所有排容題都在算這個。</p>
+
+  <h3 id="pre-function">1.5 函數與滿射的先備</h3>
+  <table>
+    <thead><tr><th>概念</th><th>白話</th><th>公式/判斷</th><th>用在哪</th></tr></thead>
+    <tbody>
+      <tr><td>從 m 個元素到 n 個元素的函數</td><td>m 個輸入，每個都要選 n 個輸出之一</td><td><span class="formula">n<sup>m</sup></span></td><td>8.6 第 8 題的全部情況 <span class="formula">5<sup>7</sup></span></td></tr>
+      <tr><td>onto / surjective / 滿射</td><td>codomain 每個元素至少被對應到一次</td><td>沒有空目標</td><td>8.6 第 8 題</td></tr>
+      <tr><td>不是 onto</td><td>至少有一個 codomain 元素沒被打到</td><td>排容的「壞情況」</td><td>8.6 扣掉漏掉某些目標的函數</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="pre-binomial">1.6 組合數 C(n,k)</h3>
+  <table>
+    <thead><tr><th>符號</th><th>意思</th><th>公式</th><th>用在哪</th></tr></thead>
+    <tbody>
+      <tr><td><span class="formula">C(n,k)</span> 或 <span class="formula">\binom{n}{k}</span></td><td>從 n 個東西挑 k 個，不管順序</td><td><span class="formula">n! / (k!(n-k)!)</span></td><td>排容：挑哪些集合交集；滿射：挑哪些目標被漏掉</td></tr>
+      <tr><td><span class="formula">C(5,2)</span></td><td>5 個目標中挑 2 個被漏掉</td><td>10</td><td>8.6 第 8 題</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="pre-algebra">1.7 代數基本功</h3>
+  <table>
+    <thead><tr><th id="pre-exponent">項目</th><th>必會規則</th><th>第八章用途</th></tr></thead>
+    <tbody>
+      <tr><td>指數</td><td><span class="formula">r<sup>n</sup> / r = r<sup>n-1</sup></span>、<span class="formula">2·2<sup>n</sup>=2<sup>n+1</sup></span></td><td>檢查非齊次特解，例如 <span class="formula">-2<sup>n+1</sup></span></td></tr>
+      <tr id="pre-factor"><td>因式分解</td><td>找根 → 除掉一次因式 → 剩下二次式分解</td><td>8.2 找 characteristic roots</td></tr>
+      <tr id="pre-system"><td>聯立方程</td><td>把初始條件代入通解，解常數 A, B, C</td><td>8.2 第 13、15、19 題</td></tr>
+    </tbody>
+  </table>
+
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a></div>
+</section>
+
+<section class="card" id="recurrence-model">
+  <h2>2. 8.1 Applications of Recurrence Relations：遞迴建模</h2>
+  <p class="lead">這節不是要你立刻解出漂亮公式，而是要會把「數東西」翻成 recurrence relation。核心只有一招：<b>看最後幾位，把所有合法情況切成互不重疊類別</b>。</p>
+
+  <h3>8.1 統一解題模板</h3>
+  <table>
+    <thead><tr><th>步驟</th><th>你要寫什麼</th><th>檢查標準</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>定義 <span class="formula">a<sub>n</sub></span></td><td>清楚說它在數什麼，例如「長度 n 且不含 000 的 bit strings 數量」</td></tr>
+      <tr><td>2</td><td>切情況</td><td>通常看結尾：結尾 1、10、100；或結尾 1 / 0</td></tr>
+      <tr><td>3</td><td>寫 recurrence</td><td>每類對應前面較短長度的合法字串數</td></tr>
+      <tr><td>4</td><td>寫 initial conditions</td><td>至少寫到遞迴可以啟動</td></tr>
+      <tr><td>5</td><td>算指定長度</td><td>逐項算，不要心算跳太多</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="r81-7">8.1 第 7 題：長度 n 且含有連續 00 的 bit strings</h3>
+  <div class="pillrow"><span class="pill">題型：反面計數</span><span class="pill green">先備：<a href="#pre-product">bit string 總數</a></span><span class="pill orange">陷阱：含有，不是剛好一次</span></div>
+  <table>
+    <thead><tr><th>做法</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td>定義</td><td><span class="formula">a<sub>n</sub></span> = 長度 n 且含有 00 的 bit strings 數量。</td></tr>
+      <tr><td>最穩思路</td><td>直接數「有 00」容易重複，所以用 <span class="formula">全部 − 沒有 00</span>。</td></tr>
+      <tr><td>沒有 00 的數量</td><td>令 <span class="formula">b<sub>n</sub></span> = 長度 n 且沒有 00 的數量。結尾若是 1：有 <span class="formula">b<sub>n-1</sub></span>；結尾若是 0，前一位必須是 1，所以結尾是 10：有 <span class="formula">b<sub>n-2</sub></span>。</td></tr>
+      <tr><td>recurrence</td><td><span class="formula">b<sub>n</sub> = b<sub>n-1</sub> + b<sub>n-2</sub></span>，<span class="formula">b<sub>1</sub>=2, b<sub>2</sub>=3</span>。</td></tr>
+      <tr><td>轉回題目</td><td><span class="formula">a<sub>n</sub> = 2<sup>n</sup> − b<sub>n</sub></span>。</td></tr>
+      <tr><td>也可寫成只用 a 的遞迴</td><td><span class="formula">a<sub>n</sub> = a<sub>n-1</sub> + a<sub>n-2</sub> + 2<sup>n-2</sup></span>，<span class="formula">a<sub>1</sub>=0, a<sub>2</sub>=1</span>。</td></tr>
+      <tr><td>長度 7</td><td><span class="formula">b<sub>7</sub>=34</span>，所以 <span class="formula">a<sub>7</sub>=2<sup>7</sup>−34=94</span>。</td></tr>
+    </tbody>
+  </table>
+  <div class="warning"><b>嚴格檢查：</b><span class="formula">0000</span> 裡面有多個 00，但整個字串只能算一次。所以直接選「00 出現位置」會重複計數，除非你有非常完整的修正，否則不要走那條路。</div>
+
+  <h3 id="r81-9">8.1 第 9 題：長度 n 且不含 000 的 bit strings</h3>
+  <div class="pillrow"><span class="pill">題型：結尾分類</span><span class="pill green">先備：<a href="#pre-recursive">初始條件</a></span></div>
+  <table>
+    <thead><tr><th>分類</th><th>原因</th><th>數量</th></tr></thead>
+    <tbody>
+      <tr><td>結尾是 1</td><td>最後放 1 不會製造 000</td><td><span class="formula">a<sub>n-1</sub></span></td></tr>
+      <tr><td>結尾是 10</td><td>最後只有一個 0，前面任意合法</td><td><span class="formula">a<sub>n-2</sub></span></td></tr>
+      <tr><td>結尾是 100</td><td>最後兩個 0，但前面任意合法，且不會變成 000</td><td><span class="formula">a<sub>n-3</sub></span></td></tr>
+    </tbody>
+  </table>
+  <div class="block-formula">a<sub>n</sub> = a<sub>n-1</sub> + a<sub>n-2</sub> + a<sub>n-3</sub>,  n ≥ 3<br>Initial: a<sub>0</sub>=1, a<sub>1</sub>=2, a<sub>2</sub>=4<br>a<sub>7</sub> = 81</div>
+  <div class="note"><b>為什麼有 a<sub>0</sub>=1？</b>空字串算一種，這是為了讓 <span class="formula">a<sub>3</sub>=a<sub>2</sub>+a<sub>1</sub>+a<sub>0</sub></span> 能正確算出 7。不要把空字串當成「沒有東西所以 0 種」，在遞迴計數裡它通常是 1 種。</div>
+
+  <h3 id="r81-13">8.1 第 13 題：ternary strings 長度 n 且不含 00</h3>
+  <div class="pillrow"><span class="pill">題型：結尾分類</span><span class="pill green">先備：<a href="#pre-product">ternary string</a></span><span class="pill orange">差異：非 0 有 2 種選擇</span></div>
+  <table>
+    <thead><tr><th>結尾型態</th><th>說明</th><th>數量</th></tr></thead>
+    <tbody>
+      <tr><td>結尾是 1 或 2</td><td>前面長度 n−1 任意合法，最後有 2 種選擇</td><td><span class="formula">2a<sub>n-1</sub></span></td></tr>
+      <tr><td>結尾是 0</td><td>倒數第二位必須是 1 或 2，所以最後兩位是 10 或 20</td><td><span class="formula">2a<sub>n-2</sub></span></td></tr>
+    </tbody>
+  </table>
+  <div class="block-formula">a<sub>n</sub> = 2a<sub>n-1</sub> + 2a<sub>n-2</sub><br>Initial: a<sub>0</sub>=1, a<sub>1</sub>=3<br>a<sub>6</sub> = 448</div>
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a><a class="btn secondary" href="#answers">跳到答案總表</a></div>
+</section>
+
+<section class="card" id="linear-recurrence">
+  <h2>3. 8.2 Solving Linear Recurrence Relations：解線性遞迴</h2>
+  <p class="lead">8.2 不再只是建立遞迴，而是把遞迴解成 <b>explicit formula</b>。這裡分成兩類：齊次與非齊次。</p>
+
+  <h3 id="lr-classify">3.1 第 1 題：判斷 linear homogeneous recurrence relation with constant coefficients</h3>
+  <table>
+    <thead><tr><th>檢查項目</th><th>必須符合</th><th>不能出現</th></tr></thead>
+    <tbody>
+      <tr><td>Linear 線性</td><td>每項都是常數乘上某個 <span class="formula">a<sub>n-k</sub></span></td><td><span class="formula">a<sub>n-1</sub><sup>2</sup></span>、<span class="formula">a<sub>n-1</sub>a<sub>n-2</sub></span></td></tr>
+      <tr><td>Homogeneous 齊次</td><td>右邊全部都是 a 的前項</td><td><span class="formula">+2</span>、<span class="formula">+n</span>、<span class="formula">+2<sup>n</sup></span></td></tr>
+      <tr><td>Constant coefficients 常係數</td><td>係數是常數</td><td><span class="formula">2n a<sub>n-1</sub></span></td></tr>
+      <tr><td>Degree 階數</td><td>看最遠用到 <span class="formula">a<sub>n-k</sub></span></td><td>中間缺項沒關係，係數可視為 0</td></tr>
+    </tbody>
+  </table>
+
+  <h4>第 1 題答案表</h4>
+  <table>
+    <thead><tr><th>小題</th><th>判斷</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>(a)</td><td>是，degree 3</td><td><span class="formula">a<sub>n</sub>=3a<sub>n-1</sub>+4a<sub>n-2</sub>+5a<sub>n-3</sub></span></td></tr>
+      <tr><td>(b)</td><td>不是</td><td>係數有 n：<span class="formula">2n a<sub>n-1</sub></span></td></tr>
+      <tr><td>(c)</td><td>是，degree 4</td><td><span class="formula">a<sub>n</sub>=a<sub>n-1</sub>+a<sub>n-4</sub></span>，中間缺項係數是 0</td></tr>
+      <tr><td>(d)</td><td>不是</td><td>有額外常數 <span class="formula">+2</span>，非齊次</td></tr>
+      <tr><td>(e)</td><td>不是</td><td>有平方 <span class="formula">a<sub>n-1</sub><sup>2</sup></span>，非線性</td></tr>
+      <tr><td>(f)</td><td>是，degree 2</td><td><span class="formula">a<sub>n</sub>=a<sub>n-2</sub></span> 可看成 <span class="formula">0a<sub>n-1</sub>+1a<sub>n-2</sub></span></td></tr>
+      <tr><td>(g)</td><td>不是</td><td>有額外 <span class="formula">+n</span>，非齊次</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="lr-homogeneous">3.2 齊次線性遞迴：第 13、15、19、21 題</h3>
+  <div class="block-formula">若 a<sub>n</sub> = c<sub>1</sub>a<sub>n-1</sub> + c<sub>2</sub>a<sub>n-2</sub> + ... + c<sub>k</sub>a<sub>n-k</sub><br>特徵方程：r<sup>k</sup> − c<sub>1</sub>r<sup>k-1</sup> − c<sub>2</sub>r<sup>k-2</sup> − ... − c<sub>k</sub> = 0</div>
+
+  <table>
+    <thead><tr><th>特徵根情況</th><th>通解寫法</th><th>例子</th></tr></thead>
+    <tbody>
+      <tr><td>不同根 <span class="formula">r<sub>1</sub>, r<sub>2</sub>, r<sub>3</sub></span></td><td><span class="formula">A r<sub>1</sub><sup>n</sup> + B r<sub>2</sub><sup>n</sup> + C r<sub>3</sub><sup>n</sup></span></td><td>第 13、15 題</td></tr>
+      <tr><td>根 r 重複 2 次</td><td><span class="formula">(A+Bn)r<sup>n</sup></span></td><td>第 21 題中的 root 3</td></tr>
+      <tr><td>根 r 重複 3 次</td><td><span class="formula">(A+Bn+Cn<sup>2</sup>)r<sup>n</sup></span></td><td>第 19 題 root −1</td></tr>
+      <tr><td>根 r 重複 m 次</td><td><span class="formula">(A<sub>0</sub>+A<sub>1</sub>n+...+A<sub>m-1</sub>n<sup>m-1</sup>)r<sup>n</sup></span></td><td>通用規則</td></tr>
+    </tbody>
+  </table>
+
+  <h4>齊次題解題流程</h4>
+  <div class="flow">
+    <div class="step">寫特徵方程</div>
+    <div class="step">因式分解找 roots</div>
+    <div class="step">寫通解</div>
+    <div class="step">代初始條件</div>
+    <div class="step">解常數並整理</div>
+  </div>
+
+  <h4>第 13、15、19 題答案與必會點</h4>
+  <table>
+    <thead><tr><th>題號</th><th>特徵方程/根</th><th>通解/答案</th><th>最容易錯的地方</th></tr></thead>
+    <tbody>
+      <tr><td>13</td><td><span class="formula">r<sup>3</sup>−7r−6=0=(r−3)(r+2)(r+1)</span></td><td><span class="formula">a<sub>n</sub>=4·3<sup>n</sup>−3(−2)<sup>n</sup>+8(−1)<sup>n</sup></span></td><td><span class="formula">a<sub>n</sub>=7a<sub>n-2</sub>+6a<sub>n-3</sub></span> 沒有 <span class="formula">a<sub>n-1</sub></span>，特徵式仍是三次</td></tr>
+      <tr><td>15</td><td><span class="formula">r<sup>3</sup>−2r<sup>2</sup>−5r+6=0=(r−1)(r−3)(r+2)</span></td><td><span class="formula">a<sub>n</sub>=5−3<sup>n</sup>+3(−2)<sup>n</sup></span></td><td>root 1 的項是常數，因為 <span class="formula">1<sup>n</sup>=1</span></td></tr>
+      <tr><td>19</td><td><span class="formula">r<sup>3</sup>+3r<sup>2</sup>+3r+1=(r+1)<sup>3</sup></span></td><td><span class="formula">a<sub>n</sub>=(n<sup>2</sup>+3n+5)(−1)<sup>n</sup></span></td><td>三重根不能寫三個一樣的 <span class="formula">A(−1)<sup>n</sup></span>，要乘 <span class="formula">1,n,n<sup>2</sup></span></td></tr>
+    </tbody>
+  </table>
+
+  <h4>第 21 題：只給 roots，要寫 general form</h4>
+  <table>
+    <thead><tr><th>root</th><th>重複次數</th><th>通解部分</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>4</td><td><span class="formula">A<sub>0</sub>+A<sub>1</sub>n+A<sub>2</sub>n<sup>2</sup>+A<sub>3</sub>n<sup>3</sup></span></td></tr>
+      <tr><td>−2</td><td>3</td><td><span class="formula">(B<sub>0</sub>+B<sub>1</sub>n+B<sub>2</sub>n<sup>2</sup>)(−2)<sup>n</sup></span></td></tr>
+      <tr><td>3</td><td>2</td><td><span class="formula">(C<sub>0</sub>+C<sub>1</sub>n)3<sup>n</sup></span></td></tr>
+      <tr><td>−4</td><td>1</td><td><span class="formula">D<sub>0</sub>(−4)<sup>n</sup></span></td></tr>
+    </tbody>
+  </table>
+  <div class="block-formula">a<sub>n</sub> = A<sub>0</sub>+A<sub>1</sub>n+A<sub>2</sub>n<sup>2</sup>+A<sub>3</sub>n<sup>3</sup> + (B<sub>0</sub>+B<sub>1</sub>n+B<sub>2</sub>n<sup>2</sup>)(−2)<sup>n</sup> + (C<sub>0</sub>+C<sub>1</sub>n)3<sup>n</sup> + D<sub>0</sub>(−4)<sup>n</sup></div>
+
+  <h3 id="lr-nonhomogeneous">3.3 非齊次線性遞迴：第 23、27、29 題</h3>
+  <div class="block-formula">總解 = 對應齊次解 + 某一個特解</div>
+
+  <h4>特解猜法總表</h4>
+  <table>
+    <thead><tr><th>右邊 F(n)</th><th>先猜</th><th>如果 s 是特徵根，且重複 t 次</th></tr></thead>
+    <tbody>
+      <tr><td><span class="formula">P(n)s<sup>n</sup></span></td><td><span class="formula">Q(n)s<sup>n</sup></span>，Q 與 P 同次數</td><td>多乘 <span class="formula">n<sup>t</sup></span></td></tr>
+      <tr><td>常數，例如 2</td><td>當成 <span class="formula">2·1<sup>n</sup></span>，猜常數 A</td><td>若 1 是特徵根才要乘 n</td></tr>
+      <tr><td><span class="formula">n2<sup>n</sup></span></td><td><span class="formula">(An+B)2<sup>n</sup></span></td><td>若 2 是二重根，改猜 <span class="formula">n<sup>2</sup>(An+B)2<sup>n</sup></span></td></tr>
+    </tbody>
+  </table>
+
+  <h4>第 23 題：<span class="formula">a<sub>n</sub>=3a<sub>n-1</sub>+2<sup>n</sup></span></h4>
+  <table>
+    <thead><tr><th>小題</th><th>結果</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>(a)</td><td><span class="formula">a<sub>n</sub>=−2<sup>n+1</sup></span> 是解</td><td>注意是 <span class="formula">−(2<sup>n+1</sup>)</span>，不是 <span class="formula">(−2)<sup>n+1</sup></span></td></tr>
+      <tr><td>(b)</td><td><span class="formula">a<sub>n</sub>=C3<sup>n</sup>−2<sup>n+1</sup></span></td><td>齊次解是 <span class="formula">C3<sup>n</sup></span>，加上特解</td></tr>
+      <tr><td>(c)</td><td><span class="formula">a<sub>n</sub>=3<sup>n+1</sup>−2<sup>n+1</sup></span></td><td>由 <span class="formula">a<sub>0</sub>=1</span> 得 <span class="formula">C=3</span></td></tr>
+    </tbody>
+  </table>
+  <div class="danger"><b>作業單特別修正：</b>第 23 題(a) 參考答案中的 <span class="formula">(−2)<sup>n</sup></span> 要更正為 <span class="formula">−(2<sup>n</sup>)</span>。這個差異很大，別混。</div>
+
+  <h4>第 27 題：只問 particular solution 的形式</h4>
+  <p>先看齊次部分：<span class="formula">a<sub>n</sub>=8a<sub>n-2</sub>−16a<sub>n-4</sub></span>。</p>
+  <div class="block-formula">r<sup>4</sup> − 8r<sup>2</sup> + 16 = 0 = (r<sup>2</sup>−4)<sup>2</sup> = (r−2)<sup>2</sup>(r+2)<sup>2</sup><br>所以 roots：2 二重根，−2 二重根。</div>
+  <table>
+    <thead><tr><th>小題 F(n)</th><th>底數 s</th><th>s 是否為特徵根</th><th>特解形式</th></tr></thead>
+    <tbody>
+      <tr><td><span class="formula">n<sup>3</sup></span></td><td>1</td><td>不是</td><td><span class="formula">An<sup>3</sup>+Bn<sup>2</sup>+Cn+D</span></td></tr>
+      <tr><td><span class="formula">(−2)<sup>n</sup></span></td><td>−2</td><td>是，二重根</td><td><span class="formula">An<sup>2</sup>(−2)<sup>n</sup></span></td></tr>
+      <tr><td><span class="formula">n2<sup>n</sup></span></td><td>2</td><td>是，二重根</td><td><span class="formula">n<sup>2</sup>(An+B)2<sup>n</sup></span></td></tr>
+      <tr><td><span class="formula">n<sup>2</sup>4<sup>n</sup></span></td><td>4</td><td>不是</td><td><span class="formula">(An<sup>2</sup>+Bn+C)4<sup>n</sup></span></td></tr>
+      <tr><td><span class="formula">(n<sup>2</sup>−2)(−2)<sup>n</sup></span></td><td>−2</td><td>是，二重根</td><td><span class="formula">n<sup>2</sup>(An<sup>2</sup>+Bn+C)(−2)<sup>n</sup></span></td></tr>
+      <tr><td><span class="formula">n<sup>4</sup>2<sup>n</sup></span></td><td>2</td><td>是，二重根</td><td><span class="formula">n<sup>2</sup>(An<sup>4</sup>+Bn<sup>3</sup>+Cn<sup>2</sup>+Dn+E)2<sup>n</sup></span></td></tr>
+      <tr><td><span class="formula">2</span></td><td>1</td><td>不是</td><td><span class="formula">A</span></td></tr>
+    </tbody>
+  </table>
+
+  <h4>第 29 題：<span class="formula">a<sub>n</sub>=2a<sub>n-1</sub>+3<sup>n</sup></span></h4>
+  <table>
+    <thead><tr><th>小題</th><th>結果</th><th>關鍵</th></tr></thead>
+    <tbody>
+      <tr><td>(a) all solutions</td><td><span class="formula">a<sub>n</sub>=C2<sup>n</sup>+3<sup>n+1</sup></span></td><td>特解猜 <span class="formula">A3<sup>n</sup></span>，代回得 A=3</td></tr>
+      <tr><td>(b) <span class="formula">a<sub>1</sub>=5</span></td><td><span class="formula">a<sub>n</sub>=3<sup>n+1</sup>−2<sup>n+1</sup></span></td><td>代入 <span class="formula">5=2C+9</span> 得 <span class="formula">C=−2</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a><a class="btn secondary" href="#answers">跳到答案總表</a></div>
+</section>
+
+<section class="card" id="ie">
+  <h2>4. 8.5 Inclusion–Exclusion：排容原理</h2>
+  <p class="lead">排容原理的本質不是公式，是「修正重複計數」。你要能說出每一個加減號在修正什麼。</p>
+
+  <h3 id="ie-formula">4.1 必背公式表</h3>
+  <table>
+    <thead><tr><th>情況</th><th>公式</th><th>白話</th></tr></thead>
+    <tbody>
+      <tr><td>兩集合</td><td><span class="formula">|A∪B|=|A|+|B|−|A∩B|</span></td><td>交集被算兩次，所以扣一次</td></tr>
+      <tr><td>三集合</td><td><span class="formula">|A∪B∪C|=|A|+|B|+|C|−|A∩B|−|A∩C|−|B∩C|+|A∩B∩C|</span></td><td>三重交集先被算 3 次，又被扣 3 次，變 0，所以加回 1 次</td></tr>
+      <tr><td>n 集合</td><td><span class="formula">加單集合 − 加兩兩交集 + 加三重交集 − ...</span></td><td>符號交替：+ − + − ...</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 第 1 題：兩集合聯集</h3>
+  <p><span class="formula">|A<sub>1</sub>|=12, |A<sub>2</sub>|=18</span>。</p>
+  <table>
+    <thead><tr><th>條件</th><th>計算</th><th>答案</th></tr></thead>
+    <tbody>
+      <tr><td>(a) <span class="formula">A<sub>1</sub>∩A<sub>2</sub>=∅</span></td><td><span class="formula">12+18−0</span></td><td>30</td></tr>
+      <tr><td>(b) <span class="formula">|A<sub>1</sub>∩A<sub>2</sub>|=1</span></td><td><span class="formula">12+18−1</span></td><td>29</td></tr>
+      <tr><td>(c) <span class="formula">|A<sub>1</sub>∩A<sub>2</sub>|=6</span></td><td><span class="formula">12+18−6</span></td><td>24</td></tr>
+      <tr><td>(d) <span class="formula">A<sub>1</sub>⊆A<sub>2</sub></span></td><td>聯集就是 <span class="formula">A<sub>2</sub></span></td><td>18</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.3 第 5 題：三集合聯集</h3>
+  <p><span class="formula">|A<sub>1</sub>|=|A<sub>2</sub>|=|A<sub>3</sub>|=100</span>。</p>
+  <table>
+    <thead><tr><th>條件</th><th>代入三集合公式</th><th>答案</th></tr></thead>
+    <tbody>
+      <tr><td>(a) pairwise disjoint</td><td><span class="formula">300−0+0</span></td><td>300</td></tr>
+      <tr><td>(b) 每對交集 50，三重交集 0</td><td><span class="formula">300−(50+50+50)+0</span></td><td>150</td></tr>
+      <tr><td>(c) 每對交集 50，三重交集 25</td><td><span class="formula">300−150+25</span></td><td>175</td></tr>
+      <tr><td>(d) 三集合相等</td><td>聯集就是其中一個集合</td><td>100</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.4 第 9 題：四門課至少修一門的人數</h3>
+  <p>設 <span class="formula">C</span> = Calculus，<span class="formula">D</span> = Discrete Mathematics，<span class="formula">S</span> = Data Structures，<span class="formula">P</span> = Programming Languages。</p>
+  <table>
+    <thead><tr><th>項目</th><th>數值</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>單集合總和</td><td><span class="formula">507+292+312+344=1455</span></td><td>先把四門課人數加起來</td></tr>
+      <tr><td>兩兩交集總和</td><td><span class="formula">14+213+211+43+0+0=481</span></td><td>題目給四個交集，且 <span class="formula">C∩D=∅</span>、<span class="formula">S∩P=∅</span></td></tr>
+      <tr><td>三重與四重交集</td><td>0</td><td>任何三重交集都會包含 <span class="formula">C∩D</span> 或 <span class="formula">S∩P</span>，所以不存在</td></tr>
+      <tr><td>答案</td><td><span class="formula">1455−481=974</span></td><td>至少修一門的人數</td></tr>
+    </tbody>
+  </table>
+  <div class="warning"><b>這題的關鍵不是公式，而是判斷哪些交集是 0。</b>如果 <span class="formula">C∩D=∅</span>，那 <span class="formula">C∩D∩S</span> 一定也是空集合。</div>
+
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a><a class="btn secondary" href="#answers">跳到答案總表</a></div>
+</section>
+
+<section class="card" id="onto">
+  <h2>5. 8.6 Applications of Inclusion–Exclusion：滿射函數</h2>
+  <p class="lead">8.6 第 8 題就是把 <a href="#ie-formula">排容原理</a> 套到 <a href="#pre-function">函數</a> 上。看到 onto，就要翻譯成：<b>codomain 每個元素都至少被用到一次</b>。</p>
+
+  <h3>5.1 滿射函數公式</h3>
+  <div class="block-formula">從 m 個元素到 n 個元素的 onto functions 數量：<br>n<sup>m</sup> − C(n,1)(n−1)<sup>m</sup> + C(n,2)(n−2)<sup>m</sup> − ... + (−1)<sup>n−1</sup>C(n,n−1)1<sup>m</sup></div>
+
+  <table>
+    <thead><tr><th>公式部分</th><th>意思</th></tr></thead>
+    <tbody>
+      <tr><td><span class="formula">n<sup>m</sup></span></td><td>全部函數，還沒要求 onto</td></tr>
+      <tr><td><span class="formula">C(n,1)(n−1)<sup>m</sup></span></td><td>扣掉至少漏掉某 1 個目標的函數</td></tr>
+      <tr><td><span class="formula">C(n,2)(n−2)<sup>m</sup></span></td><td>加回同時漏掉 2 個目標而被扣太多的函數</td></tr>
+      <tr><td>符號交替</td><td>排容原理：扣壞情況，再修正重複扣除</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.2 第 8 題：從 7 個元素到 5 個元素的 onto functions</h3>
+  <div class="pillrow"><span class="pill">m=7</span><span class="pill">n=5</span><span class="pill green">答案：16800</span></div>
+  <table>
+    <thead><tr><th>步驟</th><th>計算</th><th>意義</th></tr></thead>
+    <tbody>
+      <tr><td>全部函數</td><td><span class="formula">5<sup>7</sup>=78125</span></td><td>7 個元素各自選 5 個目標之一</td></tr>
+      <tr><td>扣漏 1 個目標</td><td><span class="formula">C(5,1)4<sup>7</sup>=81920</span></td><td>指定 1 個目標不用，只剩 4 個目標可選</td></tr>
+      <tr><td>加回漏 2 個目標</td><td><span class="formula">C(5,2)3<sup>7</sup>=21870</span></td><td>同時漏兩個，在上一行被扣了兩次</td></tr>
+      <tr><td>扣漏 3 個目標</td><td><span class="formula">C(5,3)2<sup>7</sup>=1280</span></td><td>繼續排容</td></tr>
+      <tr><td>加回漏 4 個目標</td><td><span class="formula">C(5,4)1<sup>7</sup>=5</span></td><td>只剩一個目標可用</td></tr>
+      <tr><td>總計</td><td><span class="formula">78125−81920+21870−1280+5=16800</span></td><td>滿射函數數量</td></tr>
+    </tbody>
+  </table>
+
+  <div class="good"><b>考試翻譯：</b>「7 個不同工作分給 5 個不同員工，每個員工至少一份」和「從 7 個元素到 5 個元素的 onto functions」是同一種題型。</div>
+  <div class="danger"><b>嚴格提醒：</b>這題不是 <span class="formula">5<sup>7</sup></span>。那只是全部函數，裡面包含有人完全沒被分到的壞情況。</div>
+
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a><a class="btn secondary" href="#answers">跳到答案總表</a></div>
+</section>
+
+<section class="card" id="answers">
+  <h2>6. 作業答案總表</h2>
+  <p class="lead">這張表用來最後檢查。不要一開始就背它；你必須能說出每個答案是從哪個模板來的。</p>
+
+  <table>
+    <thead><tr><th>題號</th><th>答案/核心結果</th><th>應使用的觀念</th></tr></thead>
+    <tbody>
+      <tr><td>8.1-7</td><td><span class="formula">a<sub>n</sub>=a<sub>n-1</sub>+a<sub>n-2</sub>+2<sup>n-2</sup></span>，<span class="formula">a<sub>1</sub>=0,a<sub>2</sub>=1</span>，<span class="formula">a<sub>7</sub>=94</span></td><td><a href="#r81-7">反面計數 / 結尾分類</a></td></tr>
+      <tr><td>8.1-9</td><td><span class="formula">a<sub>n</sub>=a<sub>n-1</sub>+a<sub>n-2</sub>+a<sub>n-3</sub></span>，<span class="formula">a<sub>0</sub>=1,a<sub>1</sub>=2,a<sub>2</sub>=4</span>，<span class="formula">a<sub>7</sub>=81</span></td><td><a href="#r81-9">結尾 1 / 10 / 100</a></td></tr>
+      <tr><td>8.1-13</td><td><span class="formula">a<sub>n</sub>=2a<sub>n-1</sub>+2a<sub>n-2</sub></span>，<span class="formula">a<sub>0</sub>=1,a<sub>1</sub>=3</span>，<span class="formula">a<sub>6</sub>=448</span></td><td><a href="#r81-13">ternary 結尾分類</a></td></tr>
+      <tr><td>8.2-1</td><td>(a) yes degree 3；(b) no；(c) yes degree 4；(d) no；(e) no；(f) yes degree 2；(g) no</td><td><a href="#lr-classify">線性/齊次/常係數/degree</a></td></tr>
+      <tr><td>8.2-13</td><td><span class="formula">a<sub>n</sub>=4·3<sup>n</sup>−3(−2)<sup>n</sup>+8(−1)<sup>n</sup></span></td><td><a href="#lr-homogeneous">特徵根不同</a></td></tr>
+      <tr><td>8.2-15</td><td><span class="formula">a<sub>n</sub>=5−3<sup>n</sup>+3(−2)<sup>n</sup></span></td><td><a href="#lr-homogeneous">特徵根不同</a></td></tr>
+      <tr><td>8.2-19</td><td><span class="formula">a<sub>n</sub>=(n<sup>2</sup>+3n+5)(−1)<sup>n</sup></span></td><td><a href="#lr-homogeneous">三重根</a></td></tr>
+      <tr><td>8.2-21</td><td><span class="formula">A<sub>0</sub>+A<sub>1</sub>n+A<sub>2</sub>n<sup>2</sup>+A<sub>3</sub>n<sup>3</sup>+(B<sub>0</sub>+B<sub>1</sub>n+B<sub>2</sub>n<sup>2</sup>)(−2)<sup>n</sup>+(C<sub>0</sub>+C<sub>1</sub>n)3<sup>n</sup>+D<sub>0</sub>(−4)<sup>n</sup></span></td><td><a href="#lr-homogeneous">重根通解</a></td></tr>
+      <tr><td>8.2-23</td><td>(a) <span class="formula">−2<sup>n+1</sup></span> 是解；(b) <span class="formula">C3<sup>n</sup>−2<sup>n+1</sup></span>；(c) <span class="formula">3<sup>n+1</sup>−2<sup>n+1</sup></span></td><td><a href="#lr-nonhomogeneous">非齊次：齊次解 + 特解</a></td></tr>
+      <tr><td>8.2-27</td><td>見 <a href="#lr-nonhomogeneous">第 27 題表格</a></td><td>特解猜法與重根修正</td></tr>
+      <tr><td>8.2-29</td><td>(a) <span class="formula">C2<sup>n</sup>+3<sup>n+1</sup></span>；(b) <span class="formula">3<sup>n+1</sup>−2<sup>n+1</sup></span></td><td><a href="#lr-nonhomogeneous">非齊次一階</a></td></tr>
+      <tr><td>8.5-1</td><td>(a) 30；(b) 29；(c) 24；(d) 18</td><td><a href="#ie">兩集合排容</a></td></tr>
+      <tr><td>8.5-5</td><td>(a) 300；(b) 150；(c) 175；(d) 100</td><td><a href="#ie">三集合排容</a></td></tr>
+      <tr><td>8.5-9</td><td>974</td><td><a href="#ie">四集合排容，判斷空交集</a></td></tr>
+      <tr><td>8.6-8</td><td>16800</td><td><a href="#onto">onto functions 排容公式</a></td></tr>
+    </tbody>
+  </table>
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a></div>
+</section>
+
+<section class="card" id="exam">
+  <h2>7. 考試檢核與練習</h2>
+  <p class="lead">你看完後，請用這份檢核表逼自己確認。不要只覺得「好像懂」。那很危險。</p>
+
+  <h3>7.1 一眼判斷題型</h3>
+  <table>
+    <thead><tr><th>題目關鍵字</th><th>立刻想到</th><th>不要犯的錯</th></tr></thead>
+    <tbody>
+      <tr><td>bit string / ternary string，不含連續某模式</td><td>8.1：看最後幾位切情況</td><td>只列幾個例子，沒有一般 recurrence</td></tr>
+      <tr><td>contain / do not contain</td><td>考慮是否用反面比較簡單</td><td>把「含有」誤解成「剛好一次」</td></tr>
+      <tr><td>linear homogeneous recurrence</td><td>8.2：檢查線性、齊次、常係數</td><td>看到缺項就以為不是；其實缺項可當係數 0</td></tr>
+      <tr><td>characteristic roots</td><td>寫通解；重根乘 <span class="formula">1,n,n<sup>2</sup>,...</span></td><td>重根寫成多個一樣的項</td></tr>
+      <tr><td>nonhomogeneous</td><td>總解 = 齊次解 + 特解</td><td>忘記先看 s 是否為 characteristic root</td></tr>
+      <tr><td>union / at least one / students in courses</td><td>8.5：排容原理</td><td>三重交集為 0 時還硬留未知數</td></tr>
+      <tr><td>onto / every box nonempty / every employee gets at least one job</td><td>8.6：滿射函數排容</td><td>直接寫 <span class="formula">n<sup>m</sup></span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>7.2 自測題：點開看答案</h3>
+  <details>
+    <summary>Q1：為什麼「長度 n 且含有 00」不要直接數 00 的位置？</summary>
+    <p>因為會重複計數。例如 <span class="formula">0000</span> 有多個 00 出現位置，但這個字串只能算一次。用反面「全部 − 沒有 00」更穩。</p>
+  </details>
+  <details>
+    <summary>Q2：不含 000 的 bit string 為什麼看結尾 1、10、100？</summary>
+    <p>合法字串結尾最多只能有兩個 0，所以最後一定是 1，或最後一個 0 前面是 1，即 10，或最後兩個 0 前面是 1，即 100。這三類互不重疊且完整。</p>
+  </details>
+  <details>
+    <summary>Q3：root −1 三重根，通解為什麼不是 A(−1)^n+B(−1)^n+C(−1)^n？</summary>
+    <p>因為三項可以合併成 <span class="formula">(A+B+C)(−1)<sup>n</sup></span>，其實只有一個自由常數。三重根要寫成 <span class="formula">(A+Bn+Cn<sup>2</sup>)(−1)<sup>n</sup></span>。</p>
+  </details>
+  <details>
+    <summary>Q4：第 27 題為什麼遇到 2^n 或 (−2)^n 要多乘 n^2？</summary>
+    <p>因為對應齊次特徵方程是 <span class="formula">(r−2)<sup>2</sup>(r+2)<sup>2</sup>=0</span>，所以 2 和 −2 都是二重根。非齊次特解若底數撞到二重根，要多乘 <span class="formula">n<sup>2</sup></span>。</p>
+  </details>
+  <details>
+    <summary>Q5：onto functions 為什麼用排容？</summary>
+    <p>onto 的要求是「沒有任何 codomain 元素被漏掉」。這等於從全部函數中扣掉「至少漏掉一個目標」的壞情況。多個目標同時被漏會造成重複扣除，所以要排容。</p>
+  </details>
+
+  <h3>7.3 最後 10 分鐘速背表</h3>
+  <table>
+    <thead><tr><th>你要背的東西</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td>沒有 00</td><td><span class="formula">b<sub>n</sub>=b<sub>n-1</sub>+b<sub>n-2</sub></span></td></tr>
+      <tr><td>不含 000</td><td><span class="formula">a<sub>n</sub>=a<sub>n-1</sub>+a<sub>n-2</sub>+a<sub>n-3</sub></span></td></tr>
+      <tr><td>ternary 不含 00</td><td><span class="formula">a<sub>n</sub>=2a<sub>n-1</sub>+2a<sub>n-2</sub></span></td></tr>
+      <tr><td>齊次線性遞迴</td><td>特徵方程 → roots → 通解 → 代初始條件</td></tr>
+      <tr><td>重根</td><td>r 重複 m 次：<span class="formula">(A<sub>0</sub>+A<sub>1</sub>n+...+A<sub>m-1</sub>n<sup>m-1</sup>)r<sup>n</sup></span></td></tr>
+      <tr><td>非齊次</td><td><span class="formula">總解 = 齊次解 + 特解</span></td></tr>
+      <tr><td>排容</td><td>單集合加，兩兩交集扣，三重交集加，符號交替</td></tr>
+      <tr><td>滿射</td><td><span class="formula">n<sup>m</sup>−C(n,1)(n−1)<sup>m</sup>+C(n,2)(n−2)<sup>m</sup>−...</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="print-note">列印提示：建議只列印第 0、1、6、7 節做考前速讀，完整學習再看全頁。</div>
+  <div class="backline"><a class="btn light" href="#top">回到目錄</a><button class="btn green" onclick="window.print()">列印/另存 PDF</button></div>
+</section>
+
+</main>
+<button class="topbtn" onclick="location.href='#top'">↑ 返回</button>
+<script>
+  // Simple highlight for table row clicked, useful when studying.
+  document.querySelectorAll('table tr').forEach(function(row){
+    row.addEventListener('click', function(){
+      document.querySelectorAll('tr.__hl').forEach(r=>r.classList.remove('__hl'));
+      row.classList.add('__hl');
+      row.style.outline = '2px solid #2563eb';
+      setTimeout(()=>{ row.style.outline=''; row.classList.remove('__hl'); }, 1200);
+    });
+  });
+</script>
+</body>
+</html>
