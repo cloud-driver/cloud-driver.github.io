@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>離散數學第九章 Relations｜考前總複習</title>
+  <style>
+    :root{
+      --bg:#f7f8fb; --paper:#ffffff; --ink:#172033; --muted:#5e6a7d; --line:#dfe5ef;
+      --blue:#2563eb; --blue2:#dbeafe; --green:#16a34a; --green2:#dcfce7;
+      --amber:#d97706; --amber2:#fef3c7; --red:#dc2626; --red2:#fee2e2;
+      --purple:#7c3aed; --purple2:#ede9fe; --gray:#f1f5f9;
+      --shadow:0 10px 30px rgba(15, 23, 42, .08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.7;}
+    header{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#2563eb 100%);color:white;padding:44px 22px 34px;}
+    header .wrap{max-width:1180px;margin:auto}
+    h1{font-size:clamp(2rem,5vw,4rem);line-height:1.1;margin:0 0 12px;font-weight:900;letter-spacing:-.03em}
+    h2{font-size:2rem;line-height:1.2;margin:52px 0 18px;border-left:7px solid var(--blue);padding-left:14px}
+    h3{font-size:1.35rem;margin:28px 0 12px;color:#111827}
+    h4{font-size:1.08rem;margin:18px 0 10px;color:#1f2937}
+    p{margin:10px 0}
+    a{color:var(--blue);text-decoration:none;font-weight:700}
+    a:hover{text-decoration:underline}
+    code,kbd,.math{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:.08rem .35rem;color:#1e1b4b}
+    .wrap{max-width:1180px;margin:auto;padding:0 22px}
+    .subtitle{font-size:1.12rem;max-width:900px;color:#e5edff;margin:0}
+    .hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+    .hero-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:14px;border-radius:16px;backdrop-filter:blur(6px)}
+    .hero-card strong{display:block;font-size:1.05rem}.hero-card span{color:#dbeafe;font-size:.92rem}
+    main{max-width:1180px;margin:26px auto 80px;padding:0 22px;display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+    nav{position:sticky;top:14px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;max-height:calc(100vh - 28px);overflow:auto}
+    nav h2{font-size:1rem;border:0;padding:0;margin:0 0 12px;color:#334155}
+    nav a{display:block;padding:8px 10px;border-radius:10px;color:#334155;font-size:.94rem;font-weight:650}
+    nav a:hover{background:#eff6ff;text-decoration:none;color:#1d4ed8}
+    nav .small{font-size:.82rem;color:#64748b;margin:10px 10px 4px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+    section,.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;margin-bottom:22px}
+    .callout{border-radius:16px;padding:16px 18px;margin:18px 0;border:1px solid var(--line);background:#f8fafc}
+    .callout.blue{background:var(--blue2);border-color:#93c5fd}.callout.green{background:var(--green2);border-color:#86efac}.callout.amber{background:var(--amber2);border-color:#fbbf24}.callout.red{background:var(--red2);border-color:#fca5a5}.callout.purple{background:var(--purple2);border-color:#c4b5fd}
+    .tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.82rem;font-weight:800;background:#e2e8f0;color:#334155;margin:2px}
+    .tag.blue{background:var(--blue2);color:#1d4ed8}.tag.green{background:var(--green2);color:#166534}.tag.amber{background:var(--amber2);color:#92400e}.tag.red{background:var(--red2);color:#991b1b}.tag.purple{background:var(--purple2);color:#5b21b6}
+    table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0 22px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:white}
+    th,td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+    th{background:#f1f5f9;color:#0f172a;font-weight:900;white-space:nowrap}
+    tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:#f8fafc}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.card h3{margin-top:0}
+    .formula{font-size:1.08rem;text-align:center;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:14px;padding:13px;margin:12px 0;color:#0f172a}
+    .backline{font-size:.92rem;margin-top:18px;color:#64748b}.backline a{margin-right:12px}
+    details{border:1px solid var(--line);border-radius:14px;background:#fff;margin:12px 0;padding:0;overflow:hidden}
+    summary{cursor:pointer;font-weight:900;padding:12px 14px;background:#f8fafc;color:#0f172a}
+    details .inside{padding:14px 16px}
+    .checklist label{display:block;margin:8px 0;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:#fff}.checklist input{margin-right:8px}
+    .sticky-actions{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:20}.floatbtn{border:0;border-radius:999px;padding:12px 14px;background:#0f172a;color:white;box-shadow:var(--shadow);cursor:pointer;font-weight:900}.floatbtn:hover{background:#1e3a8a}
+    .mini{font-size:.92rem;color:#475569}.danger{color:var(--red);font-weight:900}.ok{color:var(--green);font-weight:900}.warn{color:#b45309;font-weight:900}
+    .tocline{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.tocline a{background:#eef2ff;border:1px solid #c7d2fe;border-radius:999px;padding:5px 11px;font-size:.9rem}
+    .svgbox{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;overflow:auto;text-align:center}
+    .exam{border-left:5px solid var(--purple);padding-left:14px;margin:14px 0;background:#faf5ff;border-radius:10px;padding-top:8px;padding-bottom:8px}
+    .kbdrow kbd{margin-right:6px}.hidden{display:none}
+    @media(max-width:980px){main{grid-template-columns:1fr}nav{position:relative;top:0;max-height:none}.hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3{grid-template-columns:1fr}}
+    @media print{nav,.sticky-actions,.no-print{display:none}main{display:block;max-width:100%;padding:0}section,.panel{box-shadow:none;page-break-inside:avoid}a{color:#000;text-decoration:none}}
+  </style>
+</head>
+<body id="top">
+<header>
+  <div class="wrap">
+    <h1>第九章 Relations<br>考前總複習網頁</h1>
+    <p class="subtitle">把所有指定題目拆成「先備知識 → 核心觀念 → 題型模板 → 答案檢查」。目標不是背答案，而是看到題目就知道該用哪一套工具。</p>
+    <div class="hero-grid">
+      <div class="hero-card"><strong>9.1–9.2</strong><span>關係、性質、n-ary relation</span></div>
+      <div class="hero-card"><strong>9.3–9.4</strong><span>矩陣 / 有向圖表示、closure</span></div>
+      <div class="hero-card"><strong>9.5</strong><span>等價關係、partition</span></div>
+      <div class="hero-card"><strong>9.6</strong><span>偏序、Hasse diagram、lattice</span></div>
+    </div>
+  </div>
+</header>
+<main>
+<nav class="no-print">
+  <h2>目錄</h2>
+  <a href="#how">怎麼使用這份網頁</a>
+  <a href="#map">總路線圖</a>
+  <div class="small">先備知識</div>
+  <a href="#pre-set">P0 集合、ordered pair、Cartesian product</a>
+  <a href="#pre-count">P1 計數：product rule、subset</a>
+  <a href="#pre-number">P2 數論：整除、gcd/lcm、mod</a>
+  <a href="#pre-matrix">P3 矩陣、Boolean product</a>
+  <a href="#pre-graph">P4 有向圖、path、reachable</a>
+  <div class="small">第九章觀念</div>
+  <a href="#c-rel">C1 Relation 基本定義</a>
+  <a href="#c-prop">C2 Relation 性質總表</a>
+  <a href="#c-count">C3 Relation 計數公式</a>
+  <a href="#c-compose">C4 Composition / Power</a>
+  <a href="#c-rep">C5 Matrix / Digraph 表示</a>
+  <a href="#c-closure">C6 Closure</a>
+  <a href="#c-equiv">C7 Equivalence relation</a>
+  <a href="#c-poset">C8 Partial order / Hasse / Lattice</a>
+  <div class="small">指定題目</div>
+  <a href="#ex-table">所有指定題目索引</a>
+  <a href="#ans-91">9.1–9.2 題型檢查</a>
+  <a href="#ans-93">9.3 題型檢查</a>
+  <a href="#ans-94">9.4 題型檢查</a>
+  <a href="#ans-95">9.5 題型檢查</a>
+  <a href="#ans-96">9.6 題型檢查</a>
+  <a href="#final-check">考前檢核表</a>
+</nav>
+<div>
+<section id="how">
+  <h2>怎麼使用這份網頁</h2>
+  <div class="callout blue">
+    <strong>建議順序：</strong>先看「先備知識」，再看「觀念庫」，最後用「指定題目索引」逐題檢查。你已經問過很多細節，現在不要再一題一題散著背；要把題目歸類成少數幾種可重複使用的模板。
+  </div>
+  <div class="grid3 checklist">
+    <div class="card"><h3>第一輪：理解</h3><label><input type="checkbox" data-key="r1">我知道每題用哪個概念。</label><label><input type="checkbox" data-key="r2">我能說出三個性質：reflexive / symmetric / transitive。</label></div>
+    <div class="card"><h3>第二輪：操作</h3><label><input type="checkbox" data-key="r3">我能從 relation 寫矩陣。</label><label><input type="checkbox" data-key="r4">我能從 graph 讀 ordered pairs。</label></div>
+    <div class="card"><h3>第三輪：考試</h3><label><input type="checkbox" data-key="r5">我能判斷 equivalence relation。</label><label><input type="checkbox" data-key="r6">我能判斷 partial order 和 lattice。</label></div>
+  </div>
+  <p class="mini">勾選狀態會存在你的瀏覽器 localStorage。換裝置或清資料會消失。</p>
+</section>
+
+<section id="map">
+  <h2>總路線圖：第九章只是在換表示法</h2>
+  <p>第九章表面上題型很多，其實都圍繞同一件事：<strong>一個 relation 是 ordered pairs 的集合；你可以用集合、矩陣、圖、closure、partition、poset 語言來描述它。</strong></p>
+  <table>
+    <thead><tr><th>章節</th><th>核心問題</th><th>你要會的動作</th><th>需要先備知識</th></tr></thead>
+    <tbody>
+      <tr><td>9.1</td><td>什麼是 relation？有哪些性質？</td><td>列 ordered pairs、判斷性質、數 relations、做 composition</td><td><a href="#pre-set">P0</a>、<a href="#pre-count">P1</a>、<a href="#pre-number">P2</a></td></tr>
+      <tr><td>9.2</td><td>三個以上元素的 relation 怎麼看？</td><td>列 n-tuples</td><td><a href="#pre-set">P0</a></td></tr>
+      <tr><td>9.3</td><td>relation 怎麼用矩陣或有向圖表示？</td><td>relation ↔ matrix ↔ digraph</td><td><a href="#pre-matrix">P3</a>、<a href="#pre-graph">P4</a></td></tr>
+      <tr><td>9.4</td><td>缺性質時，最少要補什麼？</td><td>reflexive / symmetric / transitive closure</td><td><a href="#c-prop">C2</a>、<a href="#c-compose">C4</a>、<a href="#pre-graph">P4</a></td></tr>
+      <tr><td>9.5</td><td>什麼叫「分成同類」？</td><td>判斷 equivalence relation、找 equivalence class、partition</td><td><a href="#c-prop">C2</a>、<a href="#pre-number">P2</a></td></tr>
+      <tr><td>9.6</td><td>什麼叫「部分可比較」？</td><td>判斷 partial order、Hasse diagram、max/min、lattice</td><td><a href="#c-prop">C2</a>、<a href="#pre-graph">P4</a>、<a href="#pre-number">P2</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="pre-set">
+  <h2>P0 先備知識：集合、ordered pair、Cartesian product</h2>
+  <table>
+    <thead><tr><th>概念</th><th>你要會的版本</th><th>第九章用途</th></tr></thead>
+    <tbody>
+      <tr><td>ordered pair</td><td><span class="math">(a,b)</span> 有順序；<span class="math">(a,b) ≠ (b,a)</span> 通常成立。</td><td>relation 的元素都是 ordered pairs。</td></tr>
+      <tr><td>Cartesian product</td><td><span class="math">A×B={(a,b) | a∈A, b∈B}</span></td><td>relation from <span class="math">A</span> to <span class="math">B</span> 是 <span class="math">A×B</span> 的 subset。</td></tr>
+      <tr><td>relation on A</td><td><span class="math">R⊆A×A</span></td><td>9.1 性質、9.3 矩陣、9.5 等價、9.6 偏序都用它。</td></tr>
+      <tr><td>n-tuple</td><td><span class="math">(a₁,a₂,…,aₙ)</span></td><td>9.2 n-ary relation。</td></tr>
+    </tbody>
+  </table>
+  <div class="exam"><strong>考場判斷：</strong>看到「list ordered pairs」就是逐個測條件；看到「from A to B」row 通常對應 A，column 對應 B。</div>
+  <p class="backline"><a href="#map">↩ 回總路線圖</a><a href="#ex-table">去指定題目索引 →</a></p>
+</section>
+
+<section id="pre-count">
+  <h2>P1 先備知識：計數與 subset</h2>
+  <table>
+    <thead><tr><th>公式</th><th>意思</th><th>用在哪題</th></tr></thead>
+    <tbody>
+      <tr><td><span class="math">|A×B|=|A||B|</span></td><td>Cartesian product 的大小。</td><td>9.1 #25</td></tr>
+      <tr><td><span class="math">m</span> 個元素的集合有 <span class="math">2^m</span> 個 subsets</td><td>每個元素選或不選。</td><td>relation 數量：因為 relation 是 subset。</td></tr>
+      <tr><td><span class="math">C(n,2)=n(n−1)/2</span></td><td>不同兩元素的無序組數。</td><td>9.1 #49 symmetric / antisymmetric 計數。</td></tr>
+    </tbody>
+  </table>
+  <div class="callout amber"><strong>不要硬背：</strong>9.1 #49 的核心是分成 diagonal pairs 和 off-diagonal unordered pairs。背公式但不懂分組，題目改一點就會爆。</div>
+  <p class="backline"><a href="#map">↩ 回總路線圖</a><a href="#c-count">去 C3 Relation 計數 →</a></p>
+</section>
+
+<section id="pre-number">
+  <h2>P2 先備知識：整除、gcd/lcm、mod</h2>
+  <table>
+    <thead><tr><th>符號</th><th>意思</th><th>例子</th><th>常用題目</th></tr></thead>
+    <tbody>
+      <tr><td><span class="math">a | b</span></td><td><span class="math">a</span> 整除 <span class="math">b</span>；存在整數 <span class="math">k</span> 使 <span class="math">b=ak</span>。</td><td><span class="math">2|6</span> true；<span class="math">6|2</span> false。</td><td>9.1 #1(d)、9.4 #3、9.6 #15/#33</td></tr>
+      <tr><td><span class="math">gcd(a,b)</span></td><td>最大公因數</td><td><span class="math">gcd(4,6)=2</span></td><td>9.1 #1(e)、9.6 GLB 類比</td></tr>
+      <tr><td><span class="math">lcm(a,b)</span></td><td>最小公倍數</td><td><span class="math">lcm(4,6)=12</span></td><td>9.1 #1(f)、9.6 LUB 類比</td></tr>
+      <tr><td><span class="math">a≡b (mod m)</span></td><td><span class="math">m | (a−b)</span>，即除以 <span class="math">m</span> 餘數相同。</td><td><span class="math">7≡2 (mod 5)</span></td><td>9.5 #35</td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#map">↩ 回總路線圖</a><a href="#ans-95">去 9.5 題型 →</a><a href="#ans-96">去 9.6 題型 →</a></p>
+</section>
+
+<section id="pre-matrix">
+  <h2>P3 先備知識：0-1 矩陣與 Boolean product</h2>
+  <p>第九章的矩陣不是拿來做普通線性代數，而是記錄「有沒有關係」。</p>
+  <table>
+    <thead><tr><th>操作</th><th>普通矩陣</th><th>Boolean 矩陣</th></tr></thead>
+    <tbody>
+      <tr><td>元素</td><td>任意數字</td><td>只看 0 或 1</td></tr>
+      <tr><td>乘法中的乘</td><td><span class="math">×</span></td><td>AND：<span class="math">∧</span></td></tr>
+      <tr><td>乘法中的加</td><td><span class="math">+</span></td><td>OR：<span class="math">∨</span></td></tr>
+      <tr><td>意義</td><td>數值計算</td><td>是否存在中繼點 / path</td></tr>
+    </tbody>
+  </table>
+  <div class="formula">Boolean product：<span class="math">cᵢⱼ=(aᵢ₁∧b₁ⱼ)∨(aᵢ₂∧b₂ⱼ)∨…∨(aᵢₙ∧bₙⱼ)</span></div>
+  <p class="backline"><a href="#map">↩ 回總路線圖</a><a href="#c-rep">去 C5 Matrix 表示 →</a></p>
+</section>
+
+<section id="pre-graph">
+  <h2>P4 先備知識：有向圖、loop、path、reachable</h2>
+  <table>
+    <thead><tr><th>圖上的東西</th><th>Relation 語言</th><th>第九章用途</th></tr></thead>
+    <tbody>
+      <tr><td>箭頭 <span class="math">a→b</span></td><td><span class="math">(a,b)∈R</span></td><td>9.3 #27</td></tr>
+      <tr><td>loop <span class="math">a→a</span></td><td><span class="math">(a,a)∈R</span></td><td>reflexive / irreflexive 判斷</td></tr>
+      <tr><td>path <span class="math">a→…→b</span></td><td><span class="math">(a,b)∈R*</span></td><td>transitive closure</td></tr>
+      <tr><td>雙向箭頭</td><td><span class="math">(a,b),(b,a)∈R</span></td><td>symmetric / antisymmetric 判斷</td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#map">↩ 回總路線圖</a><a href="#c-closure">去 C6 Closure →</a><a href="#c-poset">去 C8 Poset →</a></p>
+</section>
+
+<section id="c-rel">
+  <h2>C1 Relation 基本定義</h2>
+  <div class="formula">Binary relation from <span class="math">A</span> to <span class="math">B</span>：<span class="math">R⊆A×B</span></div>
+  <div class="formula">Relation on <span class="math">A</span>：<span class="math">R⊆A×A</span></div>
+  <table>
+    <thead><tr><th>題目問法</th><th>翻譯</th><th>動作</th></tr></thead>
+    <tbody>
+      <tr><td>List ordered pairs</td><td>列出滿足條件的 <span class="math">(a,b)</span></td><td>先列出元素範圍，再逐一測條件。</td></tr>
+      <tr><td>How many relations?</td><td>問有多少 subsets</td><td>先算 <span class="math">A×B</span> 有幾個元素，再做 <span class="math">2^m</span>。</td></tr>
+      <tr><td>n-ary relation</td><td>relation 是 n-tuples 的集合</td><td>從 <span class="math">A₁×…×Aₙ</span> 中找滿足條件的 tuples。</td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#pre-set">↩ 回 P0</a><a href="#ex-table">去題目索引 →</a></p>
+</section>
+
+<section id="c-prop">
+  <h2>C2 Relation 性質總表</h2>
+  <table>
+    <thead><tr><th>性質</th><th>定義</th><th>矩陣看法</th><th>有向圖看法</th><th>一句話口訣</th></tr></thead>
+    <tbody>
+      <tr><td>reflexive</td><td>所有 <span class="math">(a,a)</span> 都在</td><td>主對角線全 1</td><td>每個點都有 loop</td><td>每個人都指自己</td></tr>
+      <tr><td>irreflexive</td><td>所有 <span class="math">(a,a)</span> 都不在</td><td>主對角線全 0</td><td>沒有任何 loop</td><td>沒有人指自己</td></tr>
+      <tr><td>symmetric</td><td><span class="math">(a,b)⇒(b,a)</span></td><td><span class="math">M=Mᵀ</span></td><td>箭頭都要雙向</td><td>有來就有回</td></tr>
+      <tr><td>antisymmetric</td><td><span class="math">(a,b)</span> 且 <span class="math">(b,a)</span> ⇒ <span class="math">a=b</span></td><td>非對角線不可雙向都是 1</td><td>不同點不能互指</td><td>雙向只准發生在自己</td></tr>
+      <tr><td>asymmetric</td><td><span class="math">(a,b)⇒not (b,a)</span></td><td>非對角不可雙向；主對角全 0</td><td>不能有 loop，也不能雙向</td><td>比 antisymmetric 更嚴</td></tr>
+      <tr><td>transitive</td><td><span class="math">(a,b),(b,c)⇒(a,c)</span></td><td><span class="math">M⊙M ≤ M</span></td><td>兩段路要有捷徑</td><td>接得起來就要補到</td></tr>
+    </tbody>
+  </table>
+  <div class="callout red"><strong>高頻錯誤：</strong>antisymmetric 不是 symmetric 的相反。identity relation 同時 symmetric 和 antisymmetric。</div>
+  <p class="backline"><a href="#c-rel">↩ 回 C1</a><a href="#ans-91">去 9.1 題型 →</a></p>
+</section>
+
+<section id="c-count">
+  <h2>C3 Relation 計數公式：9.1 #25、#47、#49</h2>
+  <h3>核心分解</h3>
+  <div class="grid2">
+    <div class="card"><h3>Diagonal pairs</h3><p><span class="math">(a,a)</span>，共有 <span class="math">n</span> 個。</p><p>負責 reflexive / irreflexive / asymmetric 的判斷。</p></div>
+    <div class="card"><h3>Off-diagonal unordered groups</h3><p>每組 <span class="math">{a,b}</span>，<span class="math">a≠b</span>，共有 <span class="math">C(n,2)</span> 組。</p><p>每組對應兩個方向：<span class="math">(a,b),(b,a)</span>。</p></div>
+  </div>
+  <table>
+    <thead><tr><th>條件</th><th>diagonal 選法</th><th>每組 {a,b} 選法</th><th>總數</th></tr></thead>
+    <tbody>
+      <tr><td>任意 relation on n elements</td><td>自由</td><td>四種：都不放、只放一邊、只放另一邊、雙向</td><td><span class="math">2^{n²}</span></td></tr>
+      <tr><td>symmetric</td><td><span class="math">2^n</span></td><td>2 種：都不放 / 雙向都放</td><td><span class="math">2^{n(n+1)/2}</span></td></tr>
+      <tr><td>antisymmetric</td><td><span class="math">2^n</span></td><td>3 種：都不放 / 只放一邊 / 只放另一邊</td><td><span class="math">2^n 3^{n(n−1)/2}</span></td></tr>
+      <tr><td>asymmetric</td><td>全部不能放</td><td>3 種</td><td><span class="math">3^{n(n−1)/2}</span></td></tr>
+      <tr><td>irreflexive</td><td>全部不能放</td><td>每個 ordered pair 自由</td><td><span class="math">2^{n(n−1)}</span></td></tr>
+      <tr><td>reflexive and symmetric</td><td>全部必放</td><td>2 種</td><td><span class="math">2^{n(n−1)/2}</span></td></tr>
+      <tr><td>neither reflexive nor irreflexive</td><td>有些放有些不放：<span class="math">2^n−2</span></td><td>每個 ordered pair 自由</td><td><span class="math">(2^n−2)2^{n(n−1)}</span></td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#pre-count">↩ 回 P1</a><a href="#ans-91">去 9.1 題型 →</a></p>
+</section>
+
+<section id="c-compose">
+  <h2>C4 Composition / Power：9.1 #37、9.3 #15、9.4 #19</h2>
+  <div class="formula"><span class="math">(a,c)∈S∘R</span> iff 存在 <span class="math">b</span>，使 <span class="math">(a,b)∈R</span> 且 <span class="math">(b,c)∈S</span></div>
+  <p><strong>重點：</strong><span class="math">S∘R</span> 是「先走 <span class="math">R</span>，再走 <span class="math">S</span>」。</p>
+  <table>
+    <thead><tr><th>符號</th><th>意思</th><th>圖上怎麼想</th></tr></thead>
+    <tbody>
+      <tr><td><span class="math">R²</span></td><td><span class="math">R∘R</span></td><td>走 2 步能到</td></tr>
+      <tr><td><span class="math">R³</span></td><td><span class="math">R²∘R</span></td><td>走 3 步能到</td></tr>
+      <tr><td><span class="math">R*</span></td><td><span class="math">R∪R²∪R³∪…</span></td><td>走任意正步數能到</td></tr>
+    </tbody>
+  </table>
+  <div class="callout amber"><strong>9.1 #37 警告：</strong>此題答案本對某些 composition 結果列成 <span class="math">R₂</span>，但依課本 composition 定義，用「存在中繼點」重算，部分小題會得到 universal relation。考試前請拿此題向老師確認採用哪個答案；其他題型不受影響。</div>
+  <details><summary>展開：9.1 #37 的安全解法</summary><div class="inside"><p>寫成「存在 <span class="math">b</span> 同時滿足兩個不等式」，再判斷 <span class="math">a,c</span> 之間被迫有什麼關係。如果不管 <span class="math">a,c</span> 如何都能選到 <span class="math">b</span>，答案就是 universal relation <span class="math">ℝ×ℝ</span>。</p></div></details>
+  <p class="backline"><a href="#c-rel">↩ 回 C1</a><a href="#pre-graph">↩ 回 P4</a></p>
+</section>
+
+<section id="c-rep">
+  <h2>C5 Matrix / Digraph 表示：9.3</h2>
+  <h3>Relation → Matrix</h3>
+  <div class="formula"><span class="math">mᵢⱼ=1</span> iff <span class="math">(aᵢ,bⱼ)∈R</span>；否則 <span class="math">mᵢⱼ=0</span></div>
+  <h3>常見矩陣操作</h3>
+  <table>
+    <thead><tr><th>Relation 操作</th><th>矩陣操作</th><th>例子</th></tr></thead>
+    <tbody>
+      <tr><td>complement <span class="math">R̄</span></td><td>0 變 1，1 變 0</td><td>9.3 #13(b)</td></tr>
+      <tr><td>inverse <span class="math">R^{-1}</span></td><td>transpose <span class="math">Mᵀ</span></td><td>9.3 #13(a)</td></tr>
+      <tr><td>power <span class="math">R²,R³</span></td><td>Boolean product</td><td>9.3 #13(c)、#15</td></tr>
+    </tbody>
+  </table>
+  <h3>Digraph → Relation</h3>
+  <p>每條箭頭 <span class="math">x→y</span> 就寫 <span class="math">(x,y)</span>；loop 就是 <span class="math">(x,x)</span>。</p>
+  <p class="backline"><a href="#pre-matrix">↩ 回 P3</a><a href="#pre-graph">↩ 回 P4</a><a href="#ans-93">去 9.3 題型 →</a></p>
+</section>
+
+<section id="c-closure">
+  <h2>C6 Closure：9.4</h2>
+  <p>Closure 就是「最少補 pair，使 relation 具有指定性質」。</p>
+  <table>
+    <thead><tr><th>Closure</th><th>要補什麼</th><th>公式</th><th>圖上做法</th></tr></thead>
+    <tbody>
+      <tr><td>reflexive closure</td><td>所有缺的 <span class="math">(a,a)</span></td><td><span class="math">R∪Δ</span></td><td>每個點加 loop</td></tr>
+      <tr><td>symmetric closure</td><td>所有反方向 <span class="math">(b,a)</span></td><td><span class="math">R∪R^{-1}</span></td><td>每條箭頭補反向</td></tr>
+      <tr><td>transitive closure</td><td>所有 path 可達的 pair</td><td><span class="math">R*=R∪R²∪R³∪…</span></td><td>有路就補直接關係</td></tr>
+    </tbody>
+  </table>
+  <div class="callout red"><strong>高頻錯誤：</strong>symmetric closure 不會自動補 loop；transitive closure 不是只補一次。</div>
+  <p class="backline"><a href="#c-prop">↩ 回 C2</a><a href="#c-compose">↩ 回 C4</a><a href="#ans-94">去 9.4 題型 →</a></p>
+</section>
+
+<section id="c-equiv">
+  <h2>C7 Equivalence relation：9.5</h2>
+  <div class="formula">Equivalence relation = reflexive + symmetric + transitive</div>
+  <table>
+    <thead><tr><th>概念</th><th>定義</th><th>考場用法</th></tr></thead>
+    <tbody>
+      <tr><td>equivalence class</td><td><span class="math">[a]={x | xRa}</span></td><td>找「跟 a 同類」的所有元素。</td></tr>
+      <tr><td>partition</td><td>不空、不重疊、合起來剛好全體</td><td>9.5 #41 判斷 partitions。</td></tr>
+      <tr><td>partition → relation</td><td>同一塊裡全部互相關聯</td><td>每一塊做 Cartesian product。</td></tr>
+      <tr><td>mod equivalence</td><td><span class="math">a≡b (mod m)</span></td><td>同餘類 <span class="math">[a]ₘ={mk+a | k∈ℤ}</span>。</td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#c-prop">↩ 回 C2</a><a href="#pre-number">↩ 回 P2</a><a href="#ans-95">去 9.5 題型 →</a></p>
+</section>
+
+<section id="c-poset">
+  <h2>C8 Partial order / Hasse / Lattice：9.6</h2>
+  <div class="formula">Partial order = reflexive + antisymmetric + transitive</div>
+  <table>
+    <thead><tr><th>名詞</th><th>意思</th><th>不要搞錯</th></tr></thead>
+    <tbody>
+      <tr><td>poset</td><td>集合 + partial ordering</td><td>不是每對都要能比較。</td></tr>
+      <tr><td>comparable</td><td><span class="math">a≤b</span> 或 <span class="math">b≤a</span></td><td>至少一個方向成立。</td></tr>
+      <tr><td>incomparable</td><td>兩個方向都不成立</td><td>常出在 subset 或 divides。</td></tr>
+      <tr><td>maximal</td><td>沒有人在它上面</td><td>可以有很多個。</td></tr>
+      <tr><td>greatest</td><td>它在所有人上面</td><td>最多一個；不一定存在。</td></tr>
+      <tr><td>minimal</td><td>沒有人在它下面</td><td>可以有很多個。</td></tr>
+      <tr><td>least</td><td>它在所有人下面</td><td>最多一個；不一定存在。</td></tr>
+      <tr><td>upper bound</td><td>同時在指定元素上面</td><td>整除 poset 中像共同倍數。</td></tr>
+      <tr><td>least upper bound</td><td>所有共同上界中最低者</td><td>整除 poset 中常像 lcm。</td></tr>
+      <tr><td>lower bound</td><td>同時在指定元素下面</td><td>整除 poset 中像共同因數。</td></tr>
+      <tr><td>greatest lower bound</td><td>所有共同下界中最高者</td><td>整除 poset 中常像 gcd。</td></tr>
+      <tr><td>lattice</td><td>任兩元素都有 LUB 和 GLB</td><td>只要一對失敗就不是。</td></tr>
+    </tbody>
+  </table>
+  <h3>Hasse diagram 三刪一省</h3>
+  <table>
+    <thead><tr><th>步驟</th><th>動作</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>刪 loop</td><td>不畫 <span class="math">(a,a)</span></td><td>reflexive 已內建。</td></tr>
+      <tr><td>刪 transitive 邊</td><td>若 <span class="math">a<b<c</span>，不畫 <span class="math">a<c</span></td><td>可以由路徑推出。</td></tr>
+      <tr><td>省箭頭</td><td>邊往上畫</td><td>預設越上越大。</td></tr>
+    </tbody>
+  </table>
+  <p class="backline"><a href="#c-prop">↩ 回 C2</a><a href="#pre-graph">↩ 回 P4</a><a href="#ans-96">去 9.6 題型 →</a></p>
+</section>
+
+<section id="ex-table">
+  <h2>所有指定題目索引：每題用哪個觀念</h2>
+  <p>這張表是你的考前作戰表。看到題號就知道要用哪個模板。</p>
+  <table>
+    <thead><tr><th>章節</th><th>指定題目</th><th>主要觀念</th><th>先備知識</th><th>考場動作</th></tr></thead>
+    <tbody>
+      <tr><td>9.1</td><td>1</td><td><a href="#c-rel">Relation、ordered pairs</a></td><td><a href="#pre-set">P0</a>、<a href="#pre-number">P2</a></td><td>逐一測條件：=、sum、>、|、gcd、lcm。</td></tr>
+      <tr><td>9.1</td><td>3, 11, 18</td><td><a href="#c-prop">Relation properties</a></td><td><a href="#pre-set">P0</a></td><td>檢查 reflexive / symmetric / antisymmetric / transitive / irreflexive / asymmetric。</td></tr>
+      <tr><td>9.1</td><td>25, 47, 49</td><td><a href="#c-count">Relation counting</a></td><td><a href="#pre-count">P1</a></td><td>先數 Cartesian product，再用 subset 或 diagonal/off-diagonal。</td></tr>
+      <tr><td>9.1</td><td>37</td><td><a href="#c-compose">Composition</a></td><td><a href="#pre-graph">P4</a></td><td>寫出「存在中繼點 b」的不等式。</td></tr>
+      <tr><td>9.2</td><td>1</td><td><a href="#c-rel">n-ary relation</a></td><td><a href="#pre-set">P0</a></td><td>列出所有滿足不等式的 triples。</td></tr>
+      <tr><td>9.3</td><td>1, 5, 9, 13, 15, 27</td><td><a href="#c-rep">Matrix / Digraph representation</a></td><td><a href="#pre-matrix">P3</a>、<a href="#pre-graph">P4</a></td><td>矩陣填 0/1、看 diagonal、Boolean product、讀箭頭。</td></tr>
+      <tr><td>9.4</td><td>1, 3, 5, 7, 9, 19, 25</td><td><a href="#c-closure">Closure</a></td><td><a href="#c-compose">C4</a>、<a href="#pre-graph">P4</a></td><td>補 loop、補反向、用 reachable 找 transitive closure。</td></tr>
+      <tr><td>9.5</td><td>1, 11, 15, 21, 25, 35, 41, 47</td><td><a href="#c-equiv">Equivalence relation / partition</a></td><td><a href="#c-prop">C2</a>、<a href="#pre-number">P2</a></td><td>證三性質、找同餘類、判斷 partition、由 partition 列 relation。</td></tr>
+      <tr><td>9.6</td><td>1, 5, 7, 11, 15, 25, 33, 43</td><td><a href="#c-poset">Partial order / lattice</a></td><td><a href="#c-prop">C2</a>、<a href="#pre-graph">P4</a></td><td>判斷 partial order、找 incomparable、Hasse relation、max/min、LUB/GLB、lattice。</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="ans-91">
+  <h2>9.1–9.2 題型檢查</h2>
+  <h3>9.1 #1：列 ordered pairs</h3>
+  <table>
+    <thead><tr><th>小題條件</th><th>解法提醒</th><th>結果檢查</th></tr></thead>
+    <tbody>
+      <tr><td><span class="math">a=b</span></td><td>只能取 A 和 B 都有的元素。</td><td><span class="math">(0,0),(1,1),(2,2),(3,3)</span></td></tr>
+      <tr><td><span class="math">a+b=4</span></td><td>固定一個找另一個。</td><td><span class="math">(1,3),(2,2),(3,1),(4,0)</span></td></tr>
+      <tr><td><span class="math">a>b</span></td><td>按 b 分類列。</td><td>共 10 個。</td></tr>
+      <tr><td><span class="math">a|b</span></td><td>注意 0 不整除任何數；非 0 可整除 0。</td><td>包含 <span class="math">(1,0),(2,0),(3,0),(4,0)</span>。</td></tr>
+      <tr><td><span class="math">gcd(a,b)=1</span></td><td>找互質。</td><td>注意 <span class="math">gcd(0,1)=1</span>。</td></tr>
+      <tr><td><span class="math">lcm(a,b)=2</span></td><td>只可能由 1 和 2 組成且至少一個 2。</td><td><span class="math">(1,2),(2,1),(2,2)</span></td></tr>
+    </tbody>
+  </table>
+  <h3>9.1 #3/#11/#18：性質判斷</h3>
+  <table>
+    <thead><tr><th>小題</th><th>reflexive</th><th>symmetric</th><th>antisymmetric</th><th>transitive</th><th>irreflexive?</th><th>asymmetric?</th></tr></thead>
+    <tbody>
+      <tr><td>a</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+      <tr><td>b</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+      <tr><td>c</td><td>No</td><td>Yes</td><td>No</td><td>No</td><td>Yes</td><td>No</td></tr>
+      <tr><td>d</td><td>No</td><td>No</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>e</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
+      <tr><td>f</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>No</td></tr>
+    </tbody>
+  </table>
+  <h3>9.1 #25/#47/#49：計數</h3>
+  <table>
+    <thead><tr><th>題目</th><th>答案模板</th><th>結果</th></tr></thead>
+    <tbody>
+      <tr><td>#25</td><td>from m elements to n elements：<span class="math">2^{mn}</span></td><td><span class="math">2^{mn}</span></td></tr>
+      <tr><td>#47(a)</td><td>on 4 elements：<span class="math">2^{4²}</span></td><td><span class="math">65536</span></td></tr>
+      <tr><td>#47(b)</td><td>固定包含一個 pair，剩下 15 個自由</td><td><span class="math">2^{15}=32768</span></td></tr>
+      <tr><td>#49</td><td>用 <a href="#c-count">C3 表格</a></td><td>不要死背，按 diagonal / off-diagonal 推。</td></tr>
+    </tbody>
+  </table>
+  <h3>9.2 #1：n-ary relation</h3>
+  <p>條件 <span class="math">0&lt;a&lt;b&lt;c&lt;5</span>，整數只能從 <span class="math">1,2,3,4</span> 選三個遞增排列。</p>
+  <div class="formula"><span class="math">{(1,2,3),(1,2,4),(1,3,4),(2,3,4)}</span></div>
+  <p class="backline"><a href="#ex-table">↩ 回題目索引</a><a href="#c-prop">↩ 回性質表</a></p>
+</section>
+
+<section id="ans-93">
+  <h2>9.3 題型檢查：矩陣與有向圖</h2>
+  <table>
+    <thead><tr><th>題目</th><th>你要做什麼</th><th>答案 / 檢查點</th></tr></thead>
+    <tbody>
+      <tr><td>#1</td><td>ordered pairs → matrix</td><td>row 是第一個元素，column 是第二個元素。</td></tr>
+      <tr><td>#5</td><td>用矩陣判斷 irreflexive</td><td>主對角線全部是 0。</td></tr>
+      <tr><td>#9</td><td>數矩陣中 1 的數量</td><td>a 4950；b 9900；c 99；d 100；e 1。</td></tr>
+      <tr><td>#13</td><td>inverse / complement / square</td><td>inverse=transpose；complement=0/1 對換；square=Boolean product。</td></tr>
+      <tr><td>#15</td><td>算 <span class="math">R²,R³,R⁴</span></td><td>用 Boolean product，不要出現 2 或 3。</td></tr>
+      <tr><td>#27</td><td>digraph → relation</td><td>照箭頭抄；loop 寫 <span class="math">(x,x)</span>。</td></tr>
+    </tbody>
+  </table>
+  <details><summary>展開：9.3 #13/#15 矩陣答案檢查</summary><div class="inside">
+    <p>#13：<span class="math">R^{-1}</span> 矩陣與原矩陣相同；complement 為 <span class="math">[[1,0,0],[0,0,1],[0,1,0]]</span>；<span class="math">R²</span> 全 1。</p>
+    <p>#15：<span class="math">R²=[[0,0,1],[1,1,0],[0,1,1]]</span>；<span class="math">R³=[[1,1,0],[0,1,1],[1,1,1]]</span>；<span class="math">R⁴=[[0,1,1],[1,1,1],[1,1,1]]</span>。</p>
+  </div></details>
+  <p class="backline"><a href="#ex-table">↩ 回題目索引</a><a href="#c-rep">↩ 回 C5</a></p>
+</section>
+
+<section id="ans-94">
+  <h2>9.4 題型檢查：Closures</h2>
+  <table>
+    <thead><tr><th>題目</th><th>核心動作</th><th>檢查點</th></tr></thead>
+    <tbody>
+      <tr><td>#1</td><td>在 A={0,1,2,3} 上做 reflexive / symmetric closure</td><td>reflexive 補 <span class="math">(0,0),(3,3)</span>；symmetric 補反向。</td></tr>
+      <tr><td>#3</td><td>整除 relation 的 symmetric closure</td><td><span class="math">{(a,b) | a|b or b|a}</span></td></tr>
+      <tr><td>#5/#7</td><td>graph 的 reflexive closure</td><td>每個 vertex 加 loop。</td></tr>
+      <tr><td>#9</td><td>graph 的 symmetric closure</td><td>每條箭頭補反方向；loop 不用補。</td></tr>
+      <tr><td>#19</td><td>算 <span class="math">R²…R⁶,R*</span></td><td><span class="math">R⁶=A×A</span>，所以 <span class="math">R*=A×A</span>。</td></tr>
+      <tr><td>#25</td><td>用 <span class="math">R∪R²∪…∪Rⁿ</span> 找 transitive closure</td><td>a、d 為全 1；c 原本已 transitive；b 第一列全 0。</td></tr>
+    </tbody>
+  </table>
+  <div class="callout blue"><strong>考試技巧：</strong>transitive closure 題目如果給 graph，先不要急著算矩陣。先看每個點能 reach 哪些點，往往比較快。</div>
+  <p class="backline"><a href="#ex-table">↩ 回題目索引</a><a href="#c-closure">↩ 回 C6</a></p>
+</section>
+
+<section id="ans-95">
+  <h2>9.5 題型檢查：Equivalence relation 與 partition</h2>
+  <table>
+    <thead><tr><th>題目</th><th>類型</th><th>結果 / 解題模板</th></tr></thead>
+    <tbody>
+      <tr><td>#1</td><td>判斷 equivalence relation</td><td>a、c 是；b 缺 reflexive/transitive；d 缺 transitive；e 缺 symmetric/transitive。</td></tr>
+      <tr><td>#11</td><td>證明前三 bits 相同</td><td>三段證明：自己同、反過來同、同於中間則彼此同。</td></tr>
+      <tr><td>#15</td><td>證明 ordered pairs 差值相同</td><td>把 <span class="math">a+d=b+c</span> 改寫成 <span class="math">a−b=c−d</span>。</td></tr>
+      <tr><td>#21</td><td>graph 判斷</td><td>不是；抓 transitive 反例即可。</td></tr>
+      <tr><td>#25</td><td>bit strings 有相同數量的 1</td><td>等價關係；等價類是「1 的個數相同」的一群字串。</td></tr>
+      <tr><td>#35</td><td>congruence class mod 5</td><td><span class="math">[2]₅={5k+2}</span>；<span class="math">[3]₅={5k+3}</span>；<span class="math">[6]₅=[1]₅</span>；<span class="math">[-3]₅=[2]₅</span>。</td></tr>
+      <tr><td>#41</td><td>判斷 partition</td><td>a No；b Yes；c Yes；d No。</td></tr>
+      <tr><td>#47</td><td>partition → relation</td><td>每一塊做 Cartesian product；不同塊之間不連。</td></tr>
+    </tbody>
+  </table>
+  <div class="callout amber"><strong>嚴格提醒：</strong>證明 equivalence relation 時，不要寫「很明顯」。考試至少要明確分 reflexive、symmetric、transitive 三段。</div>
+  <p class="backline"><a href="#ex-table">↩ 回題目索引</a><a href="#c-equiv">↩ 回 C7</a></p>
+</section>
+
+<section id="ans-96">
+  <h2>9.6 題型檢查：Partial order、Hasse、Lattice</h2>
+  <table>
+    <thead><tr><th>題目</th><th>類型</th><th>結果 / 解題模板</th></tr></thead>
+    <tbody>
+      <tr><td>#1</td><td>判斷 partial order</td><td>a、c、d 是；b、e 不是，因為缺 antisymmetric/transitive。</td></tr>
+      <tr><td>#5</td><td>判斷 poset</td><td><span class="math">(ℤ,=)</span>、<span class="math">(ℤ,≥)</span> 是；<span class="math">(ℤ,≠)</span>、<span class="math">(ℤ,∤)</span> 不是。</td></tr>
+      <tr><td>#7</td><td>矩陣判斷 partial order</td><td>a No；b Yes；c No。</td></tr>
+      <tr><td>#11</td><td>digraph 判斷 partial order</td><td>是：每點 loop、無不同元素雙向、沒有缺 transitive。</td></tr>
+      <tr><td>#15</td><td>找 incomparable elements</td><td>a 可選 <span class="math">{0}</span> 和 <span class="math">{1}</span>；b 可選 <span class="math">4</span> 和 <span class="math">6</span>。</td></tr>
+      <tr><td>#25</td><td>Hasse diagram → relation</td><td>除了直接邊，也要補 transitive 推出的 pairs。</td></tr>
+      <tr><td>#33</td><td>整除 poset</td><td>maximal: 24,45；minimal: 3,5；無 greatest/least；UB{3,5}=15,45；LUB=15；LB{15,45}=3,5,15；GLB=15。</td></tr>
+      <tr><td>#43</td><td>判斷 lattice</td><td>a Yes；b No；c Yes。</td></tr>
+    </tbody>
+  </table>
+  <div class="callout red"><strong>最大陷阱：</strong>maximal 不是 greatest。maximal 只是不被別人壓在下面；greatest 必須壓過所有人。</div>
+  <p class="backline"><a href="#ex-table">↩ 回題目索引</a><a href="#c-poset">↩ 回 C8</a></p>
+</section>
+
+<section id="final-check">
+  <h2>考前檢核表：看完必須會的事</h2>
+  <div class="grid2 checklist">
+    <div class="card"><h3>基礎操作</h3>
+      <label><input type="checkbox" data-key="f1">我能列出 ordered pairs，不會把 <span class="math">(a,b)</span> 和 <span class="math">(b,a)</span> 混掉。</label>
+      <label><input type="checkbox" data-key="f2">我能用 diagonal / off-diagonal 推 relation 計數公式。</label>
+      <label><input type="checkbox" data-key="f3">我能用矩陣判斷 reflexive、irreflexive、symmetric、antisymmetric、transitive。</label>
+      <label><input type="checkbox" data-key="f4">我知道 Boolean product 只看 OR/AND，不會算出 2 或 3。</label>
+    </div>
+    <div class="card"><h3>進階判斷</h3>
+      <label><input type="checkbox" data-key="f5">我能分清 equivalence relation 和 partial order：前者 symmetric，後者 antisymmetric。</label>
+      <label><input type="checkbox" data-key="f6">我能從 partition 寫出 relation。</label>
+      <label><input type="checkbox" data-key="f7">我能從 Hasse diagram 還原完整 relation。</label>
+      <label><input type="checkbox" data-key="f8">我能判斷 maximal / greatest / LUB / GLB / lattice。</label>
+    </div>
+  </div>
+  <h3>最後 10 分鐘只背這張表</h3>
+  <table>
+    <thead><tr><th>看到題目</th><th>立刻做</th></tr></thead>
+    <tbody>
+      <tr><td>equivalence relation</td><td>reflexive + symmetric + transitive</td></tr>
+      <tr><td>partial order</td><td>reflexive + antisymmetric + transitive</td></tr>
+      <tr><td>symmetric closure</td><td><span class="math">R∪R^{-1}</span></td></tr>
+      <tr><td>reflexive closure</td><td><span class="math">R∪Δ</span></td></tr>
+      <tr><td>transitive closure</td><td>所有 reachable pairs</td></tr>
+      <tr><td>matrix inverse</td><td>transpose</td></tr>
+      <tr><td>matrix complement</td><td>0/1 對換</td></tr>
+      <tr><td>Hasse diagram</td><td>補回 loops 和 transitive pairs 才是完整 relation</td></tr>
+    </tbody>
+  </table>
+  <div class="callout green"><strong>你真正要掌握的只有三個動詞：</strong>列出、判斷、補上。第九章所有題目都能歸到這三個動詞。</div>
+  <p class="backline"><a href="#top">↑ 回最上方</a><a href="#ex-table">↩ 回題目索引</a></p>
+</section>
+</div>
+</main>
+<div class="sticky-actions no-print">
+  <button class="floatbtn" onclick="location.href='#top'">↑ 頂部</button>
+  <button class="floatbtn" onclick="window.print()">列印</button>
+</div>
+<script>
+  const boxes = document.querySelectorAll('input[type="checkbox"][data-key]');
+  boxes.forEach(box => {
+    const key = 'ch9-study-' + box.dataset.key;
+    box.checked = localStorage.getItem(key) === '1';
+    box.addEventListener('change', () => localStorage.setItem(key, box.checked ? '1' : '0'));
+  });
+</script>
+</body>
+</html>
