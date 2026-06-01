@@ -244,24 +244,231 @@
 
 <section id="c-count">
   <h2>C3 Relation 計數公式：9.1 #25、#47、#49</h2>
-  <h3>核心分解</h3>
+  <div class="callout blue">
+    <strong>這一節不要死背公式。</strong>正確做法是先把 <span class="math">A×A</span> 拆成兩塊：
+    <strong>diagonal pairs</strong> 和 <strong>off-diagonal pairs</strong>。所有公式都只是這兩塊的乘法結果。
+  </div>
+
+  <h3 id="c-count-core">核心分解：先分兩個區域</h3>
   <div class="grid2">
-    <div class="card"><h3>Diagonal pairs</h3><p><span class="math">(a,a)</span>，共有 <span class="math">n</span> 個。</p><p>負責 reflexive / irreflexive / asymmetric 的判斷。</p></div>
-    <div class="card"><h3>Off-diagonal unordered groups</h3><p>每組 <span class="math">{a,b}</span>，<span class="math">a≠b</span>，共有 <span class="math">C(n,2)</span> 組。</p><p>每組對應兩個方向：<span class="math">(a,b),(b,a)</span>。</p></div>
+    <div class="card">
+      <h3>1. Diagonal pairs</h3>
+      <p>形式是 <span class="math">(a,a)</span>，也就是元素跟自己配對。</p>
+      <p>如果集合有 <span class="math">n</span> 個元素，就剛好有 <span class="math">n</span> 個 diagonal pairs。</p>
+      <p>例如 <span class="math">A={1,2,3}</span> 時，diagonal pairs 是：</p>
+      <div class="formula"><span class="math">(1,1),(2,2),(3,3)</span></div>
+      <p>它們負責判斷 <strong>reflexive</strong>、<strong>irreflexive</strong>、<strong>asymmetric</strong>。</p>
+    </div>
+    <div class="card">
+      <h3>2. Off-diagonal unordered groups</h3>
+      <p>先用無順序組 <span class="math">{a,b}</span> 分組，其中 <span class="math">a≠b</span>。</p>
+      <p>這樣的組數是：</p>
+      <div class="formula"><span class="math">C(n,2)=n(n−1)/2</span></div>
+      <p>每一組 <span class="math">{a,b}</span> 對應兩個 ordered pairs：</p>
+      <div class="formula"><span class="math">(a,b)</span> 和 <span class="math">(b,a)</span></div>
+      <p>它們負責判斷 <strong>symmetric</strong>、<strong>antisymmetric</strong>、<strong>asymmetric</strong>。</p>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <strong>小心：</strong><span class="math">C(n,2)</span> 是在數「不同元素的無順序組」；
+    <span class="math">n(n−1)</span> 是在數「不同元素的 ordered pairs」。
+    這兩個不能混用。
+  </div>
+
+  <h3 id="c-count-formula-table">公式總表＋每一行怎麼來</h3>
+  <div class="callout green">
+    <strong>新版重點：</strong>下面這張表不只列公式，也把「diagonal 怎麼數、off-diagonal 怎麼數、為什麼相乘」直接寫在同一行。先讀這張表，再往下看完整推導。
   </div>
   <table>
-    <thead><tr><th>條件</th><th>diagonal 選法</th><th>每組 {a,b} 選法</th><th>總數</th></tr></thead>
+    <thead><tr><th>條件</th><th>diagonal 選法</th><th>每組 {a,b} 選法</th><th>總數</th><th>這一行怎麼來</th></tr></thead>
     <tbody>
-      <tr><td>任意 relation on n elements</td><td>自由</td><td>四種：都不放、只放一邊、只放另一邊、雙向</td><td><span class="math">2^{n²}</span></td></tr>
-      <tr><td>symmetric</td><td><span class="math">2^n</span></td><td>2 種：都不放 / 雙向都放</td><td><span class="math">2^{n(n+1)/2}</span></td></tr>
-      <tr><td>antisymmetric</td><td><span class="math">2^n</span></td><td>3 種：都不放 / 只放一邊 / 只放另一邊</td><td><span class="math">2^n 3^{n(n−1)/2}</span></td></tr>
-      <tr><td>asymmetric</td><td>全部不能放</td><td>3 種</td><td><span class="math">3^{n(n−1)/2}</span></td></tr>
-      <tr><td>irreflexive</td><td>全部不能放</td><td>每個 ordered pair 自由</td><td><span class="math">2^{n(n−1)}</span></td></tr>
-      <tr><td>reflexive and symmetric</td><td>全部必放</td><td>2 種</td><td><span class="math">2^{n(n−1)/2}</span></td></tr>
-      <tr><td>neither reflexive nor irreflexive</td><td>有些放有些不放：<span class="math">2^n−2</span></td><td>每個 ordered pair 自由</td><td><span class="math">(2^n−2)2^{n(n−1)}</span></td></tr>
+      <tr><td><a href="#count-any">任意 relation on n elements</a></td><td><span class="math">n</span> 個 diagonal 各自放/不放，所以 <span class="math">2^n</span></td><td>每組有 <span class="math">(a,b),(b,a)</span> 兩個 ordered pairs，各自放/不放，所以 <span class="math">4</span> 種；共有 <span class="math">C(n,2)</span> 組</td><td><span class="math">2^{n²}</span></td><td>其實最直接：<span class="math">A×A</span> 有 <span class="math">n²</span> 個 ordered pairs，每個 pair 都是「放/不放」2 種，所以 <span class="math">2^{n²}</span>。若用分區看：<span class="math">2^n·4^{C(n,2)}=2^n·2^{n(n−1)}=2^{n²}</span>。</td></tr>
+      <tr><td><a href="#count-symmetric">symmetric</a></td><td>diagonal 反過來還是自己，不影響對稱；每個自由，所以 <span class="math">2^n</span></td><td>只允許「都不放」或「雙向都放」，不能只放一邊，所以每組 <span class="math">2</span> 種</td><td><span class="math">2^{n(n+1)/2}</span></td><td>共有 <span class="math">C(n,2)</span> 組不同元素，因此 off-diagonal 有 <span class="math">2^{C(n,2)}</span> 種。乘上 diagonal 的 <span class="math">2^n</span>：<span class="math">2^n·2^{C(n,2)}=2^{n+n(n−1)/2}=2^{n(n+1)/2}</span>。</td></tr>
+      <tr><td><a href="#count-antisymmetric">antisymmetric</a></td><td>diagonal <span class="math">(a,a)</span> 不會違反，因為本來就是同一個元素；所以 <span class="math">2^n</span></td><td>不同元素不能雙向都有；合法是「都不放、只放 <span class="math">(a,b)</span>、只放 <span class="math">(b,a)</span>」，每組 <span class="math">3</span> 種</td><td><span class="math">2^n 3^{n(n−1)/2}</span></td><td>diagonal 給 <span class="math">2^n</span>；不同元素無序組共有 <span class="math">C(n,2)=n(n−1)/2</span> 組，每組 3 種，所以是 <span class="math">2^n·3^{C(n,2)}</span>。</td></tr>
+      <tr><td><a href="#count-asymmetric">asymmetric</a></td><td>全部不能放；因為放 <span class="math">(a,a)</span> 會讓它的反向仍是自己，直接違反 asymmetric</td><td>和 antisymmetric 一樣，不同元素不能雙向都有；每組 <span class="math">3</span> 種</td><td><span class="math">3^{n(n−1)/2}</span></td><td>diagonal 只有 1 種「全不放」。off-diagonal 每個無序組 3 種，共 <span class="math">C(n,2)</span> 組，所以 <span class="math">1·3^{C(n,2)}=3^{n(n−1)/2}</span>。</td></tr>
+      <tr><td><a href="#count-irreflexive">irreflexive</a></td><td>全部不能放；這是 irreflexive 的定義</td><td>沒有 symmetric/antisymmetric 限制，所以每個 off-diagonal ordered pair 自由放/不放</td><td><span class="math">2^{n(n−1)}</span></td><td>off-diagonal ordered pairs 數量是：第一格 <span class="math">n</span> 種，第二格不能等於第一格，所以 <span class="math">n−1</span> 種，共 <span class="math">n(n−1)</span> 個。每個 2 種，因此 <span class="math">2^{n(n−1)}</span>。</td></tr>
+      <tr><td><a href="#count-ref-sym">reflexive and symmetric</a></td><td>reflexive 強迫全部必放，所以 diagonal 只有 <span class="math">1</span> 種</td><td>symmetric 要求每組只能「都不放」或「雙向都放」，每組 <span class="math">2</span> 種</td><td><span class="math">2^{n(n−1)/2}</span></td><td>diagonal 沒自由度；off-diagonal 有 <span class="math">C(n,2)</span> 組，每組 2 種，所以 <span class="math">1·2^{C(n,2)}=2^{n(n−1)/2}</span>。</td></tr>
+      <tr><td><a href="#count-neither">neither reflexive nor irreflexive</a></td><td>diagonal 要「有些放、有些不放」。全部 diagonal 原本有 <span class="math">2^n</span> 種，扣掉「全放」和「全不放」兩種，所以 <span class="math">2^n−2</span></td><td>off-diagonal 沒限制，每個 ordered pair 自由放/不放</td><td><span class="math">(2^n−2)2^{n(n−1)}</span></td><td>diagonal 選法是 <span class="math">2^n−2</span>。off-diagonal ordered pairs 有 <span class="math">n(n−1)</span> 個，每個 2 種，所以乘上 <span class="math">2^{n(n−1)}</span>。</td></tr>
     </tbody>
   </table>
-  <p class="backline"><a href="#pre-count">↩ 回 P1</a><a href="#ans-91">去 9.1 題型 →</a></p>
+
+  <h3 id="c-count-row-details">逐行推導：每一行怎麼來</h3>
+
+  <details id="count-any" open>
+    <summary>1. 任意 relation on n elements：為什麼是 <span class="math">2^{n²}</span>？</summary>
+    <div class="inside">
+      <p>relation on <span class="math">A</span> 的意思是：</p>
+      <div class="formula"><span class="math">R⊆A×A</span></div>
+      <p>如果 <span class="math">|A|=n</span>，那 <span class="math">A×A</span> 有：</p>
+      <div class="formula"><span class="math">n·n=n²</span> 個 ordered pairs</div>
+      <p>每一個 ordered pair 都只有兩個選擇：放進 relation，或不放進 relation。</p>
+      <table>
+        <thead><tr><th>物件</th><th>選擇數</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td>每個 ordered pair</td><td>2</td><td>放 / 不放</td></tr>
+          <tr><td>共有 ordered pairs</td><td><span class="math">n²</span></td><td><span class="math">|A×A|=n²</span></td></tr>
+          <tr><td>總數</td><td><span class="math">2^{n²}</span></td><td>乘法原理：2 乘 <span class="math">n²</span> 次</td></tr>
+        </tbody>
+      </table>
+      <p><strong>對應 9.1 #47(a)：</strong>若 <span class="math">n=4</span>，總數就是 <span class="math">2^{16}=65536</span>。</p>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a></p>
+    </div>
+  </details>
+
+  <details id="count-symmetric" open>
+    <summary>2. symmetric：為什麼是 <span class="math">2^{n(n+1)/2}</span>？</summary>
+    <div class="inside">
+      <p>symmetric 要求：</p>
+      <div class="formula"><span class="math">(a,b)∈R ⇒ (b,a)∈R</span></div>
+      <p>先看 diagonal：<span class="math">(a,a)</span> 的反方向還是自己，所以每個 diagonal pair 可以自由放或不放。</p>
+      <div class="formula">diagonal 選法：<span class="math">2^n</span></div>
+      <p>再看每一組不同元素 <span class="math">{a,b}</span>。它有兩個方向：<span class="math">(a,b)</span>、<span class="math">(b,a)</span>。為了對稱，只能：</p>
+      <table>
+        <thead><tr><th>選法</th><th><span class="math">(a,b)</span></th><th><span class="math">(b,a)</span></th><th>是否 symmetric</th></tr></thead>
+        <tbody>
+          <tr><td>都不放</td><td>0</td><td>0</td><td class="ok">可以</td></tr>
+          <tr><td>只放 <span class="math">(a,b)</span></td><td>1</td><td>0</td><td class="danger">不行</td></tr>
+          <tr><td>只放 <span class="math">(b,a)</span></td><td>0</td><td>1</td><td class="danger">不行</td></tr>
+          <tr><td>雙向都放</td><td>1</td><td>1</td><td class="ok">可以</td></tr>
+        </tbody>
+      </table>
+      <p>所以每組只有 <span class="math">2</span> 種選法。這樣的組共有 <span class="math">C(n,2)=n(n−1)/2</span> 組。</p>
+      <div class="formula"><span class="math">2^n · 2^{n(n−1)/2}=2^{n+n(n−1)/2}=2^{n(n+1)/2}</span></div>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a></p>
+    </div>
+  </details>
+
+  <details id="count-antisymmetric" open>
+    <summary>3. antisymmetric：為什麼是 <span class="math">2^n3^{n(n−1)/2}</span>？</summary>
+    <div class="inside">
+      <p>antisymmetric 要求：</p>
+      <div class="formula"><span class="math">(a,b)∈R</span> 且 <span class="math">(b,a)∈R ⇒ a=b</span></div>
+      <p>白話：不同元素不能雙向都有。注意 diagonal <span class="math">(a,a)</span> 沒問題，因為這裡 <span class="math">a=b</span>。</p>
+      <p>所以 diagonal 仍然自由放或不放：</p>
+      <div class="formula">diagonal 選法：<span class="math">2^n</span></div>
+      <p>每一組 <span class="math">{a,b}</span>，<span class="math">a≠b</span>，有四種原始選法，但「雙向都放」會違反 antisymmetric：</p>
+      <table>
+        <thead><tr><th>選法</th><th><span class="math">(a,b)</span></th><th><span class="math">(b,a)</span></th><th>是否 antisymmetric</th></tr></thead>
+        <tbody>
+          <tr><td>都不放</td><td>0</td><td>0</td><td class="ok">可以</td></tr>
+          <tr><td>只放 <span class="math">(a,b)</span></td><td>1</td><td>0</td><td class="ok">可以</td></tr>
+          <tr><td>只放 <span class="math">(b,a)</span></td><td>0</td><td>1</td><td class="ok">可以</td></tr>
+          <tr><td>雙向都放</td><td>1</td><td>1</td><td class="danger">不行，因為 <span class="math">a≠b</span></td></tr>
+        </tbody>
+      </table>
+      <p>所以每組有 <span class="math">3</span> 種。共有 <span class="math">C(n,2)=n(n−1)/2</span> 組。</p>
+      <div class="formula"><span class="math">2^n · 3^{n(n−1)/2}</span></div>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a><a href="#c-prop">↩ 回 antisymmetric 定義</a></p>
+    </div>
+  </details>
+
+  <details id="count-asymmetric" open>
+    <summary>4. asymmetric：為什麼是 <span class="math">3^{n(n−1)/2}</span>？</summary>
+    <div class="inside">
+      <p>asymmetric 要求：</p>
+      <div class="formula"><span class="math">(a,b)∈R ⇒ (b,a)∉R</span></div>
+      <p>它比 antisymmetric 更嚴格。先看 diagonal：如果放了 <span class="math">(a,a)</span>，那它的反方向還是 <span class="math">(a,a)</span>，會直接違反 asymmetric。</p>
+      <div class="formula">diagonal 選法：全部不能放，所以只有 <span class="math">1</span> 種</div>
+      <p>每組不同元素 <span class="math">{a,b}</span> 的選法和 antisymmetric 一樣，不能雙向都有，所以有 3 種：</p>
+      <div class="formula">都不放、只放 <span class="math">(a,b)</span>、只放 <span class="math">(b,a)</span></div>
+      <p>共有 <span class="math">C(n,2)=n(n−1)/2</span> 組，因此：</p>
+      <div class="formula"><span class="math">1·3^{n(n−1)/2}=3^{n(n−1)/2}</span></div>
+      <div class="callout red"><strong>考場提醒：</strong>asymmetric 一定 irreflexive；所以 diagonal 不能有任何一個 1。</div>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a><a href="#c-prop">↩ 回 asymmetric 定義</a></p>
+    </div>
+  </details>
+
+  <details id="count-irreflexive" open>
+    <summary>5. irreflexive：為什麼是 <span class="math">2^{n(n−1)}</span>？</summary>
+    <div class="inside">
+      <p>irreflexive 要求所有 diagonal pairs 都不能放：</p>
+      <div class="formula"><span class="math">(a,a)∉R</span> for every <span class="math">a∈A</span></div>
+      <p>所以 diagonal 沒有自由度：全部固定不放，只有 1 種選法。</p>
+      <p>剩下的是 off-diagonal ordered pairs，也就是 <span class="math">(a,b)</span> 且 <span class="math">a≠b</span>。</p>
+      <table>
+        <thead><tr><th>第一格 <span class="math">a</span></th><th>第二格 <span class="math">b</span></th><th>總數</th></tr></thead>
+        <tbody>
+          <tr><td><span class="math">n</span> 種</td><td>不能等於 <span class="math">a</span>，所以 <span class="math">n−1</span> 種</td><td><span class="math">n(n−1)</span></td></tr>
+        </tbody>
+      </table>
+      <p>每個 off-diagonal ordered pair 都可以自由放或不放，所以：</p>
+      <div class="formula"><span class="math">2^{n(n−1)}</span></div>
+      <p>也可以用分組看：每組 <span class="math">{a,b}</span> 有 4 種選法，共 <span class="math">C(n,2)</span> 組，所以 <span class="math">4^{C(n,2)}=2^{2C(n,2)}=2^{n(n−1)}</span>。</p>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a></p>
+    </div>
+  </details>
+
+  <details id="count-ref-sym" open>
+    <summary>6. reflexive and symmetric：為什麼是 <span class="math">2^{n(n−1)/2}</span>？</summary>
+    <div class="inside">
+      <p>同時滿足 reflexive 和 symmetric。</p>
+      <p>reflexive 先固定 diagonal：所有 <span class="math">(a,a)</span> 都必須放。這部分沒有自由度，只有 1 種選法。</p>
+      <div class="formula">diagonal 選法：全部必放，<span class="math">1</span> 種</div>
+      <p>symmetric 再限制每組 <span class="math">{a,b}</span>：只能「都不放」或「雙向都放」。</p>
+      <div class="formula">每組 <span class="math">2</span> 種，共 <span class="math">C(n,2)=n(n−1)/2</span> 組</div>
+      <p>所以：</p>
+      <div class="formula"><span class="math">1·2^{n(n−1)/2}=2^{n(n−1)/2}</span></div>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a><a href="#c-prop">↩ 回 reflexive / symmetric 定義</a></p>
+    </div>
+  </details>
+
+  <details id="count-neither" open>
+    <summary>7. neither reflexive nor irreflexive：為什麼是 <span class="math">(2^n−2)2^{n(n−1)}</span>？</summary>
+    <div class="inside">
+      <p>這句話最容易被誤解。它不是「不是 reflexive 就好」，而是同時：</p>
+      <div class="formula">不是 reflexive，而且也不是 irreflexive</div>
+      <table>
+        <thead><tr><th>狀態</th><th>diagonal 情況</th></tr></thead>
+        <tbody>
+          <tr><td>reflexive</td><td>全部 diagonal 都放</td></tr>
+          <tr><td>irreflexive</td><td>全部 diagonal 都不放</td></tr>
+          <tr><td>neither reflexive nor irreflexive</td><td>有些 diagonal 放，有些 diagonal 不放</td></tr>
+        </tbody>
+      </table>
+      <p>diagonal 共有 <span class="math">n</span> 個，每個本來可放可不放，所以總選法是 <span class="math">2^n</span>。</p>
+      <p>但要扣掉兩種不合法情況：</p>
+      <ul>
+        <li>全部都放：這會變成 reflexive。</li>
+        <li>全部都不放：這會變成 irreflexive。</li>
+      </ul>
+      <div class="formula">diagonal 選法：<span class="math">2^n−2</span></div>
+      <p>off-diagonal 完全沒有額外限制，每個 ordered pair 都自由放或不放。off-diagonal ordered pairs 有 <span class="math">n(n−1)</span> 個，所以：</p>
+      <div class="formula">off-diagonal 選法：<span class="math">2^{n(n−1)}</span></div>
+      <p>兩部分相乘：</p>
+      <div class="formula"><span class="math">(2^n−2)2^{n(n−1)}</span></div>
+      <p class="backline"><a href="#c-count-formula-table">↩ 回公式表</a><a href="#c-prop">↩ 回 reflexive / irreflexive 定義</a></p>
+    </div>
+  </details>
+
+  <h3 id="c-count-mini-example">用 <span class="math">n=3</span> 檢查你有沒有真的懂</h3>
+  <div class="callout green">
+    <p>令 <span class="math">A={1,2,3}</span>。diagonal pairs 有 3 個：<span class="math">(1,1),(2,2),(3,3)</span>。</p>
+    <p>不同元素的無順序組有 <span class="math">C(3,2)=3</span> 組：<span class="math">{1,2},{1,3},{2,3}</span>。</p>
+    <p>off-diagonal ordered pairs 有 <span class="math">3·2=6</span> 個：每組各有兩個方向。</p>
+  </div>
+  <table>
+    <thead><tr><th>條件</th><th>代入 <span class="math">n=3</span></th><th>結果</th></tr></thead>
+    <tbody>
+      <tr><td>任意 relation</td><td><span class="math">2^{3²}</span></td><td><span class="math">512</span></td></tr>
+      <tr><td>symmetric</td><td><span class="math">2^{3·4/2}</span></td><td><span class="math">64</span></td></tr>
+      <tr><td>antisymmetric</td><td><span class="math">2^3·3^{3}</span></td><td><span class="math">216</span></td></tr>
+      <tr><td>asymmetric</td><td><span class="math">3^3</span></td><td><span class="math">27</span></td></tr>
+      <tr><td>irreflexive</td><td><span class="math">2^{3·2}</span></td><td><span class="math">64</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout red">
+    <strong>真正要背的只有三句：</strong>
+    <ol>
+      <li>diagonal 有 <span class="math">n</span> 個。</li>
+      <li>不同元素的無順序組有 <span class="math">C(n,2)=n(n−1)/2</span> 組。</li>
+      <li>每組 <span class="math">{a,b}</span> 對應兩個方向：<span class="math">(a,b),(b,a)</span>。</li>
+    </ol>
+    公式都是這三句推出來的。不要當咒語背。
+  </div>
+
+  <p class="backline"><a href="#pre-count">↩ 回 P1</a><a href="#c-prop">↩ 回 C2 性質定義</a><a href="#ans-91">去 9.1 題型 →</a></p>
 </section>
 
 <section id="c-compose">
