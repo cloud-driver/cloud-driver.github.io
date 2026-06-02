@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第六章 Counting：考前整理與題型地圖</title>
+<style>
+  :root{
+    --bg:#f8fafc;--card:#ffffff;--ink:#172033;--muted:#5b677a;--line:#dbe3ef;
+    --accent:#2563eb;--accent2:#0f766e;--warn:#b45309;--bad:#b91c1c;--good:#15803d;
+    --soft:#eef4ff;--soft2:#ecfdf5;--soft3:#fff7ed;--code:#0f172a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",Arial,sans-serif;line-height:1.65;color:var(--ink);background:linear-gradient(180deg,#eef4ff 0,#f8fafc 260px)}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  header{padding:42px 22px 28px;max-width:1180px;margin:auto}
+  .title{font-size:clamp(28px,4vw,46px);font-weight:900;letter-spacing:-.03em;margin:0 0 10px}
+  .subtitle{font-size:18px;color:var(--muted);max-width:900px;margin:0}
+  .layout{max-width:1180px;margin:0 auto;padding:0 18px 70px;display:grid;grid-template-columns:280px 1fr;gap:22px}
+  nav{position:sticky;top:14px;align-self:start;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 8px 28px rgba(15,23,42,.06)}
+  nav h2{font-size:16px;margin:0 0 8px} nav ol{padding-left:20px;margin:8px 0} nav li{margin:7px 0;font-size:14px}
+  main{min-width:0}
+  section,.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin:0 0 18px;box-shadow:0 8px 28px rgba(15,23,42,.04)}
+  h2{font-size:28px;line-height:1.25;margin:0 0 14px;border-left:6px solid var(--accent);padding-left:12px}
+  h3{font-size:21px;margin:26px 0 10px;color:#111827}
+  h4{font-size:17px;margin:20px 0 8px;color:#1f2937}
+  p{margin:10px 0}.muted{color:var(--muted)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;background:var(--soft);border:1px solid #c7d2fe;color:#1e40af;font-size:13px;font-weight:700;margin:2px 3px 2px 0}
+  .pill.green{background:var(--soft2);border-color:#bbf7d0;color:#166534}.pill.orange{background:var(--soft3);border-color:#fed7aa;color:#9a3412}
+  .formula{display:inline-block;background:#f1f5f9;border:1px solid #e2e8f0;color:var(--code);border-radius:10px;padding:2px 8px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.95em;white-space:nowrap}
+  .blockformula{display:block;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;overflow:auto;color:var(--code)}
+  table{width:100%;border-collapse:collapse;margin:12px 0 18px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:top} th{background:#f1f5f9;text-align:left;font-weight:800} tr:nth-child(even) td{background:#fbfdff}
+  .note{border-left:5px solid var(--accent2);background:#f0fdfa;padding:12px 14px;border-radius:12px;margin:12px 0}.warn{border-left:5px solid var(--warn);background:#fff7ed;padding:12px 14px;border-radius:12px;margin:12px 0}.bad{border-left:5px solid var(--bad);background:#fef2f2;padding:12px 14px;border-radius:12px;margin:12px 0}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.mini{padding:14px;border:1px solid var(--line);border-radius:16px;background:#fbfdff}.mini h3{margin-top:0}
+  details{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;margin:10px 0} summary{font-weight:800;cursor:pointer;color:#1f2937}.small{font-size:14px}.toplink{display:inline-block;margin-top:10px;font-size:13px;font-weight:800}.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  button,.fakebtn{border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:7px 11px;font-weight:800;cursor:pointer;font-size:13px}.fakebtn:hover,button:hover{background:#dbeafe;text-decoration:none}.fixedTop{position:fixed;right:16px;bottom:16px;z-index:10;box-shadow:0 8px 20px rgba(15,23,42,.14)}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#e5e7eb;border-radius:6px;padding:1px 6px}
+  .check li{margin:6px 0}.source{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:20px}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}nav{position:relative;top:0}.grid{grid-template-columns:1fr}}
+  @media print{nav,.fixedTop,.btnrow{display:none}body{background:white}.layout{display:block;max-width:none}section,.card{box-shadow:none;break-inside:avoid}}
+</style>
+<script>
+function openAllDetails(){document.querySelectorAll('details').forEach(d=>d.open=true)}
+function closeAllDetails(){document.querySelectorAll('details').forEach(d=>d.open=false)}
+</script>
+</head>
+<body id="top">
+<header>
+  <h1 class="title">第六章 Counting：考前整理與題型地圖</h1>
+  <p class="subtitle">目標不是背題號，而是看到題目後立刻判斷：固定格子、補集、排容、鴿籠、排列/組合、二項式、stars and bars，還是球盒分配。</p>
+  <div class="btnrow">
+    <a class="fakebtn" href="#exercise-map">先看題目對照</a>
+    <a class="fakebtn" href="#decision">先看判斷流程</a>
+    <a class="fakebtn" href="#formula-table">先看公式表</a>
+    <button onclick="openAllDetails()">展開所有細節</button>
+    <button onclick="closeAllDetails()">收合所有細節</button>
+  </div>
+</header>
+<div class="layout">
+<nav>
+  <h2>目錄</h2>
+  <ol>
+    <li><a href="#scope">本章題目範圍</a></li>
+    <li><a href="#decision">解題判斷流程</a></li>
+    <li><a href="#prereq">先備知識</a></li>
+    <li><a href="#concepts">不重複觀念庫</a></li>
+    <li><a href="#exercise-map">題目 ↔ 觀念對照</a></li>
+    <li><a href="#formula-table">必背公式表</a></li>
+    <li><a href="#mistakes">常見錯誤</a></li>
+    <li><a href="#exam-check">考前檢核</a></li>
+  </ol>
+  <p class="small muted">每個題目都連回同一份觀念庫，避免同一觀念重複散落。</p>
+</nav>
+<main>
+<section id="scope">
+  <h2>0. 本整理涵蓋哪些題目？</h2>
+  <p>依照你前面問過的第六章題目，本 HTML 覆蓋：</p>
+  <table>
+    <thead><tr><th>章節</th><th>需要會的題目</th><th>大主題</th></tr></thead>
+    <tbody>
+      <tr><td>6.1</td><td>11, 17, 25, 35, 37, 51, 57, 67</td><td>基本計數、補集、排容、函數計數、block</td></tr>
+      <tr><td>6.2</td><td>3, 11, 15, 21</td><td>鴿籠原理與反證式證明</td></tr>
+      <tr><td>6.3</td><td>11, 17, 21, 29, 35, 37, 39</td><td>排列、組合、選位置、指定連續字串</td></tr>
+      <tr><td>6.4</td><td>5, 9, 29, 33</td><td>二項式定理、係數、組合恆等式證明</td></tr>
+      <tr><td>6.5</td><td>1, 5, 7, 15, 23, 25, 29, 47, 61</td><td>重複排列/組合、stars and bars、球盒模型</td></tr>
+    </tbody>
+  </table>
+  <div class="note">課本第六章主題是 Counting，先建立 product rule / sum rule，再到 pigeonhole principle、permutations and combinations、binomial coefficients and identities、generalized permutations and combinations。你要把第六章當成「分類決策」章，而不是「公式堆疊」章。</div>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="decision">
+  <h2>1. 解題判斷流程：先分類，再算</h2>
+  <p>考試時請照這張表走。不要一看到數字就亂套公式。</p>
+  <table>
+    <thead><tr><th>題目訊號</th><th>你要問自己的問題</th><th>用哪個觀念</th><th>連結</th></tr></thead>
+    <tbody>
+      <tr><td>每一格、每一步都有選擇</td><td>每一步選擇數會不會受前一步影響？</td><td>乘法原理 / 固定格子</td><td><a href="#c-product">看觀念</a></td></tr>
+      <tr><td>長度可以是 8 到 12、分不同情況</td><td>各情況互斥嗎？</td><td>加法原理</td><td><a href="#c-sum">看觀念</a></td></tr>
+      <tr><td>至少一次、至少三個、不能有某情況</td><td>反面是不是比較好算？</td><td>補集法</td><td><a href="#c-complement">看觀念</a></td></tr>
+      <tr><td>A 或 B，而且可能同時發生</td><td>重疊有沒有被算兩次？</td><td>排容原理</td><td><a href="#c-inclusion">看觀念</a></td></tr>
+      <tr><td>保證至少、有一組一定、任抽幾個一定</td><td>物件是什麼？籠子是什麼？</td><td>鴿籠原理</td><td><a href="#c-pigeonhole">看觀念</a></td></tr>
+      <tr><td>選人、選位置、子集合</td><td>順序重要嗎？</td><td>組合 C(n,r)</td><td><a href="#c-combination">看觀念</a></td></tr>
+      <tr><td>職位、排名、安排不同角色</td><td>同一批人換位置算不算不同？</td><td>排列 P(n,r)</td><td><a href="#c-permutation">看觀念</a></td></tr>
+      <tr><td>包含 BCD、每個 0 後面接 1</td><td>哪些東西必須黏在一起？</td><td>Block 法</td><td><a href="#c-block">看觀念</a></td></tr>
+      <tr><td>(x+y)^n、指定 x^a y^b 的係數</td><td>哪一項會產生指定次方？</td><td>二項式定理</td><td><a href="#c-binomial">看觀念</a></td></tr>
+      <tr><td>非負整數解、分配相同物品到不同盒子</td><td>幾顆星星？幾個隔板？有上下限嗎？</td><td>Stars and Bars</td><td><a href="#c-starsbars">看觀念</a></td></tr>
+      <tr><td>球/盒子、有標籤/沒標籤</td><td>球可分辨嗎？盒子可分辨嗎？</td><td>球盒模型</td><td><a href="#c-boxes">看觀念</a></td></tr>
+    </tbody>
+  </table>
+  <div class="bad"><strong>硬規則：</strong>先判斷「順序重要嗎」「可不可重複」「物件/盒子可不可分辨」。這三件沒判斷就寫公式，通常是在賭。</div>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="prereq">
+  <h2>2. 先備知識：不懂這些，後面公式會變成背咒語</h2>
+  <table>
+    <thead><tr><th>先備知識</th><th>你需要會什麼</th><th>用在哪裡</th></tr></thead>
+    <tbody>
+      <tr><td>次方</td><td><span class="formula">a^n</span> 表示 n 格各有 a 種選擇。</td><td><a href="#c-product">乘法原理</a>、密碼、字串、函數</td></tr>
+      <tr><td>階乘</td><td><span class="formula">n! = n(n-1)...1</span>，用來排 n 個不同物件。</td><td><a href="#c-permutation">排列</a>、block、球盒分配</td></tr>
+      <tr><td>組合數</td><td><span class="formula">C(n,r)=n!/[r!(n-r)!]</span>，表示從 n 個中選 r 個，不看順序。</td><td><a href="#c-combination">選位置/選人</a>、二項係數</td></tr>
+      <tr><td>補集</td><td>想算「至少一個」，常改算「全部 − 一個都沒有」。</td><td><a href="#c-complement">補集法</a></td></tr>
+      <tr><td>整數不等式</td><td><span class="formula">x &lt; 4</span> 且 x 是整數，等價於 <span class="formula">x ≤ 3</span>；壞情況是 <span class="formula">x ≥ 4</span>。</td><td><a href="#c-starsbars">有上下限的 stars and bars</a></td></tr>
+      <tr><td>函數</td><td>domain 每個元素都要指定到 codomain 的一個元素；one-to-one 代表不同輸入不能撞到同一輸出。</td><td><a href="#c-functions">函數計數</a></td></tr>
+      <tr><td>反證法</td><td>要證明「A 或 B 或 C」，可以假設三個都不成立，看總數是否矛盾。</td><td><a href="#c-pigeonhole">鴿籠原理</a>、6.2 第21題</td></tr>
+    </tbody>
+  </table>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="concepts">
+  <h2>3. 不重複觀念庫</h2>
+  <p>下面每個觀念只講一次。後面的題目都會連回這裡。</p>
+
+  <article id="c-product" class="mini">
+    <h3>A. 乘法原理：分步完成，就相乘</h3>
+    <p>如果一件事分成多步，第一步有 <span class="formula">n1</span> 種，第二步有 <span class="formula">n2</span> 種，……，總數就是：</p>
+    <div class="blockformula">n1 × n2 × ... × nk</div>
+    <table><thead><tr><th>常見包裝</th><th>翻譯</th><th>例子</th></tr></thead><tbody>
+      <tr><td>bit string 長度 n</td><td>每格 0/1 兩種</td><td><span class="formula">2^n</span></td></tr>
+      <tr><td>每個工作分給一位員工</td><td>每個工作有 m 種選擇</td><td><span class="formula">m^r</span></td></tr>
+      <tr><td>固定某些位置</td><td>固定位置只有 1 種；自由位置照規則乘</td><td>長度 10 首尾為 1：<span class="formula">2^8</span></td></tr>
+    </tbody></table>
+    <div class="warn"><strong>錯誤警告：</strong>「可以重複」時不能用下降乘積 <span class="formula">n(n-1)...</span>；每一步仍有同樣選擇數。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-sum" class="mini">
+    <h3>B. 加法原理：分互斥情況，就相加</h3>
+    <p>如果事件可以分成互不重疊的情況，例如密碼長度是 8、9、10、11、12，總數就是各長度加起來。</p>
+    <div class="blockformula">總數 = 情況1 + 情況2 + ... + 情況k</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-complement" class="mini">
+    <h3>C. 補集法：至少、沒有、不超過，先看反面</h3>
+    <table><thead><tr><th>題目語句</th><th>反面</th><th>常用寫法</th></tr></thead><tbody>
+      <tr><td>至少一個 @</td><td>完全沒有 @</td><td><span class="formula">全部 − 沒有@</span></td></tr>
+      <tr><td>至少 4 個 1</td><td>0、1、2、3 個 1</td><td><span class="formula">2^n − Σ C(n,k)</span></td></tr>
+      <tr><td>不包含三個相同數字</td><td>000,111,...,999</td><td><span class="formula">全部 − 壞情況</span></td></tr>
+    </tbody></table>
+    <p>補集法不是偷懶，是避免「至少一次」拆情況時重複計算。</p>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-inclusion" class="mini">
+    <h3>D. 排容原理：A 或 B，但會重疊</h3>
+    <p>當題目說「A 或 B」且 A、B 可能同時發生，不能直接加，要扣掉重複算一次的交集。</p>
+    <div class="blockformula">|A ∪ B| = |A| + |B| − |A ∩ B|</div>
+    <p>例：長度 10 bit string，開頭三個 0 或結尾兩個 0：<span class="formula">2^7 + 2^8 − 2^5</span>。</p>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-functions" class="mini">
+    <h3>E. 函數計數與 one-to-one</h3>
+    <table><thead><tr><th>情況</th><th>公式/方法</th><th>理由</th></tr></thead><tbody>
+      <tr><td>從 m 個元素到 n 個元素的函數</td><td><span class="formula">n^m</span></td><td>domain 每個元素各自選 codomain 的一個值</td></tr>
+      <tr><td>one-to-one，m ≤ n</td><td><span class="formula">n(n-1)...(n-m+1)</span></td><td>用過的輸出不能再用</td></tr>
+      <tr><td>one-to-one，m &gt; n</td><td><span class="formula">0</span></td><td>輸出位置不夠，必定撞到</td></tr>
+    </tbody></table>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-pigeonhole" class="mini">
+    <h3>F. 鴿籠原理：保證題要看最壞情況</h3>
+    <table><thead><tr><th>版本</th><th>說法</th><th>考試寫法</th></tr></thead><tbody>
+      <tr><td>基本版</td><td>n+1 個物件放進 n 個籠子，至少有一籠 ≥ 2 個。</td><td>「因為物件數大於籠子數，所以必有一籠至少兩個。」</td></tr>
+      <tr><td>廣義版</td><td>N 個物件放進 k 個籠子，至少有一籠 ≥ <span class="formula">ceil(N/k)</span>。</td><td>25 人分 3 年級：至少 <span class="formula">ceil(25/3)=9</span> 人同年級。</td></tr>
+      <tr><td>保證至少 r 個</td><td>最多避免達標：每籠放 r−1 個，再多 1 個就爆。</td><td><span class="formula">k(r−1)+1</span></td></tr>
+    </tbody></table>
+    <div class="warn"><strong>關鍵：</strong>指定顏色的題，例如「至少 2 隻黑襪」，不是平均分，要想最衰情況：先抽完所有非黑襪。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-permutation" class="mini">
+    <h3>G. 排列：順序重要</h3>
+    <p>從 n 個不同物件中取 r 個排成一列：</p>
+    <div class="blockformula">P(n,r) = n(n−1)...(n−r+1) = n!/(n−r)!</div>
+    <p>職位題一定是排列：president、vice president、secretary、treasurer 是不同職位，換人就是不同結果。</p>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-combination" class="mini">
+    <h3>H. 組合：順序不重要</h3>
+    <p>從 n 個不同物件中選 r 個，不看順序：</p>
+    <div class="blockformula">C(n,r) = n!/[r!(n−r)!]</div>
+    <table><thead><tr><th>題型</th><th>翻譯</th></tr></thead><tbody>
+      <tr><td>長度 n 的 bit string 恰好 r 個 1</td><td>選 r 個位置放 1：<span class="formula">C(n,r)</span></td></tr>
+      <tr><td>選 r 人組委員會</td><td>只選人不分職位：<span class="formula">C(n,r)</span></td></tr>
+      <tr><td>subset 有 r 個元素</td><td>從全集選 r 個：<span class="formula">C(n,r)</span></td></tr>
+    </tbody></table>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-block" class="mini">
+    <h3>I. Block 法：指定連續，就綁成一包</h3>
+    <p>如果題目要求排列中包含指定連續字串，例如 BCD，就把 BCD 當成一個物件。</p>
+    <table><thead><tr><th>題目</th><th>變成</th><th>算法</th></tr></thead><tbody>
+      <tr><td>排列 ABCDEFG，包含 BCD</td><td>[BCD], A, E, F, G 共 5 個物件</td><td><span class="formula">5!</span></td></tr>
+      <tr><td>禁止 a 立刻接 b</td><td>總數 − 壞 block [ab]</td><td><span class="formula">4! − 3!</span></td></tr>
+      <tr><td>每個 0 後面都接 1</td><td>每個 0 形成 [01] block</td><td>再安排 block 與剩餘物件</td></tr>
+    </tbody></table>
+    <div class="bad"><strong>陷阱：</strong>兩個 block 若共享字母，要檢查是否能合併或矛盾。例如 ABC 與 CDE 共享 C，會強迫成 ABCDE；CBA 與 BED 會矛盾，因為 B 後面不能同時是 A 和 E。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-binomial" class="mini">
+    <h3>J. 二項式定理與係數</h3>
+    <div class="blockformula">(x+y)^n = Σ[k=0..n] C(n,k) x^(n−k)y^k</div>
+    <table><thead><tr><th>問題</th><th>解法</th></tr></thead><tbody>
+      <tr><td>展開後有幾項？</td><td>k 從 0 到 n，共 <span class="formula">n+1</span> 項。</td></tr>
+      <tr><td>求指定項係數</td><td>找出 y 的次方 k，再檢查 x 次方是否吻合。</td></tr>
+      <tr><td>(2x−3y)^200 的 x^101 y^99</td><td>k=99，係數 <span class="formula">C(200,99)2^101(−3)^99</span></td></tr>
+    </tbody></table>
+    <div class="warn"><strong>常漏：</strong>係數裡的 2 和 −3 也要連同次方一起算；負號由 <span class="formula">(−3)^k</span> 的 k 奇偶決定。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-identity" class="mini">
+    <h3>K. 組合恆等式證明</h3>
+    <table><thead><tr><th>證明類型</th><th>模板</th><th>例子</th></tr></thead><tbody>
+      <tr><td>Pascal identity</td><td><span class="formula">C(m,r)+C(m,r−1)=C(m+1,r)</span></td><td>6.4 第29題</td></tr>
+      <tr><td>對稱性</td><td><span class="formula">C(n,r)=C(n,n−r)</span></td><td>把 <span class="formula">C(2n+1,n)</span> 換成 <span class="formula">C(2n+1,n+1)</span></td></tr>
+      <tr><td>組合證明</td><td>左右兩邊數同一件事</td><td>先組隊再選隊長 = 先選隊長再拉人入隊</td></tr>
+    </tbody></table>
+    <details>
+      <summary>6.4 第33題的好記版本：火鍋背鍋隊長</summary>
+      <p>左邊 <span class="formula">Σ kC(n,k)</span>：先選 k 個人吃火鍋，再從 k 個人中選背鍋隊長。</p>
+      <p>右邊 <span class="formula">n2^(n−1)</span>：先抓一個背鍋隊長，再讓剩下 n−1 個人各自決定要不要加入火鍋團。</p>
+      <p>兩邊都在數「火鍋團 + 一位背鍋隊長」，所以相等。</p>
+    </details>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-starsbars" class="mini">
+    <h3>L. Stars and Bars：非負整數解 / 相同物品分給不同盒子</h3>
+    <p>問題：</p>
+    <div class="blockformula">x1 + x2 + ... + xn = r,  xi ≥ 0</div>
+    <p>把 r 個相同物品分成 n 份。需要 r 顆星星和 n−1 個隔板，所以：</p>
+    <div class="blockformula">解數 = C(r+n−1, n−1) = C(r+n−1, r)</div>
+    <table><thead><tr><th>限制型態</th><th>處理法</th><th>例子</th></tr></thead><tbody>
+      <tr><td><span class="formula">xi ≥ a</span></td><td>令 <span class="formula">yi = xi−a</span>，先扣掉最低需求</td><td>每題至少 5 分：總分先扣 <span class="formula">10×5</span></td></tr>
+      <tr><td><span class="formula">xi ≤ b</span></td><td>先算全部，再扣 <span class="formula">xi ≥ b+1</span></td><td><span class="formula">x1≤10</span> 的壞情況是 <span class="formula">x1≥11</span></td></tr>
+      <tr><td>同時有上下限</td><td>先處理下限，再用補集扣上限</td><td>6.5 第15(d)</td></tr>
+    </tbody></table>
+    <div class="warn"><strong>隔板數為什麼是 n−1？</strong>n 個變數只需要 n−1 個隔板切成 n 區。5 個變數需要 4 個隔板。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-multiset" class="mini">
+    <h3>M. 可重複但不看順序：r-combination with repetition</h3>
+    <p>從 n 種東西選 r 個，可以重複，順序不重要：</p>
+    <div class="blockformula">C(n+r−1, r)</div>
+    <p>本質上就是 <a href="#c-starsbars">stars and bars</a>：令 <span class="formula">xi</span> 表示第 i 種選了幾個。</p>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+
+  <article id="c-boxes" class="mini">
+    <h3>N. 球盒模型：先判斷可不可分辨</h3>
+    <table><thead><tr><th>球</th><th>盒子</th><th>方法</th><th>例子</th></tr></thead><tbody>
+      <tr><td>可分辨</td><td>可分辨</td><td>每顆球選盒子；若每盒非空用排容</td><td>5 顆不同球到 3 個不同盒，每盒至少 1：<span class="formula">3^5−C(3,1)2^5+C(3,2)1^5</span></td></tr>
+      <tr><td>可分辨</td><td>不可分辨</td><td>分組；盒子沒有名字，不能把組別順序算進去</td><td>5 顆不同球分 3 組：大小 3,1,1 或 2,2,1</td></tr>
+      <tr><td>不可分辨</td><td>可分辨</td><td>stars and bars</td><td>相同球放不同盒</td></tr>
+      <tr><td>不可分辨</td><td>不可分辨</td><td>整數分割，看有哪些拆法</td><td>5 拆成 3 個正整數：3+1+1、2+2+1</td></tr>
+    </tbody></table>
+    <div class="bad"><strong>最大陷阱：</strong>盒子可分辨就不能除以盒子數的階乘；盒子不可分辨才需要避免把同一分組重複算。</div>
+    <a class="toplink" href="#exercise-map">↩ 回題目對照</a>
+  </article>
+</section>
+
+<section id="exercise-map">
+  <h2>4. 題目 ↔ 觀念對照表</h2>
+  <p>這張表是你考前最該反覆看的一頁。題目不再展開長篇解答，只保留「用什麼觀念、為什麼、答案骨架」。</p>
+
+  <h3 id="sec61">6.1 The Basics of Counting</h3>
+  <table>
+    <thead><tr><th>題號</th><th>核心觀念</th><th>解題骨架</th><th>答案/結論</th></tr></thead>
+    <tbody>
+      <tr><td>11</td><td><a href="#c-product">固定格子 + 乘法原理</a></td><td>長度 10，首尾固定為 1，中間 8 格自由。</td><td><span class="formula">2^8 = 256</span></td></tr>
+      <tr><td>17</td><td><a href="#c-complement">補集法</a></td><td>全部 ASCII 字串 − 完全沒有 @。</td><td><span class="formula">128^5−127^5 = 1,321,368,961</span></td></tr>
+      <tr><td>25(a)</td><td><a href="#c-complement">補集法</a></td><td>三位數字字串全部 1000，扣 000,111,...,999。</td><td><span class="formula">1000−10=990</span></td></tr>
+      <tr><td>25(b)</td><td><a href="#c-product">乘法原理</a></td><td>第一位奇數 5 種，後兩位各 10 種。</td><td><span class="formula">5×10×10=500</span></td></tr>
+      <tr><td>25(c)</td><td><a href="#c-combination">選位置</a></td><td>選兩格放 4，剩下一格不能是 4。</td><td><span class="formula">C(3,2)×9=27</span></td></tr>
+      <tr><td>35</td><td><a href="#c-functions">one-to-one functions</a></td><td>domain 5 個，codomain n 個：若 n&lt;5 則 0，否則下降乘積。</td><td>4:0；5:120；6:720；7:2520</td></tr>
+      <tr><td>37</td><td><a href="#c-functions">函數計數</a></td><td>codomain={0,1}，注意 n=1 特例。</td><td>(a) n=1,2 時 2；n≥3 時 0。 (b) n=1 時 1；n&gt;1 時 <span class="formula">2^(n−2)</span>。 (c) <span class="formula">2(n−1)</span></td></tr>
+      <tr><td>51</td><td><a href="#c-inclusion">排容原理</a></td><td>A=前三位 000，B=末兩位 00，扣交集。</td><td><span class="formula">2^7+2^8−2^5=352</span></td></tr>
+      <tr><td>57</td><td><a href="#c-sum">加法原理</a> + <a href="#c-complement">補集法</a></td><td>每格 68 種，長度 8~12 相加；至少一特殊字元用扣掉沒有特殊字元。</td><td>(a) <span class="formula">Σ[k=8..12]68^k</span>；(b) <span class="formula">Σ68^k−Σ62^k</span>；(c) 約 314,000 年</td></tr>
+      <tr><td>67</td><td><a href="#c-block">Block + 補集</a></td><td>總排列 4!，扣掉壞情況 [ab]。</td><td><span class="formula">4!−3! = 18</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec62">6.2 The Pigeonhole Principle</h3>
+  <table>
+    <thead><tr><th>題號</th><th>核心觀念</th><th>解題骨架</th><th>答案/結論</th></tr></thead>
+    <tbody>
+      <tr><td>3(a)</td><td><a href="#c-pigeonhole">基本鴿籠</a></td><td>兩種顏色，抽 3 隻一定有同色。</td><td>3</td></tr>
+      <tr><td>3(b)</td><td><a href="#c-pigeonhole">指定目標的最壞情況</a></td><td>要保證 2 隻黑襪，最壞先抽 12 隻棕 + 1 隻黑。</td><td>14</td></tr>
+      <tr><td>11</td><td><a href="#c-pigeonhole">廣義鴿籠</a></td><td>50 州，每州最多 99 人還不達標。</td><td><span class="formula">50×99+1=4951</span></td></tr>
+      <tr><td>15(a)</td><td><a href="#c-pigeonhole">配對成籠</a></td><td>{1,8},{2,7},{3,6},{4,5} 四籠，選 5 個必撞籠。</td><td>必有一對和為 9</td></tr>
+      <tr><td>15(b)</td><td>反例</td><td>選 4 個不保證撞籠。</td><td>不成立，例如 {1,2,3,4}</td></tr>
+      <tr><td>21(a)</td><td><a href="#c-pigeonhole">廣義鴿籠</a></td><td>25 人分 3 年級。</td><td>至少一類 ≥ <span class="formula">ceil(25/3)=9</span></td></tr>
+      <tr><td>21(b)</td><td><a href="#c-pigeonhole">反證 + 上限總和</a></td><td>若 F≤2, S≤18, J≤4，最多 24 人，矛盾。</td><td>三條件至少一個成立</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec63">6.3 Permutations and Combinations</h3>
+  <table>
+    <thead><tr><th>題號</th><th>核心觀念</th><th>解題骨架</th><th>答案/結論</th></tr></thead>
+    <tbody>
+      <tr><td>11(a)</td><td><a href="#c-combination">選位置</a></td><td>長度 10，選 4 個位置放 1。</td><td><span class="formula">C(10,4)=210</span></td></tr>
+      <tr><td>11(b)</td><td><a href="#c-combination">至多：分情況加</a></td><td>0~4 個 1。</td><td><span class="formula">Σ[k=0..4]C(10,k)=386</span></td></tr>
+      <tr><td>11(c)</td><td><a href="#c-complement">至少：補集</a></td><td>全部扣 0~3 個 1。</td><td>848</td></tr>
+      <tr><td>11(d)</td><td><a href="#c-combination">選位置</a></td><td>0 和 1 一樣多，就是 5 個 1。</td><td><span class="formula">C(10,5)=252</span></td></tr>
+      <tr><td>17</td><td><a href="#c-complement">子集合補集</a></td><td>全部 subsets 扣大小 0,1,2。</td><td><span class="formula">2^100−5051</span></td></tr>
+      <tr><td>21</td><td><a href="#c-block">指定連續字串 block</a></td><td>把指定字串當成一個物件；共享字母要合併或判斷矛盾。</td><td>(a)120 (b)24 (c)120 (d)24 (e)6 (f)0</td></tr>
+      <tr><td>29(a)</td><td><a href="#c-combination">組合</a></td><td>選 4 人委員會，無職位。</td><td><span class="formula">C(25,4)=12650</span></td></tr>
+      <tr><td>29(b)</td><td><a href="#c-permutation">排列</a></td><td>四個職位不同。</td><td><span class="formula">P(25,4)=303600</span></td></tr>
+      <tr><td>35</td><td><a href="#c-combination">分男女選人</a></td><td>6 人男女相同 → 3 男 3 女。</td><td><span class="formula">C(10,3)C(15,3)=54600</span></td></tr>
+      <tr><td>37</td><td><a href="#c-block">[01] block</a></td><td>8 個 0 各自形成 8 個 [01]，剩 2 個單獨 1。</td><td><span class="formula">C(10,2)=45</span></td></tr>
+      <tr><td>39</td><td><a href="#c-complement">補集或分情況</a></td><td>至少三個 1 且至少三個 0，1 的數量是 3~7。</td><td><span class="formula">Σ[k=3..7]C(10,k)=912</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec64">6.4 Binomial Coefficients and Identities</h3>
+  <table>
+    <thead><tr><th>題號</th><th>核心觀念</th><th>解題骨架</th><th>答案/結論</th></tr></thead>
+    <tbody>
+      <tr><td>5</td><td><a href="#c-binomial">二項式項數</a></td><td>(x+y)^100 中 k=0 到 100。</td><td>101 項</td></tr>
+      <tr><td>9</td><td><a href="#c-binomial">指定係數</a></td><td>y 次方 99，所以選 k=99。</td><td><span class="formula">−C(200,99)2^101 3^99</span></td></tr>
+      <tr><td>29</td><td><a href="#c-identity">Pascal identity + 對稱性</a></td><td>左邊先合成 C(2n+1,n+1)，再用對稱性拆 C(2n+2,n+1)。</td><td>恆等式成立</td></tr>
+      <tr><td>33</td><td><a href="#c-identity">組合證明</a></td><td>數「選委員會並指定主席」：先選委員會大小 vs 先選主席。</td><td><span class="formula">Σ[k=1..n] kC(n,k)=n2^(n−1)</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="sec65">6.5 Generalized Permutations and Combinations</h3>
+  <table>
+    <thead><tr><th>題號</th><th>核心觀念</th><th>解題骨架</th><th>答案/結論</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><a href="#c-product">有順序、可重複</a></td><td>從 3 個元素依序選 5 次。</td><td><span class="formula">3^5=243</span></td></tr>
+      <tr><td>5</td><td><a href="#c-product">工作分配</a></td><td>3 個工作各選 1 位員工，員工可重複。</td><td><span class="formula">5^3=125</span></td></tr>
+      <tr><td>7</td><td><a href="#c-multiset">可重複組合</a></td><td>從 5 種選 3 個，不看順序，可重複。</td><td><span class="formula">C(7,3)=35</span></td></tr>
+      <tr><td>15(a)</td><td><a href="#c-starsbars">stars and bars，下限</a></td><td>x1≥1，令 y1=x1−1，總和變 20。</td><td><span class="formula">C(24,4)=10626</span></td></tr>
+      <tr><td>15(b)</td><td><a href="#c-starsbars">stars and bars，全體下限</a></td><td>每個 xi≥2，總共先扣 10。</td><td><span class="formula">C(15,4)=1365</span></td></tr>
+      <tr><td>15(c)</td><td><a href="#c-starsbars">上限用補集</a></td><td>全部扣 x1≥11。</td><td><span class="formula">C(25,4)−C(14,4)=11649</span></td></tr>
+      <tr><td>15(d)</td><td><a href="#c-starsbars">上下限 + 補集</a></td><td>先令 y2=x2−1, y3=x3−15，總和變 5，再扣 x1≥4 與 y2≥3。</td><td><span class="formula">C(9,4)−C(5,4)−C(6,4)=106</span></td></tr>
+      <tr><td>23</td><td><a href="#c-starsbars">相同球到不同盒</a></td><td>6 顆相同球，9 個不同箱。</td><td><span class="formula">C(14,8)=3003</span></td></tr>
+      <tr><td>25</td><td><a href="#c-boxes">不同物件到不同盒，指定每盒數量</a></td><td>12 個不同物件分到 6 個不同盒，每盒 2 個。</td><td><span class="formula">12!/(2!)^6=7,484,400</span></td></tr>
+      <tr><td>29</td><td><a href="#c-starsbars">配分問題</a></td><td>10 題總分 100，每題至少 5，先扣 50。</td><td><span class="formula">C(59,9)=12,565,671,261</span></td></tr>
+      <tr><td>47(a)</td><td><a href="#c-starsbars">相同書到不同書架</a></td><td>n 本相同書，k 個不同書架，可空。</td><td><span class="formula">C(n+k−1,n)</span></td></tr>
+      <tr><td>47(b)</td><td><a href="#c-boxes">不同書 + 書架位置重要</a></td><td>n 本不同書與 k−1 個相同隔板排列。</td><td><span class="formula">(n+k−1)!/(k−1)!</span></td></tr>
+      <tr><td>61(a)</td><td><a href="#c-boxes">球可分辨、盒可分辨</a></td><td>排容扣空盒。</td><td>150</td></tr>
+      <tr><td>61(b)</td><td><a href="#c-boxes">球可分辨、盒不可分辨</a></td><td>分組大小 3,1,1 或 2,2,1。</td><td>25</td></tr>
+      <tr><td>61(c)</td><td><a href="#c-starsbars">球不可分辨、盒可分辨</a></td><td>x1+x2+x3=5，每盒至少 1。</td><td>6</td></tr>
+      <tr><td>61(d)</td><td><a href="#c-boxes">球不可分辨、盒不可分辨</a></td><td>5 拆成 3 個正整數，不看順序。</td><td>2</td></tr>
+    </tbody>
+  </table>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="formula-table">
+  <h2>5. 必背公式表：考前最後 10 分鐘看這張</h2>
+  <table>
+    <thead><tr><th>用途</th><th>公式</th><th>什麼時候用</th><th>不要犯的錯</th></tr></thead>
+    <tbody>
+      <tr><td>乘法原理</td><td><span class="formula">n1n2...nk</span></td><td>分步完成，每步選擇數明確</td><td>步驟不是互斥情況，不能加</td></tr>
+      <tr><td>加法原理</td><td><span class="formula">N1+N2+...+Nk</span></td><td>分互斥情況</td><td>若情況重疊，要用排容</td></tr>
+      <tr><td>補集法</td><td><span class="formula">合法 = 全部 − 不合法</span></td><td>至少、沒有、不超過</td><td>反面要寫完整</td></tr>
+      <tr><td>排容</td><td><span class="formula">|A∪B|=|A|+|B|−|A∩B|</span></td><td>A 或 B 且可能重疊</td><td>忘記扣交集</td></tr>
+      <tr><td>鴿籠保證 r 個</td><td><span class="formula">k(r−1)+1</span></td><td>k 個籠子，保證某籠至少 r 個</td><td>指定顏色不能亂平均</td></tr>
+      <tr><td>排列</td><td><span class="formula">P(n,r)=n!/(n−r)!</span></td><td>順序/職位重要</td><td>把委員會當排列</td></tr>
+      <tr><td>組合</td><td><span class="formula">C(n,r)=n!/[r!(n−r)!]</span></td><td>只選，不管順序</td><td>把職位題當組合</td></tr>
+      <tr><td>二項式定理</td><td><span class="formula">(x+y)^n=Σ C(n,k)x^(n−k)y^k</span></td><td>展開、找係數</td><td>k 從 0 開始，不是 1</td></tr>
+      <tr><td>Stars and Bars</td><td><span class="formula">x1+...+xn=r ⇒ C(r+n−1,n−1)</span></td><td>非負整數解；相同物品到不同盒</td><td>隔板數是 n−1，不是 n</td></tr>
+      <tr><td>可重複組合</td><td><span class="formula">C(n+r−1,r)</span></td><td>n 種選 r 個，可重複，不看順序</td><td>不要用 n^r，因為 n^r 是有順序</td></tr>
+      <tr><td>不同物件分不同盒，指定數量</td><td><span class="formula">n!/(n1!n2!...nk!)</span></td><td>每盒數量固定，盒子有名字</td><td>盒子可分辨，不要再除 k!</td></tr>
+    </tbody>
+  </table>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="mistakes">
+  <h2>6. 常見錯誤與修正</h2>
+  <table>
+    <thead><tr><th>錯誤想法</th><th>為什麼錯</th><th>正確處理</th></tr></thead>
+    <tbody>
+      <tr><td>「至少一次」直接分一次、兩次、三次……</td><td>容易漏算或重複算，特別是字串位置多時。</td><td>先用補集：全部 − 一次都沒有。</td></tr>
+      <tr><td>看到「or」就直接加</td><td>A、B 可能同時發生，重疊被算兩次。</td><td>用排容：加起來後扣交集。</td></tr>
+      <tr><td>4 個籠子選 4 個一定撞籠</td><td>鴿籠要物件數大於籠子數才保證撞。</td><td>5 個物件放 4 籠才保證至少一籠 2 個。</td></tr>
+      <tr><td>committee 用排列</td><td>委員會只看成員，不看順序。</td><td>用組合 C(n,r)。</td></tr>
+      <tr><td>president/vice president 用組合</td><td>職位不同，換職位算不同結果。</td><td>用排列 P(n,r)。</td></tr>
+      <tr><td>Stars and Bars 下面寫 n</td><td>n 個變數只需 n−1 個隔板。</td><td><span class="formula">C(r+n−1,n−1)</span> 或 <span class="formula">C(r+n−1,r)</span>。</td></tr>
+      <tr><td>處理 x2&lt;4 時壞情況寫錯</td><td>若換變數 y2=x2−1，限制也要一起換。</td><td>原本壞情況 x2≥4；新變數壞情況 y2≥3。</td></tr>
+      <tr><td>球盒題沒先判斷可不可分辨</td><td>這會決定是否要考慮順序、是否要除掉重複分組。</td><td>先寫四格分類表，再選方法。</td></tr>
+      <tr><td>Block 題直接把兩個字串各自綁起來</td><td>若字串共享字母，可能合併或矛盾。</td><td>先檢查相容性：ABC 與 CDE → ABCDE；CBA 與 BED → 不可能。</td></tr>
+      <tr><td>二項式係數漏掉 2 或 −3</td><td>(2x−3y)^n 的係數不只 C(n,k)，還有 2 和 −3 的次方。</td><td>係數是 <span class="formula">C(n,k)2^(n−k)(−3)^k</span>。</td></tr>
+    </tbody>
+  </table>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+
+<section id="exam-check">
+  <h2>7. 考前檢核：你要能做到這些</h2>
+  <div class="grid">
+    <div class="mini">
+      <h3>基礎計數</h3>
+      <ul class="check">
+        <li>看到 bit string，能立刻把固定格子和自由格子分開。</li>
+        <li>看到「至少一次」，會先想補集。</li>
+        <li>看到「A 或 B」，會問是否重疊。</li>
+        <li>看到 function，會分一般函數與 one-to-one。</li>
+      </ul>
+    </div>
+    <div class="mini">
+      <h3>鴿籠</h3>
+      <ul class="check">
+        <li>能明確說出物件是什麼、籠子是什麼。</li>
+        <li>會用最壞情況求「至少要幾個才保證」。</li>
+        <li>會用反證法證明「A 或 B 或 C」。</li>
+      </ul>
+    </div>
+    <div class="mini">
+      <h3>排列組合</h3>
+      <ul class="check">
+        <li>能分清楚順序重要或不重要。</li>
+        <li>會用 C(n,r) 選 bit string 的 1 的位置。</li>
+        <li>會把指定連續字串綁成 block。</li>
+      </ul>
+    </div>
+    <div class="mini">
+      <h3>廣義排列組合</h3>
+      <ul class="check">
+        <li>能把非負整數解看成 stars and bars。</li>
+        <li>能先處理下限，再處理上限。</li>
+        <li>球盒題會先判斷球/盒子是否可分辨。</li>
+      </ul>
+    </div>
+  </div>
+  <details open>
+    <summary>最後一張口訣表</summary>
+    <table>
+      <thead><tr><th>口訣</th><th>意思</th></tr></thead>
+      <tbody>
+        <tr><td>分步乘，分情況加</td><td>乘法原理 vs 加法原理</td></tr>
+        <tr><td>至少先補集，或字先排容</td><td>至少問題用補集；or 問題檢查交集</td></tr>
+        <tr><td>順序重要排列，不重要組合</td><td>P(n,r) vs C(n,r)</td></tr>
+        <tr><td>連續就綁包，禁止就扣壞包</td><td>Block 法</td></tr>
+        <tr><td>n 份只要 n−1 道牆</td><td>Stars and Bars 的隔板數</td></tr>
+        <tr><td>球盒先問有沒有名字</td><td>可分辨/不可分辨決定方法</td></tr>
+      </tbody>
+    </table>
+  </details>
+  <div class="source">製作依據：第六章 Counting 與奇數題答案。這份整理重點放在你指定要寫的題目，不含 6.6。</div>
+  <a class="toplink" href="#top">↑ 回到頂部</a>
+</section>
+</main>
+</div>
+<a class="fakebtn fixedTop" href="#top">↑ Top</a>
+</body>
+</html>
