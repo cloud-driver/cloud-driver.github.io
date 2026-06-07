@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+
+# Xcode user data
+*.xcuserdata/
+xcuserdata/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
