@@ -306,9 +306,124 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
+  
+
+    /* ── Authentication ─────────────────────────────────────────────── */
+    body.auth-lock { overflow: hidden; }
+    .auth-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10010;
+      display: grid;
+      place-items: center;
+      padding: max(1.25rem, var(--safe-top)) max(1rem, var(--safe-right)) max(1.25rem, var(--safe-bottom)) max(1rem, var(--safe-left));
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255,221,183,.84) 0, transparent 32%),
+        radial-gradient(circle at 85% 88%, rgba(185,238,171,.46) 0, transparent 30%),
+        rgba(253,249,244,.96);
+      backdrop-filter: blur(14px);
+      transition: opacity .24s ease, visibility .24s ease;
+    }
+    .auth-screen.auth-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .auth-card {
+      width: min(100%, 28rem);
+      border: 1px solid rgba(215,195,176,.72);
+      border-radius: 1.75rem;
+      padding: clamp(1.4rem, 4vw, 2rem);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 24px 64px rgba(82,68,54,.16);
+    }
+    .auth-brand-mark {
+      width: 3.25rem;
+      height: 3.25rem;
+      display: grid;
+      place-items: center;
+      border-radius: 1rem;
+      color: #855400;
+      background: #ffddb7;
+      box-shadow: inset 0 0 0 1px rgba(226,153,48,.35);
+    }
+    .auth-tab {
+      flex: 1;
+      min-height: 2.75rem;
+      border-radius: .8rem;
+      color: #524436;
+      font-weight: 700;
+      font-size: .875rem;
+      transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+    .auth-tab.active {
+      color: #583600;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(82,68,54,.1);
+    }
+    .auth-message { min-height: 1.25rem; }
+    .user-menu-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + .65rem);
+      z-index: 70;
+      width: 13.5rem;
+      padding: .75rem;
+      border: 1px solid rgba(215,195,176,.7);
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 14px 32px rgba(82,68,54,.16);
+    }
+
   </style>
 </head>
 <body class="min-h-screen splash-lock">
+
+  <section id="auth-screen" class="auth-screen auth-hidden" aria-label="帳號登入" aria-hidden="true">
+    <div class="auth-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="auth-brand-mark" aria-hidden="true"><span class="material-symbols-outlined fill-icon text-[1.7rem]">auto_stories</span></div>
+        <div>
+          <p class="text-lg font-extrabold text-[#855400]">閱境 AI</p>
+          <p class="text-xs text-[#524436]">把閱讀軌跡留給真正的你</p>
+        </div>
+      </div>
+
+      <div class="flex gap-1 p-1 rounded-xl bg-[#f1ede8] mb-5" role="tablist" aria-label="登入或註冊">
+        <button id="auth-tab-login" type="button" role="tab" aria-selected="true" class="auth-tab active" onclick="setAuthMode('login')">登入</button>
+        <button id="auth-tab-register" type="button" role="tab" aria-selected="false" class="auth-tab" onclick="setAuthMode('register')">建立帳號</button>
+      </div>
+
+      <form id="auth-form" class="space-y-4" novalidate>
+        <div id="auth-display-name-row" class="hidden space-y-1.5">
+          <label for="auth-display-name" class="text-xs font-bold text-[#524436]">顯示名稱</label>
+          <input id="auth-display-name" type="text" maxlength="40" autocomplete="name" placeholder="例如：小明"
+            class="w-full rounded-xl bg-[#f7f3ee] border border-[#d7c3b0]/55 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50" />
+        </div>
+        <div class="space-y-1.5">
+          <label for="auth-username" class="text-xs font-bold text-[#524436]">帳號</label>
+          <input id="auth-username" type="text" minlength="3" maxlength="32" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="英數、底線、連字號或句點"
+            class="w-full rounded-xl bg-[#f7f3ee] border border-[#d7c3b0]/55 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50" />
+        </div>
+        <div class="space-y-1.5">
+          <label for="auth-password" class="text-xs font-bold text-[#524436]">密碼</label>
+          <input id="auth-password" type="password" minlength="8" maxlength="128" autocomplete="current-password" required placeholder="至少 8 個字元"
+            class="w-full rounded-xl bg-[#f7f3ee] border border-[#d7c3b0]/55 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50" />
+        </div>
+        <div id="auth-email-row" class="hidden space-y-1.5">
+          <label for="auth-email" class="text-xs font-bold text-[#524436]">Email <span class="font-normal text-[#847463]">（選填）</span></label>
+          <input id="auth-email" type="email" maxlength="254" autocomplete="email" placeholder="name@example.com"
+            class="w-full rounded-xl bg-[#f7f3ee] border border-[#d7c3b0]/55 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e29930]/50" />
+        </div>
+        <p id="auth-message" class="auth-message text-xs font-semibold text-[#ba1a1a]" role="alert" aria-live="polite"></p>
+        <button id="auth-submit-btn" type="submit" class="touch-target w-full rounded-xl bg-[#855400] text-white py-3 font-bold text-sm hover:bg-[#6b4300] transition-colors disabled:opacity-45 disabled:cursor-not-allowed">登入並開始閱讀</button>
+      </form>
+
+      <p id="auth-switch-copy" class="text-center text-xs text-[#524436] mt-5">還沒有帳號？ <button type="button" onclick="setAuthMode('register')" class="font-bold text-[#855400] hover:underline">建立帳號</button></p>
+    </div>
+  </section>
+
   <div id="app-splash" class="app-splash" role="status" aria-live="polite" aria-label="閱境 AI 載入中">
     <div class="splash-card">
       <div class="splash-logo-wrap">
@@ -337,14 +452,24 @@
         <button type="button" data-nav="home" onclick="goHome()" class="nav-btn touch-target px-4 rounded-full text-[#855400] bg-[#ffddb7]">探索</button>
         <button type="button" data-nav="bookshelf" onclick="scrollToBookshelf()" class="nav-btn touch-target px-4 rounded-full text-[#524436] hover:text-[#855400] hover:bg-[#f1ede8] transition-colors">書架</button>
       </nav>
-      <div class="w-9 h-9 rounded-full bg-[#ffddb7] flex items-center justify-center text-[#855400] font-bold text-sm border-2 border-[#e29930]" aria-label="目前使用者 Alan">A</div>
+      <div id="account-menu-wrap" class="relative">
+        <button id="user-menu-btn" type="button" onclick="toggleUserMenu()" class="touch-target w-10 h-10 rounded-full bg-[#ffddb7] flex items-center justify-center text-[#855400] font-bold text-sm border-2 border-[#e29930]" aria-label="帳號選單" aria-expanded="false">
+          <span id="user-avatar">?</span>
+        </button>
+        <div id="user-menu-panel" class="user-menu-panel hidden" role="menu">
+          <p id="user-menu-name" class="px-2 text-sm font-bold text-[#1c1c19] truncate">尚未登入</p>
+          <p id="user-menu-username" class="px-2 mt-0.5 text-[11px] text-[#847463] truncate"></p>
+          <div class="h-px bg-[#e6e2dd] my-2"></div>
+          <button type="button" onclick="logout()" class="touch-target w-full px-2 rounded-lg text-left text-sm font-bold text-[#ba1a1a] hover:bg-[#ffdad6]/60">登出</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <div id="home-page" class="spa-page active">
     <main class="app-main max-w-screen-xl mx-auto px-4 sm:px-5 md:px-10 pt-6 md:pt-8 space-y-8 md:space-y-12">
       <section class="space-y-1">
-        <p class="text-sm font-semibold text-[#524436] tracking-wide">午後好，Alan</p>
+        <p id="greeting-name" class="text-sm font-semibold text-[#524436] tracking-wide">歡迎回來</p>
         <h1 class="text-[2rem] md:text-4xl font-extrabold text-[#1c1c19] leading-tight">今天想為心靈，<br class="md:hidden" />留下一段什麼樣的空白？</h1>
       </section>
 
@@ -528,8 +653,13 @@
 
   <script>
     const API_BASE = "https://generator-pic.hasaki.idv.tw";
+    const AUTH_TOKEN_KEY = "yuejing_ai_auth_token";
     const FALLBACK_COVER = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480"><rect width="320" height="480" rx="28" fill="#ffddb7"/><path d="M70 110h180v250H70z" fill="#fff7ed"/><path d="M100 160h120M100 205h120M100 250h90" stroke="#855400" stroke-width="16" stroke-linecap="round"/></svg>`);
 
+    let authMode = "login";
+    let authToken = "";
+    let currentUser = null;
+    let appStarted = false;
     let chatHistory = [];
     let currentMood = "";
     let currentModel = null;
@@ -639,10 +769,226 @@
 
     function removeTyping() { $("typing-ind")?.remove(); }
 
+    function readStoredAuthToken() {
+      try { return localStorage.getItem(AUTH_TOKEN_KEY) || ""; }
+      catch (e) { console.warn("無法讀取本機登入狀態", e); return ""; }
+    }
+
+    function saveAuthToken(token) {
+      try { localStorage.setItem(AUTH_TOKEN_KEY, token); }
+      catch (e) { throw new Error("瀏覽器無法保存登入狀態，請確認未停用本機儲存。"); }
+    }
+
+    function removeAuthToken() {
+      try { localStorage.removeItem(AUTH_TOKEN_KEY); }
+      catch (e) { console.warn("無法清除本機登入狀態", e); }
+    }
+
+    function greetingPrefix() {
+      const hour = new Date().getHours();
+      if (hour < 11) return "早安";
+      if (hour < 18) return "午後好";
+      return "晚上好";
+    }
+
+    function setAuthMessage(message = "", type = "error") {
+      const el = $("auth-message");
+      if (!el) return;
+      el.textContent = message;
+      el.classList.toggle("text-[#ba1a1a]", type === "error");
+      el.classList.toggle("text-[#3b6934]", type === "success");
+      el.classList.toggle("text-[#524436]", type === "info");
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode === "register" ? "register" : "login";
+      const registering = authMode === "register";
+      $("auth-tab-login")?.classList.toggle("active", !registering);
+      $("auth-tab-register")?.classList.toggle("active", registering);
+      $("auth-tab-login")?.setAttribute("aria-selected", String(!registering));
+      $("auth-tab-register")?.setAttribute("aria-selected", String(registering));
+      $("auth-display-name-row")?.classList.toggle("hidden", !registering);
+      $("auth-email-row")?.classList.toggle("hidden", !registering);
+      const password = $("auth-password");
+      if (password) password.autocomplete = registering ? "new-password" : "current-password";
+      const submit = $("auth-submit-btn");
+      if (submit) submit.textContent = registering ? "建立帳號並開始閱讀" : "登入並開始閱讀";
+      const copy = $("auth-switch-copy");
+      if (copy) {
+        copy.innerHTML = registering
+          ? '已經有帳號？ <button type="button" onclick="setAuthMode(\'login\')" class="font-bold text-[#855400] hover:underline">回到登入</button>'
+          : '還沒有帳號？ <button type="button" onclick="setAuthMode(\'register\')" class="font-bold text-[#855400] hover:underline">建立帳號</button>';
+      }
+      setAuthMessage("");
+    }
+
+    function showAuthScreen(message = "") {
+      const screen = $("auth-screen");
+      if (!screen) return;
+      screen.classList.remove("auth-hidden");
+      screen.setAttribute("aria-hidden", "false");
+      document.body.classList.add("auth-lock");
+      setAuthMode("login");
+      if (message) setAuthMessage(message, "info");
+      window.setTimeout(() => $("auth-username")?.focus({ preventScroll: true }), 100);
+    }
+
+    function hideAuthScreen() {
+      const screen = $("auth-screen");
+      if (!screen) return;
+      screen.classList.add("auth-hidden");
+      screen.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("auth-lock");
+    }
+
+    function applyCurrentUser(user) {
+      currentUser = user || null;
+      const displayName = currentUser?.display_name || currentUser?.username || "讀者";
+      const initial = Array.from(displayName.trim() || "讀者")[0] || "讀";
+      const greeting = $("greeting-name");
+      if (greeting) greeting.textContent = `${greetingPrefix()}，${displayName}`;
+      const avatar = $("user-avatar");
+      if (avatar) avatar.textContent = initial.toUpperCase();
+      const menuBtn = $("user-menu-btn");
+      if (menuBtn) menuBtn.setAttribute("aria-label", `${displayName} 的帳號選單`);
+      const menuName = $("user-menu-name");
+      if (menuName) menuName.textContent = displayName;
+      const menuUsername = $("user-menu-username");
+      if (menuUsername) menuUsername.textContent = currentUser?.username ? `@${currentUser.username}` : "";
+    }
+
+    function resetUserExperience() {
+      chatHistory = [];
+      currentMood = "";
+      recommendedId = "";
+      currentBook = null;
+      currentPageIdx = 0;
+      $("chat-box") && ($("chat-box").innerHTML = "");
+      $("mood-badge")?.classList.add("hidden");
+      $("recommended-hint")?.classList.add("hidden");
+      $("user-input") && ($("user-input").value = "");
+      renderBookshelf();
+      if ($("detail-page")?.classList.contains("active")) goHome();
+    }
+
+    function handleUnauthorized(message = "登入狀態已失效，請重新登入。") {
+      removeAuthToken();
+      authToken = "";
+      currentUser = null;
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = null;
+      }
+      resetUserExperience();
+      $("user-menu-panel")?.classList.add("hidden");
+      $("user-menu-btn")?.setAttribute("aria-expanded", "false");
+      showAuthScreen(message);
+    }
+
+    function toggleUserMenu() {
+      const panel = $("user-menu-panel");
+      const btn = $("user-menu-btn");
+      if (!panel || !btn || !currentUser) return;
+      const nextOpen = panel.classList.contains("hidden");
+      panel.classList.toggle("hidden", !nextOpen);
+      btn.setAttribute("aria-expanded", String(nextOpen));
+    }
+
     async function fetchJSON(url, options = {}) {
-      const res = await fetch(url, options);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
+      const headers = new Headers(options.headers || {});
+      if (authToken && !headers.has("Authorization")) headers.set("Authorization", `Bearer ${authToken}`);
+      const res = await fetch(url, { ...options, headers });
+      const contentType = res.headers.get("content-type") || "";
+      const data = contentType.includes("application/json") ? await res.json() : null;
+      if (!res.ok) {
+        const message = data?.detail || `HTTP ${res.status}`;
+        const isCredentialRequest = /\/api\/auth\/(login|register)$/.test(url);
+        if (res.status === 401 && !isCredentialRequest) handleUnauthorized(message);
+        throw new Error(message);
+      }
+      return data;
+    }
+
+    async function restoreSession() {
+      authToken = readStoredAuthToken();
+      if (!authToken) return false;
+      try {
+        const data = await fetchJSON(`${API_BASE}/api/auth/me`);
+        if (!data?.user) throw new Error("登入資料不完整");
+        applyCurrentUser(data.user);
+        return true;
+      } catch (e) {
+        authToken = "";
+        removeAuthToken();
+        return false;
+      }
+    }
+
+    async function submitAuth(event) {
+      event.preventDefault();
+      const username = $("auth-username")?.value.trim() || "";
+      const password = $("auth-password")?.value || "";
+      const displayName = $("auth-display-name")?.value.trim() || "";
+      const email = $("auth-email")?.value.trim() || "";
+      const button = $("auth-submit-btn");
+      if (!username || !password) {
+        setAuthMessage("請輸入帳號與密碼。");
+        return;
+      }
+      if (authMode === "register" && !displayName) {
+        setAuthMessage("請輸入顯示名稱。");
+        return;
+      }
+
+      button && (button.disabled = true);
+      setAuthMessage(authMode === "register" ? "正在建立帳號…" : "正在登入…", "info");
+      try {
+        const path = authMode === "register" ? "/api/auth/register" : "/api/auth/login";
+        const payload = authMode === "register"
+          ? { username, password, display_name: displayName, email: email || null }
+          : { username, password };
+        const data = await fetchJSON(`${API_BASE}${path}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!data?.access_token || !data?.user) throw new Error("伺服器沒有回傳完整登入資料。");
+        saveAuthToken(data.access_token);
+        authToken = data.access_token;
+        applyCurrentUser(data.user);
+        $("auth-password").value = "";
+        hideAuthScreen();
+        startAuthenticatedApp();
+      } catch (e) {
+        setAuthMessage(e.message || "登入失敗，請稍後再試。");
+      } finally {
+        button && (button.disabled = false);
+      }
+    }
+
+    async function logout() {
+      try {
+        await fetchJSON(`${API_BASE}/api/auth/logout`, { method: "POST" });
+      } catch (e) {
+        console.warn("登出請求未完成，仍會清除本機登入狀態。", e);
+      } finally {
+        handleUnauthorized("你已登出。\n");
+      }
+    }
+
+    function startAuthenticatedApp() {
+      if (appStarted) {
+        resetUserExperience();
+        appendBotMsg(`哈囉，${currentUser?.display_name || "你"}！今天想讀點什麼？`);
+        chatHistory.push({ sender: "assistant", text: `哈囉，${currentUser?.display_name || "你"}！今天想讀點什麼？` });
+        return;
+      }
+      appStarted = true;
+      setNavActive("home");
+      setSplashText("正在建立閱讀空間…");
+      window.setTimeout(initLive2D, 0);
+      loadBooks();
+      window.setTimeout(() => hideSplash("timeout-fallback"), 4500);
     }
 
     async function initLive2D() {
@@ -697,8 +1043,11 @@
       } catch (e) {
         console.warn("Live2D 載入失敗，已保留聊天功能。", e);
       }
-      appendBotMsg("哈囉！今天過得好嗎？心情怎麼樣呢？");
-      chatHistory.push({ sender: "assistant", text: "哈囉！今天過得好嗎？心情怎麼樣呢？" });
+      const welcome = currentUser?.display_name
+        ? `哈囉，${currentUser.display_name}！今天過得好嗎？心情怎麼樣呢？`
+        : "哈囉！今天過得好嗎？心情怎麼樣呢？";
+      appendBotMsg(welcome);
+      chatHistory.push({ sender: "assistant", text: welcome });
       hideSplash();
       hideSplash(currentModel ? "live2d-ready" : "live2d-fallback");
     }
@@ -1151,14 +1500,25 @@
       next.disabled = currentPageIdx === total - 1;
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      setNavActive("home");
-      setSplashText("正在建立閱讀空間…");
-      window.setTimeout(initLive2D, 0);
-      loadBooks();
+    window.addEventListener("DOMContentLoaded", async () => {
+      $("auth-form")?.addEventListener("submit", submitAuth);
+      document.addEventListener("click", (event) => {
+        const wrap = $("account-menu-wrap");
+        if (wrap && !wrap.contains(event.target)) {
+          $("user-menu-panel")?.classList.add("hidden");
+          $("user-menu-btn")?.setAttribute("aria-expanded", "false");
+        }
+      });
 
-      // 最後保險：如果 CDN 或 Live2D 載入卡住，最多等 4.5 秒就放使用者進入。
-      window.setTimeout(() => hideSplash("timeout-fallback"), 4500);
+      setSplashText("正在確認登入狀態…");
+      const restored = await restoreSession();
+      if (restored) {
+        startAuthenticatedApp();
+      } else {
+        hideSplash("auth-required");
+        // splash 至少顯示 0.9 秒，避免登入頁面突兀地覆蓋載入畫面。
+        window.setTimeout(() => showAuthScreen(), 940);
+      }
     });
   </script>
 </body>
